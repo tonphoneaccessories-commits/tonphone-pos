@@ -8,9 +8,9 @@
   <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 12px; background: #f1f5f9; color: #0f172a; }
-    .box { max-width: 760px; margin: auto; background: #fff; padding: 14px; border-radius: 10px; }
+    .box { max-width: 760px; margin: auto; background: #fff; padding: 14px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .nav { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
-    .nav button { padding: 10px; font-weight: bold; border-radius: 7px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #0f172a; }
+    .nav button { padding: 10px; font-weight: bold; border-radius: 7px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #0f172a; cursor: pointer; }
     .nav button.on { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
     .pane { display: none; }
     .pane.on { display: block; }
@@ -18,10 +18,10 @@
     .row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
     .row > * { flex: 1 1 140px; }
     input, select, button { padding: 10px; font-size: 14px; border-radius: 7px; border: 1px solid #cbd5e1; width: 100%; box-sizing: border-box; }
-    .btn-b { background: #1d4ed8; color: #fff; border: none; font-weight: bold; }
-    .btn-g { background: #0f766e; color: #fff; border: none; font-weight: bold; }
-    .btn-r { background: #b91c1c; color: #fff; border: none; font-weight: bold; }
-    #msg { display: none; padding: 10px; border-radius: 7px; margin-bottom: 10px; background: #eff6ff; color: #1e3a8a; }
+    .btn-b { background: #1d4ed8; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    .btn-g { background: #0f766e; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    .btn-r { background: #b91c1c; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    #msg { display: none; padding: 10px; border-radius: 7px; margin-bottom: 10px; background: #eff6ff; color: #1e3a8a; word-break: break-word; }
     #cam { display: none; max-width: 360px; margin: 8px auto; }
   </style>
 </head>
@@ -45,16 +45,31 @@
     <div id="s_pos" class="pane on">
       <div class="card">
         <div class="row">
-          <div><small><b>Duka / Tawi (Mkoa)</b></small><select id="sel_br"></select></div>
-          <div><small><b>Mfanyakazi / Wakala</b></small><select id="sel_em"></select></div>
+          <div>
+            <small><b>Duka / Tawi (Mkoa)</b></small>
+            <select id="sel_br">
+              <option value="eec9702a-d5fa-4fdf-9466-7d8e0e4def0d">Duka Kuu — Moshi (Kilimanjaro)</option>
+              <option value="branch-mwanga">Tawi la Mwanga (Kilimanjaro)</option>
+              <option value="branch-dsm">Tawi la Dar es Salaam (Dar es Salaam)</option>
+            </select>
+          </div>
+          <div>
+            <small><b>Mfanyakazi / Wakala</b></small>
+            <select id="sel_em">
+              <option value="3e549b90-ad40-4c81-84cd-4a78869fddda">Mfanyakazi Mkuu</option>
+            </select>
+          </div>
         </div>
       </div>
+
       <div class="row">
         <input id="in_code" type="text" placeholder="Weka au scan barcode" />
         <button type="button" id="b_find" class="btn-b">Tafuta</button>
         <button type="button" id="b_scan" class="btn-g">Scan Kamera</button>
       </div>
+
       <div id="pos_res" class="card">Tayari kutafuta bidhaa.</div>
+
       <div class="row">
         <input id="in_qty" type="number" step="any" min="0.01" value="1" />
         <select id="in_pay">
@@ -62,6 +77,7 @@
           <option value="lipa_namba">Lipa Namba</option>
         </select>
       </div>
+
       <div id="pos_sum" style="font-weight:bold; margin-bottom:8px;">Makadirio ya Jumla: 0</div>
       <button type="button" id="b_sale" class="btn-b">Hifadhi Mauzo</button>
     </div>
@@ -81,19 +97,20 @@
         </div>
         <button type="button" id="b_p_save" class="btn-b">Hifadhi Bidhaa</button>
       </div>
-      <div id="p_list" class="card">Inapakia bidhaa...</div>
+      <div id="p_list" class="card">Bonyeza kichupo cha Bidhaa kuona orodha.</div>
     </div>
 
     <div id="s_staff" class="pane">
       <div class="card">
         <b>Ongeza Duka / Tawi (Mkoa)</b>
         <div class="row" style="margin-top:8px;">
-          <input id="d_name" type="text" placeholder="Jina la duka (mf. Moshi)" />
+          <input id="d_name" type="text" placeholder="Jina la duka (mf. Duka la Moshi)" />
           <input id="d_reg" type="text" placeholder="Mkoa (mf. Kilimanjaro)" />
         </div>
         <button type="button" id="b_d_add" class="btn-b">Hifadhi Duka</button>
-        <div id="d_list" style="margin-top:8px;"></div>
+        <div id="d_list" style="margin-top:8px;">• Duka Kuu — Moshi (Kilimanjaro)<br>• Tawi la Mwanga (Kilimanjaro)<br>• Tawi la Dar es Salaam (Dar es Salaam)</div>
       </div>
+
       <div class="card">
         <b>Ongeza Mfanyakazi / Wakala</b>
         <div class="row" style="margin-top:8px;">
@@ -101,7 +118,7 @@
           <input id="w_phone" type="text" placeholder="Simu (hiari)" />
         </div>
         <button type="button" id="b_w_add" class="btn-g">Hifadhi Mfanyakazi</button>
-        <div id="w_list" style="margin-top:8px;"></div>
+        <div id="w_list" style="margin-top:8px;">• Mfanyakazi Mkuu</div>
       </div>
     </div>
 
@@ -109,179 +126,83 @@
       <div class="card">
         <div class="row"><input id="r_date" type="date" /></div>
         <button type="button" id="b_r_load" class="btn-b">Pakia Ripoti</button>
-        <div id="r_out" style="margin-top:8px;">Hakuna ripoti iliyopakiwa.</div>
+        <div id="r_out" style="margin-top:8px;">Chagua siku na ubonyeze Pakia Ripoti.</div>
       </div>
     </div>
   </div>
 
   <script>
-    var SB_URL = "https://wsmlqijofwmpojdujsyy.supabase.co";
-    var SB_KEY = "sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq";
-    var DEF_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
-    var DEF_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
-    var sb = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SB_URL, SB_KEY) : null;
-
-    var branches = [
-      { id: DEF_B, name: "Duka Kuu (HQ)", region: "Moshi" },
-      { id: "mwanga", name: "Tawi la Mwanga", region: "Kilimanjaro" },
-      { id: "dsm", name: "Tawi la Dar es Salaam", region: "Dar es Salaam" }
-    ];
-    var emps = [{ id: DEF_E, name: "Mfanyakazi Mkuu", phone: "" }];
-    var curProd = null;
-    var qr = null;
-    var scanDest = "pos";
-
-    function say(t) {
-      var m = document.getElementById("msg");
-      m.style.display = "block";
-      m.textContent = t;
-    }
-
-    function fillDrops() {
-      var bHtml = "", eHtml = "";
-      for (var i = 0; i < branches.length; i++) {
-        bHtml += '<option value="' + branches[i].id + '">' + branches[i].name + " (" + branches[i].region + ")</option>";
-      }
-      for (var j = 0; j < emps.length; j++) {
-        eHtml += '<option value="' + emps[j].id + '">' + emps[j].name + "</option>";
-      }
-      document.getElementById("sel_br").innerHTML = bHtml;
-      document.getElementById("sel_em").innerHTML = eHtml;
-      document.getElementById("d_list").innerHTML = branches.map(function(x) { return "<div>• <b>" + x.name + "</b> — " + x.region + "</div>"; }).join("");
-      document.getElementById("w_list").innerHTML = emps.map(function(x) { return "<div>• <b>" + x.name + "</b> " + (x.phone || "") + "</div>"; }).join("");
-    }
-
-    function showPane(name) {
-      var list = ["pos", "prod", "staff", "rep"];
-      for (var i = 0; i < list.length; i++) {
-        var k = list[i];
-        document.getElementById("b_" + k).className = (k === name) ? "on" : "";
-        document.getElementById("s_" + k).className = "pane" + (k === name ? " on" : "");
-      }
-      if (name === "prod") loadProds();
-      if (name === "rep") loadRep();
-    }
-
-    function stopScanner() {
-      if (qr && qr.isScanning) { qr.stop().catch(function(){}); }
-      document.getElementById("cam").style.display = "none";
-      document.getElementById("camStopWrap").style.display = "none";
-    }
-
-    function startScanner(dest) {
-      scanDest = dest;
-      document.getElementById("cam").style.display = "block";
-      document.getElementById("camStopWrap").style.display = "block";
-      if (typeof Html5Qrcode === "undefined") { say("Scanner haijapakiwa."); return; }
-      if (!qr) qr = new Html5Qrcode("cam");
-      qr.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 240, height: 140 } }, function(code) {
-        var c = (code || "").trim();
-        stopScanner();
-        if (scanDest === "pos") { document.getElementById("in_code").value = c; findProd(); }
-        else { document.getElementById("p_code").value = c; }
-        say("Imesomwa: " + c);
-      }, function(){}).catch(function(e) { say("Kamera: " + e); stopScanner(); });
-    }
-
-    function sumEst() {
-      var q = parseFloat(document.getElementById("in_qty").value) || 0;
-      var p = curProd ? Number(curProd.selling_price || 0) : 0;
-      document.getElementById("pos_sum").textContent = "Makadirio ya Jumla: " + (q * p).toLocaleString();
-    }
-
-    function findProd() {
-      var c = document.getElementById("in_code").value.trim();
-      if (!sb) { document.getElementById("pos_res").textContent = "Supabase haipo."; return; }
-      if (!c) { curProd = null; document.getElementById("pos_res").textContent = "Weka barcode kwanza."; sumEst(); return; }
-      sb.from("productss").select("id,name,barcod,stock,selling_price").eq("barcod", c).maybeSingle().then(function(r) {
-        if (r.error) { curProd = null; document.getElementById("pos_res").textContent = r.error.message; }
-        else if (!r.data) { curProd = null; document.getElementById("pos_res").textContent = "Hakuna bidhaa yenye barcode " + c; }
-        else {
-          curProd = r.data;
-          document.getElementById("pos_res").innerHTML = "<b>" + r.data.name + "</b> | Stock: <b>" + r.data.stock + "</b> | Bei: <b>" + Number(r.data.selling_price).toLocaleString() + "</b>";
+    try {
+      var SB_URL = "https://wsmlqijofwmpojdujsyy.supabase.co";
+      var SB_KEY = "sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq";
+      var DEF_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
+      var DEF_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
+      var sb = null;
+      try {
+        if (window.supabase && window.supabase.createClient) {
+          sb = window.supabase.createClient(SB_URL, SB_KEY);
         }
-        sumEst();
-      });
-    }
+      } catch (e) {}
 
-    function makeSale() {
-      if (!sb || !curProd) { say("Tafuta bidhaa kwanza."); return; }
-      var q = parseFloat(document.getElementById("in_qty").value) || 0;
-      if (q <= 0) { say("Weka idadi."); return; }
-      sb.rpc("record_sale", {
-        p_branch_id: document.getElementById("sel_br").value || DEF_B,
-        p_employee_id: document.getElementById("sel_em").value || DEF_E,
-        p_product_id: curProd.id,
-        p_barcod: String(curProd.barcod),
-        p_quantity: q,
-        p_total_amount: q * Number(curProd.selling_price || 0),
-        p_payment_method: document.getElementById("in_pay").value
-      }).then(function(r) {
-        say(r.error ? ("Kosa: " + r.error.message) : "Mauzo yamehifadhiwa!");
-        findProd();
-      });
-    }
+      var curProd = null;
+      var qr = null;
+      var scanDest = "pos";
 
-    function saveNewProd() {
-      if (!sb) return;
-      var row = {
-        name: document.getElementById("p_name").value.trim(),
-        barcod: document.getElementById("p_code").value.trim(),
-        stock: parseFloat(document.getElementById("p_stock").value),
-        selling_price: parseFloat(document.getElementById("p_sell").value),
-        wholesale_price: parseFloat(document.getElementById("p_whole").value) || 0
-      };
-      if (!row.name || !row.barcod || isNaN(row.stock) || isNaN(row.selling_price)) { say("Jaza taarifa za bidhaa."); return; }
-      sb.from("productss").insert([row]).then(function(r) {
-        say(r.error ? ("Kosa: " + r.error.message) : "Bidhaa imehifadhiwa!");
-        loadProds();
-      });
-    }
+      function say(t) {
+        var m = document.getElementById("msg");
+        if (!m) return;
+        m.style.display = "block";
+        m.textContent = t;
+      }
 
-    function loadProds() {
-      if (!sb) return;
-      sb.from("productss").select("id,name,barcod,stock,selling_price").order("id", { ascending: true }).then(function(r) {
-        if (r.error) { document.getElementById("p_list").textContent = r.error.message; return; }
-        var rows = r.data || [];
-        document.getElementById("p_list").innerHTML = rows.length
-          ? rows.map(function(p) { return "<div>• <b>" + p.name + "</b> (" + p.barcod + ") — Stock: <b>" + p.stock + "</b> | Bei: <b>" + Number(p.selling_price).toLocaleString() + "</b></div>"; }).join("")
-          : "Hakuna bidhaa bado.";
-      });
-    }
+      function showPane(name) {
+        stopScanner();
+        var list = ["pos", "prod", "staff", "rep"];
+        for (var i = 0; i < list.length; i++) {
+          var k = list[i];
+          var btn = document.getElementById("b_" + k);
+          var sec = document.getElementById("s_" + k);
+          if (btn) btn.className = (k === name) ? "on" : "";
+          if (sec) sec.className = "pane" + ((k === name) ? " on" : "");
+        }
+        if (name === "prod") loadProds();
+        if (name === "rep") loadRep();
+      }
 
-    function loadRep() {
-      if (!sb) return;
-      var d = document.getElementById("r_date").value;
-      if (!d) return;
-      var p = d.split("-");
-      var s = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]), 0, 0, 0).toISOString();
-      var e = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]), 23, 59, 59).toISOString();
-      sb.from("sales").select("total_amount,payment_method,quantity").gte("created_at", s).lte("created_at", e).then(function(r) {
-        if (r.error) { document.getElementById("r_out").textContent = r.error.message; return; }
-        var rows = r.data || [], tot = 0;
-        for (var i = 0; i < rows.length; i++) tot += Number(rows[i].total_amount || 0);
-        document.getElementById("r_out").innerHTML = "Jumla ya Mauzo: <b>" + tot.toLocaleString() + "</b> | Miamala: <b>" + rows.length + "</b>";
-      });
-    }
+      function stopScanner() {
+        try {
+          if (qr && qr.isScanning) qr.stop().catch(function() {});
+        } catch (e) {}
+        document.getElementById("cam").style.display = "none";
+        document.getElementById("camStopWrap").style.display = "none";
+      }
 
-    document.getElementById("b_pos").onclick = function() { showPane("pos"); };
-    document.getElementById("b_prod").onclick = function() { showPane("prod"); };
-    document.getElementById("b_staff").onclick = function() { showPane("staff"); };
-    document.getElementById("b_rep").onclick = function() { showPane("rep"); };
-    document.getElementById("b_stop").onclick = stopScanner;
-    document.getElementById("b_find").onclick = findProd;
-    document.getElementById("b_scan").onclick = function() { startScanner("pos"); };
-    document.getElementById("b_p_scan").onclick = function() { startScanner("prod"); };
-    document.getElementById("in_qty").oninput = sumEst;
-    document.getElementById("b_sale").onclick = makeSale;
-    document.getElementById("b_p_save").onclick = saveNewProd;
-    document.getElementById("b_r_load").onclick = loadRep;
-    document.getElementById("b_d_add").onclick = function() {
-      var n = document.getElementById("d_name").value.trim(), reg = document.getElementById("d_reg").value.trim();
-      if (!n) return;
-      branches.push({ id: "b-" + Date.now(), name: n, region: reg });
-      document.getElementById("d_name").value = ""; document.getElementById("d_reg").value = "";
-      fillDrops(); say("Duka limeongezwa.");
-    };
-    document.getElementById("b_w_add").onclick = function() {
-      var n = document.getElementById("w_name").value.trim(), ph = document.getElementById("
+      function startScanner(dest) {
+        scanDest = dest;
+        document.getElementById("cam").style.display = "block";
+        document.getElementById("camStopWrap").style.display = "block";
+        if (typeof Html5Qrcode === "undefined") { say("Scanner haijapakiwa."); return; }
+        if (!qr) qr = new Html5Qrcode("cam");
+        qr.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: { width: 240, height: 140 } },
+          function(code) {
+            var c = (code || "").trim();
+            stopScanner();
+            if (scanDest === "pos") {
+              document.getElementById("in_code").value = c;
+              findProd();
+            } else {
+              document.getElementById("p_code").value = c;
+            }
+            say("Imesomwa: " + c);
+          },
+          function() {}
+        ).catch(function(e) {
+          say("Kamera imeshindikana: " + e);
+          stopScanner();
+        });
+      }
+
+      function sumEst() {
+        var q = parseFloat(document.getElementById("in_qty").value)
