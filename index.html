@@ -3,138 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TON-PHONE &amp; ACCESSORIES — POS Web</title>
+  <title>TON-PHONE &amp; ACCESSORIES - POS</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 14px;
-      background: #f1f5f9;
-      color: #0f172a;
-    }
-    .container {
-      max-width: 780px;
-      margin: auto;
-      background: #ffffff;
-      padding: 16px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-    }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 14px; background: #f1f5f9; color: #0f172a; }
+    .container { max-width: 780px; margin: auto; background: #fff; padding: 16px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
     h2 { margin: 0 0 12px 0; font-size: 20px; }
     h3 { margin: 0 0 10px 0; font-size: 16px; }
-    .tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-    .tab-btn {
-      flex: 1;
-      min-width: 110px;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      background: #e2e8f0;
-      color: #0f172a;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .tab-btn.active {
-      background: #1d4ed8;
-      color: #ffffff;
-      border-color: #1d4ed8;
-    }
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+    .tab-btn { padding: 11px; border-radius: 8px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #0f172a; font-weight: bold; cursor: pointer; }
+    .tab-btn.active { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
     .section { display: none; }
     .section.active { display: block; }
     .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-    .field-col { flex: 1; min-width: 160px; }
-    label.field-label {
-      display: block;
-      font-size: 12px;
-      font-weight: bold;
-      color: #334155;
-      margin-bottom: 4px;
-    }
-    input, select, button {
-      padding: 10px;
-      font-size: 14px;
-      border-radius: 7px;
-      border: 1px solid #cbd5e1;
-    }
-    input, select { flex: 1; min-width: 120px; width: 100%; box-sizing: border-box; }
-    button.primary {
-      background: #1d4ed8;
-      color: #fff;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button.secondary {
-      background: #0f766e;
-      color: #fff;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button.danger {
-      background: #b91c1c;
-      color: #fff;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button.ghost {
-      background: #f8fafc;
-      color: #0f172a;
-      border: 1px solid #cbd5e1;
-      cursor: pointer;
-    }
-    .card {
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-    }
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .stat-box {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      padding: 10px;
-      border-radius: 8px;
-    }
-    .stat-label { font-size: 12px; color: #334155; }
-    .stat-value { font-size: 17px; font-weight: bold; color: #1e3a8a; margin-top: 4px; }
-    .list-item {
-      border-bottom: 1px solid #e5e7eb;
-      padding: 10px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .status {
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 14px;
-      display: none;
-      word-break: break-word;
-    }
-    #reader {
-      width: 100%;
-      max-width: 420px;
-      margin: 10px auto;
-      display: none;
-    }
+    .col { flex: 1; min-width: 150px; }
+    label { display: block; font-size: 12px; font-weight: bold; color: #334155; margin-bottom: 4px; }
+    input, select, button { padding: 10px; font-size: 14px; border-radius: 7px; border: 1px solid #cbd5e1; box-sizing: border-box; }
+    input, select { width: 100%; }
+    .flex-grow { flex: 1; min-width: 140px; }
+    button.primary { background: #1d4ed8; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    button.secondary { background: #0f766e; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    button.danger { background: #b91c1c; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    button.ghost { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; cursor: pointer; }
+    .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .stat { background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px; border-radius: 8px; }
+    .stat-title { font-size: 12px; color: #334155; }
+    .stat-num { font-size: 17px; font-weight: bold; color: #1e3a8a; margin-top: 4px; }
+    .item { border-bottom: 1px solid #e5e7eb; padding: 9px 0; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    #msgBox { display: none; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-size: 14px; word-break: break-word; }
+    #reader { display: none; max-width: 400px; margin: 10px auto; }
   </style>
 </head>
 <body>
@@ -142,146 +41,37 @@
     <h2>TON-PHONE &amp; ACCESSORIES — POS</h2>
 
     <div class="tabs">
-      <button type="button" id="tabPos" class="tab-btn active" onclick="switchTab('pos')">Mauzo (POS)</button>
-      <button type="button" id="tabProducts" class="tab-btn" onclick="switchTab('products')">Bidhaa (productss)</button>
-      <button type="button" id="tabStaff" class="tab-btn" onclick="switchTab('staff')">Maduka &amp; Wafanyakazi</button>
-      <button type="button" id="tabReport" class="tab-btn" onclick="switchTab('report')">Ripoti ya Siku</button>
+      <button type="button" id="btnPos" class="tab-btn active" onclick="openTab('pos')">Mauzo (POS)</button>
+      <button type="button" id="btnProd" class="tab-btn" onclick="openTab('prod')">Bidhaa (productss)</button>
+      <button type="button" id="btnStaff" class="tab-btn" onclick="openTab('staff')">Maduka &amp; Wafanyakazi</button>
+      <button type="button" id="btnRep" class="tab-btn" onclick="openTab('rep')">Ripoti ya Siku</button>
     </div>
 
-    <div id="statusBox" class="status"></div>
-
-    <!-- Kamera Barcode Scanner -->
+    <div id="msgBox"></div>
     <div id="reader"></div>
-    <div id="stopScanRow" class="row" style="display:none; justify-content:center;">
-      <button type="button" class="danger" onclick="stopScanner()">Zima Kamera</button>
+    <div id="stopBtnRow" class="row" style="display:none; justify-content:center;">
+      <button type="button" class="danger" onclick="closeScanner()">Zima Kamera</button>
     </div>
 
-    <!-- SEHEMU 1: MAUZO (POS) -->
-    <div id="sectionPos" class="section active">
+    <!-- MAUZO -->
+    <div id="secPos" class="section active">
       <div class="card">
         <div class="row" style="margin-bottom:0;">
-          <div class="field-col">
-            <label class="field-label" for="posBranchSelect">Duka / Tawi (Mkoa)</label>
-            <select id="posBranchSelect" onchange="syncSelectors('pos')"></select>
+          <div class="col">
+            <label for="posBranch">Duka / Tawi (Mkoa)</label>
+            <select id="posBranch" onchange="saveSelection('pos')"></select>
           </div>
-          <div class="field-col">
-            <label class="field-label" for="posEmployeeSelect">Mfanyakazi / Wakala</label>
-            <select id="posEmployeeSelect" onchange="syncSelectors('pos')"></select>
+          <div class="col">
+            <label for="posEmp">Mfanyakazi / Wakala</label>
+            <select id="posEmp" onchange="saveSelection('pos')"></select>
           </div>
         </div>
       </div>
 
       <div class="row">
-        <input id="posBarcode" type="text" value="8901234567890" placeholder="Barcode ya bidhaa" />
-        <button type="button" class="primary" onclick="findPosProduct()">Tafuta</button>
-        <button type="button" class="secondary" onclick="startScanner('pos')">Scan Kamera</button>
-      </div>
+        <div class="flex-grow"><input id="posCode" type="text" value="8901234567890" placeholder="Barcode ya bidhaa" /></div>
+        <button type="button" class="primary" onclick="searchPosItem()">Tafuta</
 
-      <div id="posProductCard" class="card">Inatafuta bidhaa...</div>
-
-      <div class="row">
-        <input id="posQty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" oninput="updatePosEstimate()" />
-        <select id="posPayment">
-          <option value="cash">Cash</option>
-          <option value="lipa_namba">Lipa Namba</option>
-        </select>
-      </div>
-
-      <div id="posEstimate" style="font-weight:bold; margin-bottom:10px;">Makadirio ya Jumla: 0</div>
-
-      <button type="button" class="primary" style="width:100%;" onclick="submitSale()">Hifadhi Mauzo</button>
-    </div>
-
-    <!-- SEHEMU 2: ONGEZA / HARIRI BIDHAA -->
-    <div id="sectionProducts" class="section">
-      <div class="card">
-        <h3 id="prodFormTitle">Ongeza Bidhaa Mpya</h3>
-        <input id="editProductId" type="hidden" />
-
-        <div class="row">
-          <input id="prodName" type="text" placeholder="Jina la bidhaa (mf. Zonix Fast Charger 20W)" />
-        </div>
-        <div class="row">
-          <input id="prodBarcode" type="text" placeholder="Barcode" />
-          <button type="button" class="secondary" onclick="startScanner('product')">Scan</button>
-        </div>
-        <div class="row">
-          <input id="prodStock" type="number" step="any" placeholder="Stock" />
-          <input id="prodSellingPrice" type="number" step="any" placeholder="Bei ya kuuza (selling_price)" />
-          <input id="prodWholesalePrice" type="number" step="any" placeholder="Bei ya jumla (wholesale_price)" />
-        </div>
-        <div class="row" style="margin-bottom:0;">
-          <button type="button" class="primary" onclick="saveProduct()">Hifadhi Bidhaa</button>
-          <button type="button" class="ghost" onclick="resetProductForm()">Futa / Mpya</button>
-        </div>
-      </div>
-
-      <div class="row">
-        <input id="prodSearch" type="text" placeholder="Chuja kwa jina au barcode..." oninput="renderProductsList()" />
-        <button type="button" class="ghost" onclick="loadProducts()">Sasisha</button>
-      </div>
-
-      <div id="productsList" class="card">Inapakia orodha ya bidhaa...</div>
-    </div>
-
-    <!-- SEHEMU 3: MADUKA & WAFANYAKAZI -->
-    <div id="sectionStaff" class="section">
-      <div class="card">
-        <h3>Ongeza Duka / Tawi (Mkoa)</h3>
-        <div class="row">
-          <input id="branchName" type="text" placeholder="Jina la duka (mf. Tawi la Moshi)" />
-          <input id="branchRegion" type="text" placeholder="Mkoa / Eneo (mf. Kilimanjaro)" />
-          <button type="button" class="primary" onclick="addBranch()">Hifadhi Duka</button>
-        </div>
-        <div id="branchesList">Inapakia maduka...</div>
-      </div>
-
-      <div class="card">
-        <h3>Ongeza Mfanyakazi / Wakala</h3>
-        <div class="row">
-          <input id="empName" type="text" placeholder="Jina kamili la mfanyakazi" />
-          <input id="empPhone" type="text" placeholder="Namba ya simu (hiari)" />
-          <select id="empBranchSelect"></select>
-          <button type="button" class="secondary" onclick="addEmployee()">Hifadhi Mfanyakazi</button>
-        </div>
-        <div id="employeesList">Inapakia wafanyakazi...</div>
-      </div>
-    </div>
-
-    <!-- SEHEMU 4: RIPOTI YA JUMLA YA MAUZO KWA SIKU -->
-    <div id="sectionReport" class="section">
-      <div class="card">
-        <div class="row" style="align-items:flex-end; margin-bottom:0;">
-          <div class="field-col">
-            <label class="field-label" for="reportDate">Chagua Siku</label>
-            <input id="reportDate" type="date" onchange="loadDailyReport()" />
-          </div>
-          <div class="field-col">
-            <label class="field-label" for="repBranchSelect">Duka / Tawi</label>
-            <select id="repBranchSelect" onchange="syncSelectors('report')"></select>
-          </div>
-          <div class="field-col">
-            <label class="field-label" for="repEmployeeSelect">Mfanyakazi</label>
-            <select id="repEmployeeSelect" onchange="syncSelectors('report')"></select>
-          </div>
-          <button type="button" class="primary" onclick="loadDailyReport()">Pakia Ripoti</button>
-        </div>
-      </div>
-
-      <div class="summary-grid">
-        <div class="stat-box">
-          <div class="stat-label">Jumla ya Mauzo ya Siku</div>
-          <div id="repTotalAmount" class="stat-value">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Idadi ya Miamala</div>
-          <div id="repTxCount" class="stat-value">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Cash</div>
-          <div id="repCashTotal" class="stat-value">0</div>
-        </div>
-        <div class="stat-box">
 
           
 
