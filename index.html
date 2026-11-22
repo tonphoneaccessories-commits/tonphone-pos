@@ -218,13 +218,17 @@
         </div>
         <div id="m_prod_box" class="card" style="background:#fff;">Weka au scan SKU / barcode kutafuta bidhaa.</div>
         <div class="row">
-          <input id="m_qty" type="number" step="any" min="0.01" value="1" />
-          <select id="m_pay">
-            <option value="cash">Cash</option>
-            <option value="lipa_namba">Lipa Namba</option>
-          </select>
+          <div><small><b>Idadi</b></small><input id="m_qty" type="number" step="any" min="0.01" value="1" /></div>
+          <div><small><b>Nauli (TZS)</b></small><input id="m_nauli" type="number" step="any" min="0" value="0" placeholder="0" /></div>
+          <div>
+            <small><b>Malipo</b></small>
+            <select id="m_pay">
+              <option value="cash">Cash</option>
+              <option value="lipa_namba">Lipa Namba</option>
+            </select>
+          </div>
         </div>
-        <div id="m_est" style="font-weight:bold; margin-bottom:8px;">Jumla: 0</div>
+        <div id="m_est" style="font-weight:bold; margin-bottom:8px;">Jumla: 0 | Nauli: 0</div>
         <button type="button" class="b-blue" data-act="saveSale">Hifadhi Mauzo</button>
       </div>
     </div>
@@ -267,9 +271,13 @@
 
           <div class="grid4">
             <div class="stat"><small>Mauzo ya Duka</small><b id="md_sales">0</b></div>
-            <div class="stat"><small>Mtaji / Aliotumia</small><b id="md_cost">0</b></div>
-            <div class="stat"><small>Faida Iliyoingia</small><b id="md_profit">0</b></div>
-            <div class="stat"><small>Idadi ya Bidhaa (SKU)</small><b id="md_sku_cnt">0</b></div>
+            <div class="stat"><small>Mtaji / Alioutumia</small><b id="md_cost">0</b></div>
+            <div class="stat"><small>Nauli Iliyotumika</small><b id="md_nauli">0</b></div>
+            <div class="stat"><small>Faida Halisi (Baada ya Nauli)</small><b id="md_profit">0</b></div>
+          </div>
+
+          <div style="margin-top:6px; font-size:12px; color:#334155;">
+            Idadi ya Bidhaa (SKU) Zilizotagiwa: <b id="md_sku_cnt">0</b>
           </div>
 
           <div style="margin-top:10px;">
@@ -342,12 +350,13 @@
 
           <div class="grid4">
             <div class="stat"><small>Hela Aliyouza</small><b id="wf_sales">0</b></div>
-            <div class="stat"><small>Ule Alioutumia (Mtaji)</small><b id="wf_cost">0</b></div>
-            <div class="stat"><small>Faida Aliyoingiza</small><b id="wf_profit">0</b></div>
+            <div class="stat"><small>Mtaji + Nauli Aliyotumia</small><b id="wf_cost">0</b></div>
+            <div class="stat"><small>Faida Halisi (Baada ya Nauli)</small><b id="wf_profit">0</b></div>
             <div class="stat"><small>Kamisheni Yake (55%)</small><b id="wf_comm">0</b></div>
           </div>
 
           <div style="margin-top:8px; font-size:13px;">
+            <b>Nauli Iliyokatwa:</b> <span id="wf_nauli">0</span> |
             <b>Kamisheni ya Mmiliki (45%):</b> <span id="wf_owner_comm">0</span>
           </div>
 
@@ -362,15 +371,15 @@
     <!-- 6. COMMISSION -->
     <div id="pg_commission" class="page">
       <div class="card">
-        <b>Commission — Detaile za Mfanyakazi (55% Mfanyakazi / 45% Mmiliki)</b>
+        <b>Commission — Detaile za Mfanyakazi (Baada ya Nauli: 55% Mfanyakazi / 45% Mmiliki)</b>
         <div class="row" style="margin-top:8px;">
           <select id="cm_emp_sel"></select>
         </div>
         <div id="cm_detail" style="margin-top:8px; font-size:13px;"></div>
         <div class="grid4">
           <div class="stat"><small>Mauzo Aliouza</small><b id="cm_sales">0</b></div>
-          <div class="stat"><small>Mtaji / Aliotumia</small><b id="cm_cost">0</b></div>
-          <div class="stat"><small>Faida Iliyopatikana</small><b id="cm_profit">0</b></div>
+          <div class="stat"><small>Mtaji / Nauli Aliyotumia</small><b id="cm_cost">0</b></div>
+          <div class="stat"><small>Faida Halisi</small><b id="cm_profit">0</b></div>
           <div class="stat"><small>Commission 55% / 45%</small><b id="cm_split">0 / 0</b></div>
         </div>
       </div>
@@ -428,7 +437,7 @@
       var SB_KEY = "sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq";
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
-      var STORE_KEY = "tonphone_pos_state_v2";
+      var STORE_KEY = "tonphone_pos_state_v3";
 
       var sb = null;
       try {
@@ -612,40 +621,38 @@
         return state.staff[0];
       }
 
-      function calcStaffStats(empId) {
-        var rows = state.sales.filter(function(r) { return String(r.employee_id) === String(empId); });
-        var totSales = 0, totCost = 0;
+      function summarizeRows(rows) {
+        var totSales = 0, totCost = 0, totNauli = 0;
         for (var i = 0; i < rows.length; i++) {
           totSales += Number(rows[i].total_amount || 0);
           totCost += Number(rows[i].cost_amount || 0);
+          totNauli += Number(rows[i].transport_fee || 0);
         }
-        var profit = totSales - totCost;
+        var netProfit = totSales - totCost - totNauli;
         return {
           rows: rows,
           count: rows.length,
           sales: totSales,
           cost: totCost,
-          profit: profit,
-          staffComm: profit * 0.55,
-          ownerComm: profit * 0.45
+          nauli: totNauli,
+          totalOutlay: totCost + totNauli,
+          profit: netProfit,
+          staffComm: netProfit * 0.55,
+          ownerComm: netProfit * 0.45
         };
+      }
+
+      function calcStaffStats(empId) {
+        var rows = state.sales.filter(function(r) { return String(r.employee_id) === String(empId); });
+        return summarizeRows(rows);
       }
 
       function calcBranchStats(brId) {
         var rows = state.sales.filter(function(r) { return String(r.branch_id) === String(brId); });
         var brStock = state.prods.filter(function(p) { return String(p.branch_id) === String(brId); });
-        var totSales = 0, totCost = 0;
-        for (var i = 0; i < rows.length; i++) {
-          totSales += Number(rows[i].total_amount || 0);
-          totCost += Number(rows[i].cost_amount || 0);
-        }
-        return {
-          rows: rows,
-          stockItems: brStock,
-          sales: totSales,
-          cost: totCost,
-          profit: totSales - totCost
-        };
+        var base = summarizeRows(rows);
+        base.stockItems = brStock;
+        return base;
       }
 
       function renderBranchInner() {
@@ -655,6 +662,7 @@
         document.getElementById("md_d_sub").textContent = "Mkoa / Eneo: " + b.region;
         document.getElementById("md_sales").textContent = money(st.sales);
         document.getElementById("md_cost").textContent = money(st.cost);
+        document.getElementById("md_nauli").textContent = money(st.nauli);
         document.getElementById("md_profit").textContent = money(st.profit);
         document.getElementById("md_sku_cnt").textContent = String(st.stockItems.length);
 
@@ -671,9 +679,11 @@
         for (var j = 0; j < st.rows.length; j++) {
           var r = st.rows[j];
           var who = staffObj(r.employee_id);
+          var rowProfit = Number(r.total_amount || 0) - Number(r.cost_amount || 0) - Number(r.transport_fee || 0);
           rHtml += "<div>• SKU: <b>" + (r.sku || r.barcod || "-") + "</b> (" + (r.product_name || "Bidhaa") +
             ") — Idadi: <b>" + r.quantity + "</b> | Mauzo: <b>" + money(r.total_amount) +
-            "</b> | Faida: <b>" + money(Number(r.total_amount || 0) - Number(r.cost_amount || 0)) +
+            "</b> | Nauli: <b>" + money(r.transport_fee || 0) +
+            "</b> | Faida: <b>" + money(rowProfit) +
             "</b> | Aliyeuza: " + (who ? who.name : "-") + "</div>";
         }
         document.getElementById("md_sales_list").innerHTML = rHtml || "Hakuna mauzo yaliyorekodiwa kwenye duka hili bado.";
@@ -685,18 +695,20 @@
         document.getElementById("wf_i_title").textContent = emp.name + " — Duka: " + brLabel(emp.branch_id);
         document.getElementById("wf_i_sub").textContent = "Simu: " + (emp.phone || "-") + " | Miamala ya Mauzo: " + st.count;
         document.getElementById("wf_sales").textContent = money(st.sales);
-        document.getElementById("wf_cost").textContent = money(st.cost);
+        document.getElementById("wf_cost").textContent = money(st.totalOutlay);
         document.getElementById("wf_profit").textContent = money(st.profit);
         document.getElementById("wf_comm").textContent = money(st.staffComm);
+        document.getElementById("wf_nauli").textContent = money(st.nauli);
         document.getElementById("wf_owner_comm").textContent = money(st.ownerComm);
 
         var soldHtml = "";
         for (var i = 0; i < st.rows.length; i++) {
           var r = st.rows[i];
+          var rowProfit = Number(r.total_amount || 0) - Number(r.cost_amount || 0) - Number(r.transport_fee || 0);
           soldHtml += "<div>• SKU: <b>" + (r.sku || r.barcod || "-") + "</b> — <b>" + (r.product_name || "Bidhaa") +
             "</b> | Stoku Iliyouzwa: <b>" + r.quantity + "</b> | Hela: <b>" + money(r.total_amount) +
-            "</b> | Mtaji: <b>" + money(r.cost_amount) + "</b> | Faida: <b>" +
-            money(Number(r.total_amount || 0) - Number(r.cost_amount || 0)) + "</b></div>";
+            "</b> | Mtaji: <b>" + money(r.cost_amount) + "</b> | Nauli: <b>" + money(r.transport_fee || 0) +
+            "</b> | Faida: <b>" + money(rowProfit) + "</b></div>";
         }
         document.getElementById("wf_sold_stock").innerHTML = soldHtml || "Hakuna stoku iliyouzwa na mfanyakazi huyu bado.";
       }
@@ -705,9 +717,10 @@
         var emp = staffObj(state.activeStaffId);
         var st = calcStaffStats(emp.id);
         document.getElementById("cm_detail").innerHTML =
-          "Mfanyakazi: <b>" + emp.name + "</b> | Duka: <b>" + brLabel(emp.branch_id) + "</b> | Mauzo: <b>" + st.count + "</b>";
+          "Mfanyakazi: <b>" + emp.name + "</b> | Duka: <b>" + brLabel(emp.branch_id) +
+          "</b> | Nauli Iliyokatwa: <b>" + money(st.nauli) + "</b> | Mauzo: <b>" + st.count + "</b>";
         document.getElementById("cm_sales").textContent = money(st.sales);
-        document.getElementById("cm_cost").textContent = money(st.cost);
+        document.getElementById("cm_cost").textContent = money(st.totalOutlay);
         document.getElementById("cm_profit").textContent = money(st.profit);
         document.getElementById("cm_split").textContent = money(st.staffComm) + " / " + money(st.ownerComm);
       }
@@ -729,8 +742,9 @@
               'Soko/Eneo: <b>' + (ag.market || '-') + '</b> | Duka: <b>' + brLabel(ag.branch_id) + '</b>' +
             '</div>' +
             '<div style="font-size:12px;color:#1e3a8a;margin-top:4px;">' +
-              'Mauzo: <b>' + money(st.sales) + '</b> | Faida: <b>' + money(st.profit) +
-              '</b> | 55%: <b>' + money(st.staffComm) + '</b> | 45%: <b>' + money(st.ownerComm) + '</b>' +
+              'Mauzo: <b>' + money(st.sales) + '</b> | Nauli: <b>' + money(st.nauli) +
+              '</b> | Faida: <b>' + money(st.profit) + '</b> | 55%: <b>' + money(st.staffComm) +
+              '</b> | 45%: <b>' + money(st.ownerComm) + '</b>' +
             '</div>' +
           '</div>';
         }
@@ -841,8 +855,9 @@
 
       function estSale() {
         var q = parseFloat(document.getElementById("m_qty").value) || 0;
+        var nauli = parseFloat(document.getElementById("m_nauli").value) || 0;
         var p = pickedProd ? Number(pickedProd.selling_price || 0) : 0;
-        document.getElementById("m_est").textContent = "Jumla: " + money(q * p);
+        document.getElementById("m_est").textContent = "Jumla: " + money(q * p) + " | Nauli: " + money(nauli);
       }
 
       function findProd() {
@@ -885,6 +900,7 @@
       function saveSale() {
         if (!pickedProd) { msg("Tafuta bidhaa kwanza."); return; }
         var q = parseFloat(document.getElementById("m_qty").value) || 0;
+        var nauli = parseFloat(document.getElementById("m_nauli").value) || 0;
         if (q <= 0) { msg("Weka idadi."); return; }
         var empId = document.getElementById("m_emp").value || state.activeStaffId;
         var brId = document.getElementById("m_br").value || pickedProd.branch_id || HQ_B;
@@ -905,6 +921,7 @@
           quantity: q,
           total_amount: totalAmt,
           cost_amount: costAmt,
+          transport_fee: nauli,
           payment_method: document.getElementById("m_pay").value,
           created_at: new Date().toISOString()
         };
@@ -912,6 +929,7 @@
         state.sales.unshift(saleRow);
         state.activeStaffId = empId;
         state.activeBranchId = brId;
+        document.getElementById("m_nauli").value = "0";
         saveLocalState();
         renderAll();
         estSale();
@@ -919,7 +937,7 @@
         if (sb) {
           sb.from("sales").insert([saleRow]).then(function(r) {
             if (r.error) msg("Imehifadhiwa ndani; Supabase: " + r.error.message);
-            else msg("Mauzo yamesukumwa Supabase na yanaonekana HQ!");
+            else msg("Mauzo na nauli yamesukumwa Supabase na yanaonekana HQ!");
           });
         } else {
           msg("Mauzo yamehifadhiwa!");
@@ -990,15 +1008,11 @@
       }
 
       function runReport() {
-        var totS = 0, totC = 0;
-        for (var i = 0; i < state.sales.length; i++) {
-          totS += Number(state.sales[i].total_amount || 0);
-          totC += Number(state.sales[i].cost_amount || 0);
-        }
-        var pr = totS - totC;
+        var st = summarizeRows(state.sales);
         document.getElementById("rp_box").innerHTML =
-          "Mauzo: <b>" + money(totS) + "</b> | Mtaji: <b>" + money(totC) + "</b> | Faida: <b>" + money(pr) +
-          "</b> | Mfanyakazi (55%): <b>" + money(pr * 0.55) + "</b> | Mmiliki (45%): <b>" + money(pr * 0.45) + "</b>";
+          "Mauzo: <b>" + money(st.sales) + "</b> | Mtaji: <b>" + money(st.cost) +
+          "</b> | Nauli: <b>" + money(st.nauli) + "</b> | Faida Halisi: <b>" + money(st.profit) +
+          "</b> | Mfanyakazi (55%): <b>" + money(st.staffComm) + "</b> | Mmiliki (45%): <b>" + money(st.ownerComm) + "</b>";
       }
 
       function runAction(el) {
@@ -1119,7 +1133,7 @@
       }, false);
 
       document.body.addEventListener("input", function(ev) {
-        if (ev.target && ev.target.id === "m_qty") estSale();
+        if (ev.target && (ev.target.id === "m_qty" || ev.target.id === "m_nauli")) estSale();
       });
 
       document.body.addEventListener("change", function(ev) {
