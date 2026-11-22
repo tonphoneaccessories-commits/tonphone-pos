@@ -24,4 +24,418 @@
     .b-teal { background: #0f766e; color: #fff; border: none; }
     .b-red { background: #b91c1c; color: #fff; border: none; }
     .b-light { background: #fff; color: #0f172a; border: 1px solid #cbd5e1; }
-    .list-box { border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px
+    .list-box { border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin-bottom: 8px; background: #fff; cursor: pointer; }
+    .list-box.pick { border-color: #1d4ed8; border-width: 2px; background: #eff6ff; }
+    .inner-panel { background: #f0fdf4; border: 1px solid #86efac; border-radius: 9px; padding: 11px; margin-top: 10px; }
+    .grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 8px; }
+    @media (min-width: 640px) { .grid4 { grid-template-columns: repeat(4, 1fr); } }
+    .stat { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 9px; }
+    .stat small { display: block; color: #334155; font-weight: bold; font-size: 11px; }
+    .stat b { font-size: 15px; color: #1e3a8a; }
+    .slot-box { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 9px; margin-bottom: 8px; }
+    #barMsg { display: none; padding: 9px; border-radius: 7px; margin-bottom: 10px; background: #eff6ff; color: #1e3a8a; font-size: 13px; font-weight: bold; }
+    #qrView { display: none; max-width: 360px; margin: 8px auto; }
+    .bottom-nav {
+      position: fixed; left: 0; right: 0; bottom: 0;
+      background: #0f172a; padding: 6px;
+      display: flex; overflow-x: auto; gap: 6px; z-index: 99;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.18);
+    }
+    .bottom-nav button {
+      flex: 0 0 auto; width: auto; padding: 9px 12px; font-size: 12px;
+      border-radius: 7px; border: 1px solid #334155; background: #1e293b; color: #e2e8f0;
+    }
+    .bottom-nav button.on { background: #1d4ed8; color: #fff; border-color: #60a5fa; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h2>TON-PHONE &amp; ACCESSORIES — POS</h2>
+    <div id="barMsg"></div>
+    <div id="qrView"></div>
+    <div id="qrStopRow" style="display:none; margin-bottom:8px;">
+      <button type="button" class="b-red" data-act="stopScan">Zima Kamera</button>
+    </div>
+
+    <!-- 1. HQ (UKURASA WA 1) -->
+    <div id="pg_hq" class="page on">
+      <div class="card">
+        <b>Makao Makuu (HQ) — Mkurugenzi Mkuu</b>
+        <div style="margin-top:6px; font-size:13px;">Msimamizi Mkuu: <b>Mkurugenzi Mkuu</b></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card" style="margin-bottom:0;">
+          <b>Ongeza Wafanyakazi (Pembeni)</b>
+          <div class="row" style="margin-top:8px;"><input id="hq_emp_name" type="text" placeholder="Jina la mfanyakazi" /></div>
+          <div class="row"><input id="hq_emp_phone" type="text" placeholder="Simu (hiari)" /></div>
+          <div class="row"><select id="hq_emp_br"></select></div>
+          <button type="button" class="b-teal" data-act="addEmp">Hifadhi Mfanyakazi</button>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <b>Ongeza Maduka (Pembeni)</b>
+          <div class="row" style="margin-top:8px;"><input id="hq_br_name" type="text" placeholder="Jina la duka (mf. Mwanza City)" /></div>
+          <div class="row"><input id="hq_br_reg" type="text" placeholder="Mkoa (mf. Mwanza)" /></div>
+          <button type="button" class="b-blue" data-act="addBr">Hifadhi Duka</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. MAUZO (UKURASA WA 2) -->
+    <div id="pg_mauzo" class="page">
+      <div class="card">
+        <div class="row">
+          <div><small><b>Duka</b></small><select id="m_br"></select></div>
+          <div><small><b>Anayeuza</b></small><select id="m_emp"></select></div>
+        </div>
+        <div class="row">
+          <input id="m_code" type="text" placeholder="SKU / Barcode ya bidhaa" />
+          <button type="button" class="b-blue" data-act="findProd">Tafuta</button>
+          <button type="button" class="b-teal" data-act="scanMauzo">Scan</button>
+        </div>
+        <div id="m_prod_box" class="card" style="background:#fff;">Weka au scan SKU / barcode kutafuta bidhaa.</div>
+        <div class="row">
+          <input id="m_qty" type="number" step="any" min="0.01" value="1" />
+          <select id="m_pay">
+            <option value="cash">Cash</option>
+            <option value="lipa_namba">Lipa Namba</option>
+          </select>
+        </div>
+        <div id="m_est" style="font-weight:bold; margin-bottom:8px;">Jumla: 0</div>
+        <button type="button" class="b-blue" data-act="saveSale">Hifadhi Mauzo</button>
+      </div>
+    </div>
+
+    <!-- 3. STOCK (UKURASA WA 3 — KUINGIZA SKU & KUTAGI DUKA) -->
+    <div id="pg_stock" class="page">
+      <div class="card">
+        <b>Ingiza Bidhaa kwa SKU &amp; Tagi Duka</b>
+        <div class="row" style="margin-top:8px;">
+          <input id="st_sku" type="text" placeholder="Ingiza SKU (mf. ZNX-20W-01)" />
+          <select id="st_br_tag"></select>
+        </div>
+        <div class="row">
+          <input id="st_name" type="text" placeholder="Jina la bidhaa (mf. Zonix Fast Charger 20W)" />
+          <input id="st_code" type="text" placeholder="Barcode (hiari — hutumia SKU kama haina)" />
+          <button type="button" class="b-teal" data-act="scanStock">Scan</button>
+        </div>
+        <div class="row">
+          <input id="st_qty" type="number" step="any" placeholder="Stock" />
+          <input id="st_sell" type="number" step="any" placeholder="Bei ya kuuza" />
+          <input id="st_cost" type="number" step="any" placeholder="Bei ya jumla / mtaji" />
+        </div>
+        <div class="row" style="margin-bottom:0;">
+          <button type="button" class="b-blue" data-act="saveProd">Hifadhi Bidhaa Kwenye Duka</button>
+          <button type="button" class="b-light" data-act="loadProds">Onyesha Stock Yote</button>
+        </div>
+      </div>
+      <div id="st_list" class="card">Ingiza bidhaa yenye SKU na kuitagi duka, au gusa "Onyesha Stock Yote".</div>
+    </div>
+
+    <!-- 4. MADUKA (UKURASA WA 4) -->
+    <div id="pg_maduka" class="page">
+      <div class="card">
+        <b>Maduka Yote (Gusa Duka Kuona Stoku, Mauzo, Ripoti &amp; Faida Kwa Ndani)</b>
+        <div id="md_list" style="margin-top:8px;"></div>
+
+        <div id="md_detail" class="inner-panel">
+          <b id="md_d_title">Duka Lililochaguliwa</b>
+          <div id="md_d_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
+
+          <div class="grid4">
+            <div class="stat"><small>Mauzo ya Duka</small><b id="md_sales">0</b></div>
+            <div class="stat"><small>Mtaji / Aliotumia</small><b id="md_cost">0</b></div>
+            <div class="stat"><small>Faida Iliyoingia</small><b id="md_profit">0</b></div>
+            <div class="stat"><small>Idadi ya Bidhaa (SKU)</small><b id="md_sku_cnt">0</b></div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <b>Stoku Zilizopo Kwenye Duka Hili (SKU)</b>
+            <div id="md_stock_list" style="margin-top:6px; font-size:13px;"></div>
+          </div>
+
+          <div style="margin-top:10px;">
+            <b>Mauzo &amp; Ripoti ya Duka Hili</b>
+            <div id="md_sales_list" style="margin-top:6px; font-size:13px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. WAFANYAKAZI (UKURASA WA 5 — NAFASI 5 ZA KUJAZA MAJINA + ORODHA + DUKA LAKE KWA NDANI) -->
+    <div id="pg_wafanyakazi" class="page">
+      <div class="card">
+        <b>Jaza Majina ya Wafanyakazi 5 Utakaowaongeza</b>
+        <div style="font-size:12px; color:#475569; margin:4px 0 8px 0;">
+          Andika majina ya wafanyakazi kwenye nafasi 5 hapa chini kisha ubonyeze "Hifadhi Wafanyakazi 5" ili waweze kutumia mfumo kwenye simu zao.
+        </div>
+
+        <div class="slot-box">
+          <small><b>Mfanyakazi #1</b></small>
+          <div class="row" style="margin-top:4px; margin-bottom:0;">
+            <input id="slot_name_1" type="text" placeholder="Jina la mfanyakazi 1" />
+            <input id="slot_phone_1" type="text" placeholder="Simu (hiari)" />
+            <select id="slot_br_1" class="slot-br-select"></select>
+          </div>
+        </div>
+
+        <div class="slot-box">
+          <small><b>Mfanyakazi #2</b></small>
+          <div class="row" style="margin-top:4px; margin-bottom:0;">
+            <input id="slot_name_2" type="text" placeholder="Jina la mfanyakazi 2" />
+            <input id="slot_phone_2" type="text" placeholder="Simu (hiari)" />
+            <select id="slot_br_2" class="slot-br-select"></select>
+          </div>
+        </div>
+
+        <div class="slot-box">
+          <small><b>Mfanyakazi #3</b></small>
+          <div class="row" style="margin-top:4px; margin-bottom:0;">
+            <input id="slot_name_3" type="text" placeholder="Jina la mfanyakazi 3" />
+            <input id="slot_phone_3" type="text" placeholder="Simu (hiari)" />
+            <select id="slot_br_3" class="slot-br-select"></select>
+          </div>
+        </div>
+
+        <div class="slot-box">
+          <small><b>Mfanyakazi #4</b></small>
+          <div class="row" style="margin-top:4px; margin-bottom:0;">
+            <input id="slot_name_4" type="text" placeholder="Jina la mfanyakazi 4" />
+            <input id="slot_phone_4" type="text" placeholder="Simu (hiari)" />
+            <select id="slot_br_4" class="slot-br-select"></select>
+          </div>
+        </div>
+
+        <div class="slot-box">
+          <small><b>Mfanyakazi #5</b></small>
+          <div class="row" style="margin-top:4px; margin-bottom:0;">
+            <input id="slot_name_5" type="text" placeholder="Jina la mfanyakazi 5" />
+            <input id="slot_phone_5" type="text" placeholder="Simu (hiari)" />
+            <select id="slot_br_5" class="slot-br-select"></select>
+          </div>
+        </div>
+
+        <button type="button" class="b-teal" data-act="saveFiveStaff">Hifadhi Wafanyakazi 5</button>
+      </div>
+
+      <div class="card">
+        <b>Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Duka Lake &amp; Takwimu Kwa Ndani)</b>
+        <div id="wf_list" style="margin-top:8px;"></div>
+
+        <div id="wf_inner" class="inner-panel">
+          <b id="wf_i_title">Duka la Mfanyakazi (Kwa Ndani)</b>
+          <div id="wf_i_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
+
+          <div class="grid4">
+            <div class="stat"><small>Hela Aliyouza</small><b id="wf_sales">0</b></div>
+            <div class="stat"><small>Ule Alioutumia (Mtaji)</small><b id="wf_cost">0</b></div>
+            <div class="stat"><small>Faida Aliyoingiza</small><b id="wf_profit">0</b></div>
+            <div class="stat"><small>Kamisheni Yake (55%)</small><b id="wf_comm">0</b></div>
+          </div>
+
+          <div style="margin-top:8px; font-size:13px;">
+            <b>Kamisheni ya Mmiliki (45%):</b> <span id="wf_owner_comm">0</span>
+          </div>
+
+          <div style="margin-top:10px;">
+            <b>Stoku Yote Aliyouza</b>
+            <div id="wf_sold_stock" style="margin-top:6px; font-size:13px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. COMMISSION (UKURASA WA 6 — NDANI KABISA, 55% / 45%) -->
+    <div id="pg_commission" class="page">
+      <div class="card">
+        <b>Commission — Detaile za Mfanyakazi (55% Mfanyakazi / 45% Mmiliki)</b>
+        <div class="row" style="margin-top:8px;">
+          <select id="cm_emp_sel"></select>
+        </div>
+        <div id="cm_detail" style="margin-top:8px; font-size:13px;"></div>
+        <div class="grid4">
+          <div class="stat"><small>Mauzo Aliouza</small><b id="cm_sales">0</b></div>
+          <div class="stat"><small>Mtaji / Aliotumia</small><b id="cm_cost">0</b></div>
+          <div class="stat"><small>Faida Iliyopatikana</small><b id="cm_profit">0</b></div>
+          <div class="stat"><small>Commission 55% / 45%</small><b id="cm_split">0 / 0</b></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. RIPOTI (UKURASA WA 7 — MWISHO) -->
+    <div id="pg_ripoti" class="page">
+      <div class="card">
+        <b>Ripoti ya Mauzo</b>
+        <div class="row" style="margin-top:8px;"><input id="rp_d" type="date" /></div>
+        <button type="button" class="b-blue" data-act="runReport">Angalia Ripoti</button>
+        <div id="rp_box" style="margin-top:10px; font-size:13px;">Chagua siku na ubonyeze Angalia Ripoti.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav" id="bottomBar">
+    <button type="button" id="nb_hq" class="on" data-pg="hq">HQ</button>
+    <button type="button" id="nb_mauzo" data-pg="mauzo">Mauzo</button>
+    <button type="button" id="nb_stock" data-pg="stock">Stock</button>
+    <button type="button" id="nb_maduka" data-pg="maduka">Maduka</button>
+    <button type="button" id="nb_wafanyakazi" data-pg="wafanyakazi">Wafanyakazi</button>
+    <button type="button" id="nb_commission" data-pg="commission">Commission</button>
+    <button type="button" id="nb_ripoti" data-pg="ripoti">Ripoti</button>
+  </div>
+
+  <script>
+    (function() {
+      var SB_URL = "https://wsmlqijofwmpojdujsyy.supabase.co";
+      var SB_KEY = "sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq";
+      var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
+      var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
+
+      var sb = null;
+      try {
+        if (window.supabase && window.supabase.createClient) {
+          sb = window.supabase.createClient(SB_URL, SB_KEY);
+        }
+      } catch (e) {}
+
+      var order = ["hq", "mauzo", "stock", "maduka", "wafanyakazi", "commission", "ripoti"];
+
+      var branches = [
+        { id: HQ_B, name: "HQ — Duka Kuu", region: "Moshi / Kilimanjaro" },
+        { id: "br-mwanga", name: "Tawi la Mwanga", region: "Kilimanjaro" },
+        { id: "br-dsm", name: "Tawi la Dar es Salaam", region: "Dar es Salaam" },
+        { id: "br-mwanza-nyamagana", name: "Duka la Mwanza Mjini (Nyamagana)", region: "Mwanza" },
+        { id: "br-mwanza-ilemela", name: "Tawi la Mwanza Ilemela", region: "Mwanza" },
+        { id: "br-mwanza-buhongwa", name: "Tawi la Mwanza Buhongwa", region: "Mwanza" }
+      ];
+
+      var staff = [
+        { id: DIR_E, name: "Mkurugenzi Mkuu", phone: "", branch_id: HQ_B },
+        { id: "emp-02", name: "Baraka John", phone: "0755000102", branch_id: "br-mwanza-nyamagana" },
+        { id: "emp-03", name: "Neema Hassan", phone: "0755000103", branch_id: "br-mwanza-ilemela" },
+        { id: "emp-04", name: "Kelvin Musa", phone: "0755000104", branch_id: "br-mwanza-buhongwa" },
+        { id: "emp-05", name: "Amina Salim", phone: "0755000105", branch_id: "br-mwanga" }
+      ];
+
+      var prods = [];
+      var sales = [];
+      var activeStaffId = DIR_E;
+      var activeBranchId = "br-mwanza-nyamagana";
+      var pickedProd = null;
+      var qr = null;
+      var scanMode = "mauzo";
+
+      function money(n) { return Number(n || 0).toLocaleString(); }
+
+      function msg(t) {
+        var el = document.getElementById("barMsg");
+        if (!el) return;
+        el.style.display = "block";
+        el.textContent = t;
+      }
+
+      function goPage(pg) {
+        stopCam();
+        var activeBtn = null;
+        for (var i = 0; i < order.length; i++) {
+          var k = order[i];
+          var p = document.getElementById("pg_" + k);
+          var b = document.getElementById("nb_" + k);
+          if (p) p.className = "page" + (k === pg ? " on" : "");
+          if (b) {
+            b.className = (k === pg ? "on" : "");
+            if (k === pg) activeBtn = b;
+          }
+        }
+        if (activeBtn && activeBtn.scrollIntoView) {
+          activeBtn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        }
+        renderAll();
+        if (pg === "stock") loadProds();
+        if (pg === "ripoti") runReport();
+      }
+
+      function brObj(id) {
+        for (var i = 0; i < branches.length; i++) {
+          if (branches[i].id === id) return branches[i];
+        }
+        return branches[0];
+      }
+
+      function brLabel(id) {
+        var b = brObj(id);
+        return b ? (b.name + " (" + b.region + ")") : id;
+      }
+
+      function staffObj(id) {
+        for (var i = 0; i < staff.length; i++) {
+          if (staff[i].id === id) return staff[i];
+        }
+        return staff[0];
+      }
+
+      function calcStaffStats(empId) {
+        var rows = sales.filter(function(r) { return String(r.employee_id) === String(empId); });
+        var totSales = 0, totCost = 0;
+        for (var i = 0; i < rows.length; i++) {
+          totSales += Number(rows[i].total_amount || 0);
+          totCost += Number(rows[i].cost_amount || 0);
+        }
+        var profit = totSales - totCost;
+        return {
+          rows: rows,
+          count: rows.length,
+          sales: totSales,
+          cost: totCost,
+          profit: profit,
+          staffComm: profit * 0.55,
+          ownerComm: profit * 0.45
+        };
+      }
+
+      function calcBranchStats(brId) {
+        var rows = sales.filter(function(r) { return String(r.branch_id) === String(brId); });
+        var brStock = prods.filter(function(p) { return String(p.branch_id) === String(brId); });
+        var totSales = 0, totCost = 0;
+        for (var i = 0; i < rows.length; i++) {
+          totSales += Number(rows[i].total_amount || 0);
+          totCost += Number(rows[i].cost_amount || 0);
+        }
+        return {
+          rows: rows,
+          stockItems: brStock,
+          sales: totSales,
+          cost: totCost,
+          profit: totSales - totCost
+        };
+      }
+
+      function renderBranchInner() {
+        var b = brObj(activeBranchId);
+        var st = calcBranchStats(b.id);
+        document.getElementById("md_d_title").textContent = b.name;
+        document.getElementById("md_d_sub").textContent = "Mkoa / Eneo: " + b.region;
+        document.getElementById("md_sales").textContent = money(st.sales);
+        document.getElementById("md_cost").textContent = money(st.cost);
+        document.getElementById("md_profit").textContent = money(st.profit);
+        document.getElementById("md_sku_cnt").textContent = String(st.stockItems.length);
+
+        var sHtml = "";
+        for (var i = 0; i < st.stockItems.length; i++) {
+          var item = st.stockItems[i];
+          sHtml += "<div>• SKU: <b>" + (item.sku || item.barcod) + "</b> — " + item.name +
+            " | Stock: <b>" + item.stock + "</b> | Kuuza: <b>" + money(item.selling_price) +
+            "</b> | Mtaji: <b>" + money(item.wholesale_price) + "</b></div>";
+        }
+        document.getElementById("md_stock_list").innerHTML = sHtml || "Hakuna bidhaa zilizotagiwa kwenye duka hili bado.";
+
+        var rHtml = "";
+        for (var j = 0; j < st.rows.length; j++) {
+          var r = st.rows[j];
+          var who = staffObj(r.employee_id);
+          rHtml += "<div>• SKU: <b>" + (r.sku || r.barcod || "-") + "</b> (" + (r.product_name || "Bidhaa") +
+            ") — Idadi: <b>" + r.quantity + "</b> | Mauzo: <b>" + money(r.total_amount) +
+            "</b> | Faida: <b>" + money(Number(r.total_amount || 0) - Number(r.cost_amount || 0)) +
+            "</b> | Aliyeuza: " + (who ? who.name : "-") + "</div>";
+        }
+        document.getElementById("md_sales_list").innerHTML = rHtml || "Hakuna
