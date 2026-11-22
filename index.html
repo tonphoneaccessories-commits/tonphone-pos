@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TON-PHONE &amp; ACCESSORIES — POS</title>
+  <title>TON-PHONE &amp; ACCESSORIES — HQ POS</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
@@ -166,7 +166,7 @@
 <body>
   <div class="wrap">
     <div class="top-row">
-      <h2>TON-PHONE &amp; ACCESSORIES — POS</h2>
+      <h2>TON-PHONE &amp; ACCESSORIES — HQ</h2>
       <button type="button" class="mini-btn" data-act="syncNow">Sawazisha HQ Sasa</button>
     </div>
 
@@ -179,9 +179,9 @@
     <!-- 1. HQ -->
     <div id="pg_hq" class="page on">
       <div class="card">
-        <b>Makao Makuu (HQ) — Mkurugenzi Mkuu</b>
+        <b>Makao Makuu (HQ) — Msimamizi Mkuu</b>
         <div style="margin-top:6px; font-size:13px;">
-          Msimamizi Mkuu: <b>Mkurugenzi Mkuu</b> | Mauzo ya Wote Yaliyosawazishwa: <b id="hq_live_count">0</b>
+          Msimamizi Mkuu: <b>Mkurugenzi Mkuu</b> | Rekodi za Mauzo Zilizopokelewa: <b id="hq_live_count">0</b>
         </div>
       </div>
 
@@ -203,20 +203,20 @@
       </div>
     </div>
 
-    <!-- 2. MAUZO -->
+    <!-- 2. MAUZO (SCAN & KUUZA) -->
     <div id="pg_mauzo" class="page">
       <div class="card">
-        <b>Mauzo ya Rejareja Sokoni (Scan / Tafuta SKU)</b>
+        <b>Scan Bidhaa &amp; Uza</b>
         <div class="row" style="margin-top:8px;">
           <div><small><b>Duka</b></small><select id="m_br"></select></div>
           <div><small><b>Anayeuza / Wakala</b></small><select id="m_emp"></select></div>
         </div>
         <div class="row">
-          <input id="m_code" type="text" placeholder="SKU / Barcode ya bidhaa" />
+          <input id="m_code" type="text" placeholder="Scan au weka SKU / Barcode" />
           <button type="button" class="b-blue" data-act="findProd">Tafuta</button>
           <button type="button" class="b-teal" data-act="scanMauzo">Scan</button>
         </div>
-        <div id="m_prod_box" class="card" style="background:#fff;">Scan au weka SKU / barcode kuona bei, mtaji, na faida ya bidhaa.</div>
+        <div id="m_prod_box" class="card" style="background:#fff;">Scan bidhaa — jina na bei vitajitokeza hapa.</div>
         <div class="row">
           <div><small><b>Idadi</b></small><input id="m_qty" type="number" step="any" min="0.01" value="1" /></div>
           <div>
@@ -227,24 +227,15 @@
             </select>
           </div>
         </div>
-        <div id="m_est" style="font-weight:bold; margin-bottom:8px;">Kiasi cha Kuuza: 0 | Mtaji: 0 | Faida: 0</div>
-        <button type="button" class="b-blue" data-act="saveSale">Hifadhi Mauzo</button>
-      </div>
-
-      <div class="card">
-        <b>Jioni: Jaza Nauli Uliyotumia Sokoni (Kukatwa Kwenye Faida)</b>
-        <div class="row" style="margin-top:8px; margin-bottom:0;">
-          <div><small><b>Mfanyakazi / Wakala</b></small><select id="m_nauli_emp"></select></div>
-          <div><small><b>Nauli ya Siku (TZS)</b></small><input id="m_nauli_day" type="number" step="any" min="0" placeholder="mf. 5000" /></div>
-          <div style="align-self:flex-end;"><button type="button" class="b-teal" data-act="saveDayNauli">Hifadhi Nauli ya Jioni</button></div>
-        </div>
+        <div id="m_est" style="font-weight:bold; margin-bottom:8px;">Jumla ya Kuuza: 0</div>
+        <button type="button" class="b-blue" data-act="saveSale">Uza / Hifadhi</button>
       </div>
     </div>
 
-    <!-- 3. STOCK -->
+    <!-- 3. STOCK (KUINGIZA STOKU KWA AJILI YA WAUZAJI) -->
     <div id="pg_stock" class="page">
       <div class="card">
-        <b>Ingiza Bidhaa kwa SKU &amp; Tagi Duka</b>
+        <b>Ingiza Stoku Kwa SKU &amp; Tagi Duka</b>
         <div class="row" style="margin-top:8px;">
           <input id="st_sku" type="text" placeholder="Ingiza SKU (mf. ZNX-20W-01)" />
           <select id="st_br_tag"></select>
@@ -255,22 +246,22 @@
           <button type="button" class="b-teal" data-act="scanStock">Scan</button>
         </div>
         <div class="row">
-          <input id="st_qty" type="number" step="any" placeholder="Stock" />
+          <input id="st_qty" type="number" step="any" placeholder="Idadi ya stoku" />
           <input id="st_sell" type="number" step="any" placeholder="Bei ya kuuza" />
           <input id="st_cost" type="number" step="any" placeholder="Bei ya jumla / mtaji" />
         </div>
         <div class="row" style="margin-bottom:0;">
-          <button type="button" class="b-blue" data-act="saveProd">Hifadhi Bidhaa Kwenye Duka</button>
-          <button type="button" class="b-light" data-act="loadProds">Onyesha Stock Yote</button>
+          <button type="button" class="b-blue" data-act="saveProd">Hifadhi Stoku</button>
+          <button type="button" class="b-light" data-act="loadProds">Onyesha Stoku Zote</button>
         </div>
       </div>
-      <div id="st_list" class="card">Ingiza bidhaa yenye SKU na kuitagi duka, au gusa "Onyesha Stock Yote".</div>
+      <div id="st_list" class="card">Ingiza stoku yenye SKU na kuitagi duka, au gusa "Onyesha Stoku Zote".</div>
     </div>
 
     <!-- 4. MADUKA -->
     <div id="pg_maduka" class="page">
       <div class="card">
-        <b>Maduka Yote (Gusa Duka Kuona Stoku, Mauzo, Ripoti &amp; Faida Kwa Ndani)</b>
+        <b>Maduka Yote (Gusa Duka Kuona Stoku, Mauzo, Nauli &amp; Faida)</b>
         <div id="md_list" style="margin-top:8px;"></div>
 
         <div id="md_detail" class="inner-panel">
@@ -280,7 +271,7 @@
           <div class="grid4">
             <div class="stat"><small>Mauzo ya Duka</small><b id="md_sales">0</b></div>
             <div class="stat"><small>Mtaji Uliotengwa</small><b id="md_cost">0</b></div>
-            <div class="stat"><small>Nauli (Matumizi)</small><b id="md_nauli">0</b></div>
+            <div class="stat"><small>Nauli Iliyotumwa</small><b id="md_nauli">0</b></div>
             <div class="stat"><small>Faida Inayobaki</small><b id="md_profit">0</b></div>
           </div>
 
@@ -294,7 +285,7 @@
           </div>
 
           <div style="margin-top:10px;">
-            <b>Mauzo &amp; Ripoti ya Duka Hili</b>
+            <b>Mauzo Yaliyotumwa Kwenye Duka Hili</b>
             <div id="md_sales_list" style="margin-top:6px; font-size:13px;"></div>
           </div>
         </div>
@@ -349,48 +340,46 @@
       </div>
 
       <div class="card">
-        <b>Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Duka Lake &amp; Takwimu Kwa Ndani)</b>
+        <b>Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Vitu Alivyouza Leo, Faida, Nauli &amp; Kamisheni)</b>
         <div id="wf_list" style="margin-top:8px;"></div>
 
         <div id="wf_inner" class="inner-panel">
-          <b id="wf_i_title">Muhtasari wa Mwisho wa Siku (Kwa Ndani)</b>
+          <b id="wf_i_title">Muhtasari wa Mfanyakazi</b>
           <div id="wf_i_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
 
           <div class="grid4">
             <div class="stat"><small>Kiasi Alichouza</small><b id="wf_sales">0</b></div>
-            <div class="stat"><small>Mtaji Uliotengwa</small><b id="wf_cost">0</b></div>
             <div class="stat"><small>Faida Iliyoingia</small><b id="wf_gross_profit">0</b></div>
-            <div class="stat"><small>Matumizi / Nauli</small><b id="wf_nauli">0</b></div>
+            <div class="stat"><small>Nauli Aliyotuma</small><b id="wf_nauli">0</b></div>
+            <div class="stat"><small>Kamisheni Yake (55%)</small><b id="wf_comm">0</b></div>
           </div>
 
           <div class="grid4">
             <div class="stat"><small>Faida Inayobaki</small><b id="wf_profit">0</b></div>
-            <div class="stat"><small>Kamisheni Yake (55%)</small><b id="wf_comm">0</b></div>
             <div class="stat"><small>Mmiliki (45%)</small><b id="wf_owner_comm">0</b></div>
-            <div class="stat"><small>Bidhaa Zilizouzwa</small><b id="wf_items_cnt">0</b></div>
+            <div class="stat"><small>Mtaji Uliotengwa</small><b id="wf_cost">0</b></div>
+            <div class="stat"><small>Vitu Alivyouza</small><b id="wf_items_cnt">0</b></div>
           </div>
 
           <div style="margin-top:10px;">
-            <b>Bidhaa / Stoku Zote Alizouza</b>
+            <b>Vitu Alivyouza Leo</b>
             <div id="wf_sold_stock" style="margin-top:6px; font-size:13px;"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 6. COMMISSION -->
+    <!-- 6. COMMISSION (KUSOMA TU KAMISSHENI YA MFANYAKAZI YA AUTOMATIC) -->
     <div id="pg_commission" class="page">
       <div class="card">
-        <b>Commission — Hesabu ya Mwisho wa Siku (Nauli Inakatwa Kabla ya 55% / 45%)</b>
+        <b>Commission — Kamisheni ya Mfanyakazi (Automatic 55% / 45% Baada ya Nauli)</b>
         <div class="row" style="margin-top:8px;">
           <div><small><b>Chagua Mfanyakazi / Wakala</b></small><select id="cm_emp_sel"></select></div>
-          <div><small><b>Nauli Aliyotumia (TZS)</b></small><input id="cm_nauli_input" type="number" step="any" min="0" placeholder="0" /></div>
-          <div style="align-self:flex-end;"><button type="button" class="b-blue" data-act="saveCommNauli">Weka Nauli &amp; Hesabu</button></div>
         </div>
         <div id="cm_detail" style="margin-top:8px; font-size:13px;"></div>
         <div class="grid4">
-          <div class="stat"><small>Faida Iliyopatikana</small><b id="cm_gross">0</b></div>
-          <div class="stat"><small>Nauli Iliyokatwa</small><b id="cm_nauli">0</b></div>
+          <div class="stat"><small>Faida Iliyokuja</small><b id="cm_gross">0</b></div>
+          <div class="stat"><small>Nauli Iliyotumwa</small><b id="cm_nauli">0</b></div>
           <div class="stat"><small>Faida Inayobaki</small><b id="cm_profit">0</b></div>
           <div class="stat"><small>55% Mfanyakazi / 45% Mmiliki</small><b id="cm_split">0 / 0</b></div>
         </div>
@@ -453,7 +442,7 @@
       var SB_KEY = "sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq";
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
-      var STORE_KEY = "tonphone_pos_state_v4";
+      var STORE_KEY = "tonphone_pos_hq_v5";
 
       var sb = null;
       try {
@@ -487,7 +476,6 @@
           ],
           prods: [],
           sales: [],
-          staffNauli: {},
           activeStaffId: DIR_E,
           activeBranchId: "br-mwanza-nyamagana"
         };
@@ -515,7 +503,6 @@
           if (parsed && Array.isArray(parsed.marketAgents)) state.marketAgents = parsed.marketAgents;
           if (parsed && Array.isArray(parsed.prods)) state.prods = parsed.prods;
           if (parsed && Array.isArray(parsed.sales)) state.sales = parsed.sales;
-          if (parsed && parsed.staffNauli && typeof parsed.staffNauli === "object") state.staffNauli = parsed.staffNauli;
           if (parsed && parsed.activeStaffId) state.activeStaffId = parsed.activeStaffId;
           if (parsed && parsed.activeBranchId) state.activeBranchId = parsed.activeBranchId;
         } catch (e) {}
@@ -639,17 +626,16 @@
         return state.staff[0];
       }
 
-      function summarizeRows(rows, extraNauli) {
-        var totSales = 0, totCost = 0, rowNauli = 0, totQty = 0;
+      function summarizeRows(rows) {
+        var totSales = 0, totCost = 0, totNauli = 0, totQty = 0;
         for (var i = 0; i < rows.length; i++) {
           totSales += Number(rows[i].total_amount || 0);
           totCost += Number(rows[i].cost_amount || 0);
-          rowNauli += Number(rows[i].transport_fee || 0);
+          totNauli += Number(rows[i].transport_fee || 0);
           totQty += Number(rows[i].quantity || 0);
         }
         var grossProfit = totSales - totCost;
-        var totalNauli = rowNauli + Number(extraNauli || 0);
-        var netProfit = grossProfit - totalNauli;
+        var netProfit = grossProfit - totNauli;
         return {
           rows: rows,
           count: rows.length,
@@ -657,7 +643,7 @@
           sales: totSales,
           cost: totCost,
           grossProfit: grossProfit,
-          nauli: totalNauli,
+          nauli: totNauli,
           profit: netProfit,
           staffComm: netProfit * 0.55,
           ownerComm: netProfit * 0.45
@@ -666,21 +652,13 @@
 
       function calcStaffStats(empId) {
         var rows = state.sales.filter(function(r) { return String(r.employee_id) === String(empId); });
-        var extra = state.staffNauli[empId] || 0;
-        return summarizeRows(rows, extra);
+        return summarizeRows(rows);
       }
 
       function calcBranchStats(brId) {
         var rows = state.sales.filter(function(r) { return String(r.branch_id) === String(brId); });
         var brStock = state.prods.filter(function(p) { return String(p.branch_id) === String(brId); });
-        var brExtraNauli = 0;
-        for (var i = 0; i < state.staff.length; i++) {
-          var s = state.staff[i];
-          if (String(s.branch_id) === String(brId)) {
-            brExtraNauli += Number(state.staffNauli[s.id] || 0);
-          }
-        }
-        var base = summarizeRows(rows, brExtraNauli);
+        var base = summarizeRows(rows);
         base.stockItems = brStock;
         return base;
       }
@@ -703,7 +681,7 @@
             " | Stock: <b>" + item.stock + "</b> | Kuuza: <b>" + money(item.selling_price) +
             "</b> | Mtaji: <b>" + money(item.wholesale_price) + "</b></div>";
         }
-        document.getElementById("md_stock_list").innerHTML = sHtml || "Hakuna bidhaa zilizotagiwa kwenye duka hili bado.";
+        document.getElementById("md_stock_list").innerHTML = sHtml || "Hakuna stoku zilizotagiwa kwenye duka hili bado.";
 
         var rHtml = "";
         for (var j = 0; j < st.rows.length; j++) {
@@ -712,10 +690,10 @@
           var rowGross = Number(r.total_amount || 0) - Number(r.cost_amount || 0);
           rHtml += "<div>• SKU: <b>" + (r.sku || r.barcod || "-") + "</b> (" + (r.product_name || "Bidhaa") +
             ") — Idadi: <b>" + r.quantity + "</b> | Mauzo: <b>" + money(r.total_amount) +
-            "</b> | Mtaji: <b>" + money(r.cost_amount) + "</b> | Faida: <b>" + money(rowGross) +
+            "</b> | Faida: <b>" + money(rowGross) + "</b> | Nauli: <b>" + money(r.transport_fee || 0) +
             "</b> | Aliyeuza: " + (who ? who.name : "-") + "</div>";
         }
-        document.getElementById("md_sales_list").innerHTML = rHtml || "Hakuna mauzo yaliyorekodiwa kwenye duka hili bado.";
+        document.getElementById("md_sales_list").innerHTML = rHtml || "Hakuna mauzo yaliyotumwa kwenye duka hili bado.";
       }
 
       function renderStaffInner() {
@@ -724,12 +702,12 @@
         document.getElementById("wf_i_title").textContent = emp.name + " — Duka: " + brLabel(emp.branch_id);
         document.getElementById("wf_i_sub").textContent = "Simu: " + (emp.phone || "-") + " | Miamala ya Mauzo: " + st.count;
         document.getElementById("wf_sales").textContent = money(st.sales);
-        document.getElementById("wf_cost").textContent = money(st.cost);
         document.getElementById("wf_gross_profit").textContent = money(st.grossProfit);
         document.getElementById("wf_nauli").textContent = money(st.nauli);
-        document.getElementById("wf_profit").textContent = money(st.profit);
         document.getElementById("wf_comm").textContent = money(st.staffComm);
+        document.getElementById("wf_profit").textContent = money(st.profit);
         document.getElementById("wf_owner_comm").textContent = money(st.ownerComm);
+        document.getElementById("wf_cost").textContent = money(st.cost);
         document.getElementById("wf_items_cnt").textContent = String(st.totalQty);
 
         var soldHtml = "";
@@ -738,18 +716,14 @@
           var rowGross = Number(r.total_amount || 0) - Number(r.cost_amount || 0);
           soldHtml += "<div>• SKU: <b>" + (r.sku || r.barcod || "-") + "</b> — <b>" + (r.product_name || "Bidhaa") +
             "</b> | Idadi: <b>" + r.quantity + "</b> | Kiasi Alichouza: <b>" + money(r.total_amount) +
-            "</b> | Mtaji: <b>" + money(r.cost_amount) + "</b> | Faida Iliyoingia: <b>" + money(rowGross) + "</b></div>";
+            "</b> | Faida: <b>" + money(rowGross) + "</b> | Nauli: <b>" + money(r.transport_fee || 0) + "</b></div>";
         }
-        document.getElementById("wf_sold_stock").innerHTML = soldHtml || "Hakuna bidhaa zilizouzwa na mfanyakazi huyu bado.";
+        document.getElementById("wf_sold_stock").innerHTML = soldHtml || "Hakuna vitu vilivyouzwa na mfanyakazi huyu bado.";
       }
 
       function renderCommission() {
         var emp = staffObj(state.activeStaffId);
         var st = calcStaffStats(emp.id);
-        var nauliInp = document.getElementById("cm_nauli_input");
-        if (nauliInp && document.activeElement !== nauliInp) {
-          nauliInp.value = String(st.nauli || 0);
-        }
         document.getElementById("cm_detail").innerHTML =
           "Mfanyakazi: <b>" + emp.name + "</b> | Duka: <b>" + brLabel(emp.branch_id) + "</b> | Mauzo: <b>" + st.count + "</b>";
         document.getElementById("cm_gross").textContent = money(st.grossProfit);
@@ -820,10 +794,8 @@
             '<div style="font-size:12px;color:#475569;">Duka: ' + brLabel(s.branch_id) + " | Simu: " + (s.phone || "-") + "</div></div>";
         }
         document.getElementById("m_emp").innerHTML = sOpt;
-        document.getElementById("m_nauli_emp").innerHTML = sOpt;
         document.getElementById("cm_emp_sel").innerHTML = sOpt;
         document.getElementById("m_emp").value = state.activeStaffId;
-        document.getElementById("m_nauli_emp").value = state.activeStaffId;
         document.getElementById("cm_emp_sel").value = state.activeStaffId;
         document.getElementById("wf_list").innerHTML = sHtml;
 
@@ -893,12 +865,7 @@
       function estSale() {
         var q = parseFloat(document.getElementById("m_qty").value) || 0;
         var sell = pickedProd ? Number(pickedProd.selling_price || 0) : 0;
-        var cost = pickedProd ? Number(pickedProd.wholesale_price || 0) : 0;
-        var tot = q * sell;
-        var mtaji = q * cost;
-        var faida = tot - mtaji;
-        document.getElementById("m_est").textContent =
-          "Kiasi cha Kuuza: " + money(tot) + " | Mtaji: " + money(mtaji) + " | Faida: " + money(faida);
+        document.getElementById("m_est").textContent = "Jumla ya Kuuza: " + money(q * sell);
       }
 
       function findProd() {
@@ -912,14 +879,12 @@
           var matchCode = (String(p.sku || "").toLowerCase() === c.toLowerCase()) || (String(p.barcod || "").toLowerCase() === c.toLowerCase());
           if (matchCode && (!brSel || String(p.branch_id) === String(brSel))) {
             pickedProd = p;
-            box.innerHTML = "<b>" + p.name + "</b> | SKU: <b>" + (p.sku || p.barcod) + "</b> | Duka: <b>" + brLabel(p.branch_id) +
-              "</b> | Stock: <b>" + p.stock + "</b> | Bei ya Kuuza: <b>" + money(p.selling_price) +
-              "</b> | Mtaji: <b>" + money(p.wholesale_price) + "</b>";
+            box.innerHTML = "<b>" + p.name + "</b> | Bei ya Kuuza: <b>" + money(p.selling_price) + "</b>";
             estSale();
             return;
           }
         }
-        if (!sb) { box.textContent = "Hakuna bidhaa yenye SKU/barcode hiyo."; return; }
+        if (!sb) { box.textContent = "Bidhaa haijapatikana."; return; }
         sb.from("productss").select("*").eq("barcod", c).maybeSingle().then(function(r) {
           if (r.error || !r.data) { pickedProd = null; box.textContent = "Bidhaa haijapatikana."; }
           else {
@@ -933,9 +898,7 @@
               selling_price: r.data.selling_price,
               wholesale_price: r.data.wholesale_price || 0
             };
-            box.innerHTML = "<b>" + pickedProd.name + "</b> | Stock: <b>" + pickedProd.stock +
-              "</b> | Bei ya Kuuza: <b>" + money(pickedProd.selling_price) +
-              "</b> | Mtaji: <b>" + money(pickedProd.wholesale_price) + "</b>";
+            box.innerHTML = "<b>" + pickedProd.name + "</b> | Bei ya Kuuza: <b>" + money(pickedProd.selling_price) + "</b>";
           }
           estSale();
         });
@@ -979,24 +942,11 @@
         if (sb) {
           sb.from("sales").insert([saleRow]).then(function(r) {
             if (r.error) msg("Imehifadhiwa ndani; Supabase: " + r.error.message);
-            else msg("Mauzo yametengwa mtaji na faida na kusukumwa HQ!");
+            else msg("Mauzo yamehifadhiwa na kusukumwa HQ!");
           });
         } else {
-          msg("Mauzo yametengwa mtaji na faida na kuhifadhiwa!");
+          msg("Mauzo yamehifadhiwa!");
         }
-      }
-
-      function applyStaffNauli(empId, nauliVal) {
-        var clean = Math.max(0, Number(nauliVal || 0));
-        state.staffNauli[empId] = clean;
-        state.activeStaffId = empId;
-        saveLocalState();
-        renderAll();
-        runReport();
-        var st = calcStaffStats(empId);
-        msg("Nauli " + money(clean) + " imekatwa kwenye faida " + money(st.grossProfit) +
-          " -> Inayobaki " + money(st.profit) + " | 55%: " + money(st.staffComm) +
-          " | 45%: " + money(st.ownerComm));
       }
 
       function saveProd() {
@@ -1009,7 +959,7 @@
         var cost = parseFloat(document.getElementById("st_cost").value) || 0;
 
         if (!sku || !name || isNaN(qty) || isNaN(sell)) {
-          msg("Jaza SKU, jina la bidhaa, stock, na bei ya kuuza.");
+          msg("Jaza SKU, jina la bidhaa, stoku, na bei ya kuuza.");
           return;
         }
 
@@ -1048,7 +998,7 @@
 
         loadProds();
         renderBranchInner();
-        msg("Bidhaa (SKU: " + sku + ") imehifadhiwa kwenye " + brLabel(brId) + "!");
+        msg("Stoku (SKU: " + sku + ") imehifadhiwa kwenye " + brLabel(brId) + "!");
       }
 
       function loadProds() {
@@ -1059,17 +1009,11 @@
             "</b> | Duka: <b>" + brLabel(p.branch_id) + "</b> | Stock: <b>" + p.stock +
             "</b> | Kuuza: <b>" + money(p.selling_price) + "</b> | Mtaji: <b>" + money(p.wholesale_price) + "</b></div>";
         }
-        document.getElementById("st_list").innerHTML = html || "Hakuna bidhaa bado.";
+        document.getElementById("st_list").innerHTML = html || "Hakuna stoku bado.";
       }
 
       function runReport() {
-        var extraAll = 0;
-        for (var k in state.staffNauli) {
-          if (Object.prototype.hasOwnProperty.call(state.staffNauli, k)) {
-            extraAll += Number(state.staffNauli[k] || 0);
-          }
-        }
-        var st = summarizeRows(state.sales, extraAll);
+        var st = summarizeRows(state.sales);
         document.getElementById("rp_box").innerHTML =
           "Mauzo: <b>" + money(st.sales) + "</b> | Mtaji: <b>" + money(st.cost) +
           "</b> | Faida: <b>" + money(st.grossProfit) + "</b> | Nauli: <b>" + money(st.nauli) +
@@ -1091,15 +1035,7 @@
         else if (act === "scanStock") startCam("stock");
         else if (act === "findProd") findProd();
         else if (act === "saveSale") saveSale();
-        else if (act === "saveDayNauli") {
-          var empN = document.getElementById("m_nauli_emp").value || state.activeStaffId;
-          var valN = parseFloat(document.getElementById("m_nauli_day").value) || 0;
-          applyStaffNauli(empN, valN);
-        } else if (act === "saveCommNauli") {
-          var empC = document.getElementById("cm_emp_sel").value || state.activeStaffId;
-          var valC = parseFloat(document.getElementById("cm_nauli_input").value) || 0;
-          applyStaffNauli(empC, valC);
-        } else if (act === "saveProd") saveProd();
+        else if (act === "saveProd") saveProd();
         else if (act === "loadProds") loadProds();
         else if (act === "runReport") runReport();
         else if (act === "saveFiveStaff") saveFiveStaff();
