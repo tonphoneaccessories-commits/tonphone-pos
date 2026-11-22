@@ -42,6 +42,17 @@
       font-weight: bold;
       cursor: pointer;
     }
+    .del-btn {
+      width: auto;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: none;
+      background: #b91c1c;
+      color: #ffffff;
+      font-weight: bold;
+      cursor: pointer;
+    }
     .page { display: none; }
     .page.on { display: block; }
     .card {
@@ -86,6 +97,12 @@
       cursor: pointer;
     }
     .list-box.pick { border-color: #1d4ed8; border-width: 2px; background: #eff6ff; }
+    .box-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
     .inner-panel {
       background: #f0fdf4;
       border: 1px solid #86efac;
@@ -215,6 +232,16 @@
           <input id="pt_nauli" type="number" step="any" min="0" value="0" placeholder="Nauli uliyotumia (TZS)" />
           <button type="button" class="b-green" data-act="ptSaveSale">Uza &amp; Tuma HQ</button>
         </div>
+
+        <div class="card" style="background:#ffffff; margin-top:10px; margin-bottom:8px;">
+          <b>Badilisha Password Yangu</b>
+          <div class="row" style="margin-top:6px; margin-bottom:0;">
+            <input id="pt_new_pass" type="text" placeholder="Andika password mpya" />
+            <button type="button" class="b-teal" data-act="ptChangePass">Hifadhi Password Mpya</button>
+          </div>
+          <div id="pt_pass_status" style="font-size:12px; color:#0f766e; margin-top:6px;"></div>
+        </div>
+
         <button type="button" class="b-light" data-act="closePortal">Funga Lango</button>
       </div>
     </div>
@@ -322,7 +349,10 @@
     <!-- 4. MADUKA -->
     <div id="pg_maduka" class="page">
       <div class="card">
-        <b>Maduka Yote (Gusa Duka Kuona Stoku, Mauzo, Nauli &amp; Faida)</b>
+        <div class="box-head">
+          <b>Maduka Yote (Gusa Duka Kuona Stoku, Mauzo, Nauli &amp; Faida)</b>
+          <button type="button" class="del-btn" data-act="deleteActiveBranch">Futa Duka Lililochaguliwa</button>
+        </div>
         <div id="md_list" style="margin-top:8px;"></div>
 
         <div id="md_detail" class="inner-panel">
@@ -401,7 +431,10 @@
       </div>
 
       <div class="card">
-        <b>Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Vitu Alivyouza Leo, Faida, Nauli &amp; Kamisheni)</b>
+        <div class="box-head">
+          <b>Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Vitu Alivyouza Leo, Faida, Nauli &amp; Kamisheni)</b>
+          <button type="button" class="del-btn" data-act="deleteActiveStaff">Futa Mfanyakazi Aliyechaguliwa</button>
+        </div>
         <div id="wf_list" style="margin-top:8px;"></div>
 
         <div id="wf_inner" class="inner-panel">
@@ -486,7 +519,7 @@
       <div class="card">
         <b>Link ya Kijana / Mfanyakazi Kuunganika na HQ (Kwa Password)</b>
         <div style="font-size:12px; color:#334155; margin-top:4px;">
-          Kijana akifungua link hii, atadaiwa <b>password</b> kwanza ili kuingia na kusawazisha na HQ.
+          Kijana akifungua link hii, atadaiwa <b>password</b> kwanza ili kuingia na kusawazisha na HQ (na anaweza kubadilisha password yake ndani ya lango lake).
         </div>
         <div class="row" style="margin-top:8px;">
           <div><small><b>Mfanyakazi / Kijana</b></small><select id="portal_emp_sel"></select></div>
@@ -570,7 +603,7 @@
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
       var OWNER_NAME = "Milton Elitwaza";
-      var STORE_KEY = "tonphone_pos_hq_v9";
+      var STORE_KEY = "tonphone_pos_hq_v10";
 
       var sb = null;
       try {
@@ -605,6 +638,7 @@
           ],
           prods: [],
           sales: [],
+          staffPasswords: {},
           activeStaffId: DIR_E,
           activeBranchId: "br-mwanza-nyamagana"
         };
@@ -631,6 +665,7 @@
           if (parsed && Array.isArray(parsed.staff) && parsed.staff.length) state.staff = parsed.staff;
           if (parsed && Array.isArray(parsed.prods)) state.prods = parsed.prods;
           if (parsed && Array.isArray(parsed.sales)) state.sales = parsed.sales;
+          if (parsed && parsed.staffPasswords && typeof parsed.staffPasswords === "object") state.staffPasswords = parsed.staffPasswords;
           if (parsed && parsed.activeStaffId) state.activeStaffId = parsed.activeStaffId;
           if (parsed && parsed.activeBranchId) state.activeBranchId = parsed.activeBranchId;
         } catch (e) {}
@@ -643,6 +678,16 @@
         if (!el) return;
         el.style.display = "block";
         el.textContent = t;
+      }
+
+      function buildStaffPortalUrl(empId, brId, pass) {
+        var baseUrl = window.location.origin + window.location.pathname;
+        if (!baseUrl || baseUrl.indexOf("http") !== 0) {
+          baseUrl = "https://tonphoneaccessories.github.io/tonphone-pos/";
+        }
+        var sep = baseUrl.indexOf("?") === -1 ? "?" : "&";
+        return baseUrl + sep + "staff_portal=1&emp=" + encodeURIComponent(empId) +
+          "&br=" + encodeURIComponent(brId) + "&key=" + encodeURIComponent(pass);
       }
 
       function checkUrlParams() {
@@ -667,14 +712,15 @@
           if (params.get("staff_portal") === "1") {
             var empId = params.get("emp") || "";
             var brId = params.get("br") || HQ_B;
-            var expectedPass = params.get("key") || "1234";
+            var urlPass = params.get("key") || "1234";
+            var savedPass = (empId && state.staffPasswords && state.staffPasswords[empId]) ? state.staffPasswords[empId] : urlPass;
             var emp = staffObj(empId);
             portalConfig = {
               empId: empId || (emp ? emp.id : DIR_E),
               empName: emp ? emp.name : "Mfanyakazi",
               brId: brId,
               brName: brLabel(brId),
-              expectedPass: expectedPass
+              expectedPass: savedPass
             };
             document.getElementById("portalEmpLabel").textContent = portalConfig.empName + " (" + portalConfig.brName + ")";
             document.getElementById("portalLockBox").style.display = "block";
@@ -695,7 +741,25 @@
         document.getElementById("portalWorkBox").style.display = "block";
         document.getElementById("portalActiveEmpName").textContent = portalConfig.empName;
         document.getElementById("portalActiveBrName").textContent = portalConfig.brName;
+        document.getElementById("pt_pass_status").textContent = "";
         msg("Karibu " + portalConfig.empName + "! Lango lako limefunguliwa.");
+      }
+
+      function ptChangePass() {
+        if (!portalConfig) return;
+        var newPass = (document.getElementById("pt_new_pass").value || "").trim();
+        if (!newPass) {
+          msg("Andika password mpya kwanza.");
+          return;
+        }
+        portalConfig.expectedPass = newPass;
+        state.staffPasswords[portalConfig.empId] = newPass;
+        saveLocalState();
+        var updatedUrl = buildStaffPortalUrl(portalConfig.empId, portalConfig.brId, newPass);
+        document.getElementById("pt_new_pass").value = "";
+        document.getElementById("pt_pass_status").innerHTML =
+          "Password mpya imehifadhiwa! Link yako mpya: <span style='word-break:break-all;'>" + updatedUrl + "</span>";
+        msg("Password yako imebadilishwa kikamilifu.");
       }
 
       function ptFindProd() {
@@ -757,17 +821,14 @@
 
       function genStaffLink() {
         var empId = document.getElementById("portal_emp_sel").value || state.activeStaffId;
-        var pass = (document.getElementById("portal_pass_set").value || "").trim();
+        var pass = (document.getElementById("portal_pass_set").value || "").trim() ||
+          (state.staffPasswords && state.staffPasswords[empId]) || "";
         if (!pass) { msg("Weka password ya mfanyakazi/kijana kwanza."); return; }
+        state.staffPasswords[empId] = pass;
+        saveLocalState();
         var emp = staffObj(empId);
         var brId = emp ? emp.branch_id : state.activeBranchId;
-        var baseUrl = window.location.origin + window.location.pathname;
-        if (!baseUrl || baseUrl.indexOf("http") !== 0) {
-          baseUrl = "https://tonphoneaccessories.github.io/tonphone-pos/";
-        }
-        var sep = baseUrl.indexOf("?") === -1 ? "?" : "&";
-        generatedStaffLink = baseUrl + sep + "staff_portal=1&emp=" + encodeURIComponent(empId) +
-          "&br=" + encodeURIComponent(brId) + "&key=" + encodeURIComponent(pass);
+        generatedStaffLink = buildStaffPortalUrl(empId, brId, pass);
         document.getElementById("staff_link_box").innerHTML =
           "<b>Link ya " + (emp ? emp.name : "Mfanyakazi") + " (Password: " + pass + "):</b><br>" + generatedStaffLink;
         msg("Link ya mfanyakazi yenye password imetengenezwa!");
@@ -777,6 +838,41 @@
         if (!generatedStaffLink) genStaffLink();
         if (!generatedStaffLink) return;
         copyTextHelper(generatedStaffLink, "Link ya kijana imenakiliwa!");
+      }
+
+      function deleteActiveBranch() {
+        var brId = state.activeBranchId;
+        if (!brId) { msg("Chagua duka la kufuta kwanza."); return; }
+        if (brId === HQ_B) { msg("Duka Kuu (HQ) haliwezi kufutwa."); return; }
+        var target = brObj(brId);
+        if (!target) return;
+        if (!confirm("Una uhakika unataka kufuta duka: " + target.name + "?")) return;
+
+        state.branches = state.branches.filter(function(b) { return b.id !== brId; });
+        state.activeBranchId = state.branches.length ? state.branches[0].id : HQ_B;
+        saveLocalState();
+        if (sb) sb.from("branches").delete().eq("id", brId).then(function(){});
+        renderAll();
+        msg("Duka '" + target.name + "' limefutwa.");
+      }
+
+      function deleteActiveStaff() {
+        var empId = state.activeStaffId;
+        if (!empId) { msg("Chagua mfanyakazi wa kufuta kwanza."); return; }
+        if (empId === DIR_E) { msg("Akaunti ya Mkurugenzi / HQ haiwezi kufutwa."); return; }
+        var target = staffObj(empId);
+        if (!target) return;
+        if (!confirm("Una uhakika unataka kufuta mfanyakazi: " + target.name + "?")) return;
+
+        state.staff = state.staff.filter(function(s) { return s.id !== empId; });
+        if (state.staffPasswords && state.staffPasswords[empId]) {
+          delete state.staffPasswords[empId];
+        }
+        state.activeStaffId = state.staff.length ? state.staff[0].id : DIR_E;
+        saveLocalState();
+        if (sb) sb.from("employees").delete().eq("id", empId).then(function(){});
+        renderAll();
+        msg("Mfanyakazi '" + target.name + "' amefutwa.");
       }
 
       function importWaFile() {
@@ -973,6 +1069,7 @@
 
       function renderBranchInner() {
         var b = brObj(state.activeBranchId);
+        if (!b) return;
         var st = calcBranchStats(b.id);
         document.getElementById("md_d_title").textContent = b.name;
         document.getElementById("md_d_sub").textContent = "Mkoa / Eneo: " + b.region;
@@ -1007,6 +1104,7 @@
 
       function renderStaffInner() {
         var emp = staffObj(state.activeStaffId);
+        if (!emp) return;
         var st = calcStaffStats(emp.id);
         document.getElementById("wf_i_title").textContent = emp.name + " — Duka: " + brLabel(emp.branch_id);
         document.getElementById("wf_i_sub").textContent = "Simu: " + (emp.phone || "-") + " | Miamala ya Mauzo: " + st.count;
@@ -1041,6 +1139,7 @@
 
       function renderCommission() {
         var emp = staffObj(state.activeStaffId);
+        if (!emp) return;
         var st = calcStaffStats(emp.id);
         document.getElementById("cm_detail").innerHTML =
           "Mfanyakazi: <b>" + emp.name + "</b> | Duka: <b>" + brLabel(emp.branch_id) + "</b> | Mauzo: <b>" + st.count + "</b>";
@@ -1427,9 +1526,12 @@
         else if (act === "closeCheckout") document.getElementById("payCheckoutCard").style.display = "none";
         else if (act === "copyCheckoutPhone") copyTextHelper(VODACOM_LINE, "Namba ya Vodacom " + VODACOM_LINE + " imenakiliwa!");
         else if (act === "unlockStaffPortal") unlockStaffPortal();
+        else if (act === "ptChangePass") ptChangePass();
         else if (act === "ptFindProd") ptFindProd();
         else if (act === "ptSaveSale") ptSaveSale();
         else if (act === "closePortal") document.getElementById("staffPortalModal").style.display = "none";
+        else if (act === "deleteActiveBranch") deleteActiveBranch();
+        else if (act === "deleteActiveStaff") deleteActiveStaff();
         else if (act === "importWaFile") importWaFile();
         else if (act === "genStaffLink") genStaffLink();
         else if (act === "copyStaffLink") copyStaffLink();
