@@ -49,6 +49,7 @@
     .section { display: none; }
     .section.active { display: block; }
     .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .field-col { flex: 1; min-width: 160px; }
     label.field-label {
       display: block;
       font-size: 12px;
@@ -56,7 +57,6 @@
       color: #334155;
       margin-bottom: 4px;
     }
-    .field-col { flex: 1; min-width: 160px; }
     input, select, button {
       padding: 10px;
       font-size: 14px;
@@ -121,15 +121,6 @@
       gap: 8px;
       flex-wrap: wrap;
     }
-    .badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: #dbeafe;
-      color: #1e40af;
-      font-weight: bold;
-    }
     .status {
       margin: 10px 0;
       padding: 10px;
@@ -171,11 +162,11 @@
         <div class="row" style="margin-bottom:0;">
           <div class="field-col">
             <label class="field-label" for="posBranchSelect">Duka / Tawi (Mkoa)</label>
-            <select id="posBranchSelect" onchange="onContextSelectionChange('pos')"></select>
+            <select id="posBranchSelect" onchange="syncSelectors('pos')"></select>
           </div>
           <div class="field-col">
             <label class="field-label" for="posEmployeeSelect">Mfanyakazi / Wakala</label>
-            <select id="posEmployeeSelect" onchange="onContextSelectionChange('pos')"></select>
+            <select id="posEmployeeSelect" onchange="syncSelectors('pos')"></select>
           </div>
         </div>
       </div>
@@ -233,40 +224,26 @@
       <div id="productsList" class="card">Inapakia orodha ya bidhaa...</div>
     </div>
 
-    <!-- SEHEMU 3: MADUKA YA MKOANI & WAFANYAKAZI -->
+    <!-- SEHEMU 3: MADUKA & WAFANYAKAZI -->
     <div id="sectionStaff" class="section">
       <div class="card">
         <h3>Ongeza Duka / Tawi (Mkoa)</h3>
         <div class="row">
-          <input id="branchName" type="text" placeholder="Jina la duka (mf. Duka la Moshi)" />
-          <input id="branchRegion" type="text" placeholder="Mkoa / Eneo (mf. Kilimanjaro / Mwanga / DSM)" />
-        </div>
-        <div class="row" style="margin-bottom:0;">
-          <input id="branchIdInput" type="text" placeholder="Branch ID (hiari — ukiacha wazi itatengenezwa)" />
+          <input id="branchName" type="text" placeholder="Jina la duka (mf. Tawi la Moshi)" />
+          <input id="branchRegion" type="text" placeholder="Mkoa / Eneo (mf. Kilimanjaro)" />
           <button type="button" class="primary" onclick="addBranch()">Hifadhi Duka</button>
         </div>
-      </div>
-
-      <div class="card">
-        <h3>Orodha ya Maduka</h3>
         <div id="branchesList">Inapakia maduka...</div>
       </div>
 
       <div class="card">
-        <h3>Ongeza Mfanyakazi / Field Agent</h3>
+        <h3>Ongeza Mfanyakazi / Wakala</h3>
         <div class="row">
           <input id="empName" type="text" placeholder="Jina kamili la mfanyakazi" />
           <input id="empPhone" type="text" placeholder="Namba ya simu (hiari)" />
-        </div>
-        <div class="row" style="margin-bottom:0;">
           <select id="empBranchSelect"></select>
-          <input id="empIdInput" type="text" placeholder="Employee ID (hiari)" />
           <button type="button" class="secondary" onclick="addEmployee()">Hifadhi Mfanyakazi</button>
         </div>
-      </div>
-
-      <div class="card">
-        <h3>Orodha ya Wafanyakazi</h3>
         <div id="employeesList">Inapakia wafanyakazi...</div>
       </div>
     </div>
@@ -281,11 +258,11 @@
           </div>
           <div class="field-col">
             <label class="field-label" for="repBranchSelect">Duka / Tawi</label>
-            <select id="repBranchSelect" onchange="onContextSelectionChange('report')"></select>
+            <select id="repBranchSelect" onchange="syncSelectors('report')"></select>
           </div>
           <div class="field-col">
             <label class="field-label" for="repEmployeeSelect">Mfanyakazi</label>
-            <select id="repEmployeeSelect" onchange="onContextSelectionChange('report')"></select>
+            <select id="repEmployeeSelect" onchange="syncSelectors('report')"></select>
           </div>
           <button type="button" class="primary" onclick="loadDailyReport()">Pakia Ripoti</button>
         </div>
@@ -298,6 +275,14 @@
         </div>
         <div class="stat-box">
           <div class="stat-label">Idadi ya Miamala</div>
+          <div id="repTxCount" class="stat-value">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Cash</div>
+          <div id="repCashTotal" class="stat-value">0</div>
+        </div>
+        <div class="stat-box">
+
           
 
 
