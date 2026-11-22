@@ -8,23 +8,23 @@
   <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 12px; background: #f1f5f9; color: #0f172a; }
-    .box { max-width: 760px; margin: auto; background: #fff; padding: 14px; border-radius: 10px; }
+    .box { max-width: 760px; margin: auto; background: #fff; padding: 14px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     h2 { margin: 0 0 10px 0; font-size: 19px; }
-    .nav { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-    .nav button { flex: 1 1 45%; padding: 10px; font-weight: bold; border-radius: 7px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #0f172a; }
+    .nav { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+    .nav button { padding: 10px; font-weight: bold; border-radius: 7px; border: 1px solid #cbd5e1; background: #e2e8f0; color: #0f172a; cursor: pointer; }
     .nav button.on { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
     .pane { display: none; }
     .pane.on { display: block; }
     .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 8px; margin-bottom: 10px; }
     .row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
     .row > * { flex: 1 1 140px; }
-    input, select, button { padding: 10px; font-size: 14px; border-radius: 7px; border: 1px solid #cbd5e1; }
-    .btn-b { background: #1d4ed8; color: #fff; border: none; font-weight: bold; }
-    .btn-g { background: #0f766e; color: #fff; border: none; font-weight: bold; }
-    .btn-r { background: #b91c1c; color: #fff; border: none; font-weight: bold; }
-    .btn-w { background: #fff; color: #0f172a; border: 1px solid #cbd5e1; }
+    input, select, button { padding: 10px; font-size: 14px; border-radius: 7px; border: 1px solid #cbd5e1; box-sizing: border-box; }
+    .btn-b { background: #1d4ed8; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    .btn-g { background: #0f766e; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    .btn-r { background: #b91c1c; color: #fff; border: none; font-weight: bold; cursor: pointer; }
+    .btn-w { background: #fff; color: #0f172a; border: 1px solid #cbd5e1; cursor: pointer; }
     .list-row { border-bottom: 1px solid #e2e8f0; padding: 8px 0; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
-    #alertBar { display: none; padding: 10px; border-radius: 7px; margin-bottom: 10px; font-size: 13px; }
+    #alertBar { display: none; padding: 10px; border-radius: 7px; margin-bottom: 10px; font-size: 13px; word-break: break-word; }
     #camBox { display: none; max-width: 380px; margin: 8px auto; }
   </style>
 </head>
@@ -33,16 +33,16 @@
     <h2>TON-PHONE &amp; ACCESSORIES - POS</h2>
 
     <div class="nav">
-      <button type="button" id="t_pos" class="on" onclick="goTab('pos')">Mauzo (POS)</button>
-      <button type="button" id="t_prod" onclick="goTab('prod')">Bidhaa (productss)</button>
-      <button type="button" id="t_staff" onclick="goTab('staff')">Maduka &amp; Wafanyakazi</button>
-      <button type="button" id="t_rep" onclick="goTab('rep')">Ripoti ya Siku</button>
+      <button type="button" id="t_pos" class="on">Mauzo (POS)</button>
+      <button type="button" id="t_prod">Bidhaa (productss)</button>
+      <button type="button" id="t_staff">Maduka &amp; Wafanyakazi</button>
+      <button type="button" id="t_rep">Ripoti ya Siku</button>
     </div>
 
     <div id="alertBar"></div>
     <div id="camBox"></div>
     <div id="stopCamWrap" class="row" style="display:none;">
-      <button type="button" class="btn-r" onclick="stopCam()">Zima Kamera</button>
+      <button type="button" id="btnStopCam" class="btn-r">Zima Kamera</button>
     </div>
 
     <div id="p_pos" class="pane on">
@@ -50,25 +50,25 @@
         <div class="row">
           <div>
             <small><b>Duka / Tawi (Mkoa)</b></small>
-            <select id="s_branch" onchange="syncPick('pos')"></select>
+            <select id="s_branch"></select>
           </div>
           <div>
             <small><b>Mfanyakazi / Wakala</b></small>
-            <select id="s_emp" onchange="syncPick('pos')"></select>
+            <select id="s_emp"></select>
           </div>
         </div>
       </div>
 
       <div class="row">
-        <input id="pos_code" type="text" value="8901234567890" placeholder="Barcode" />
-        <button type="button" class="btn-b" onclick="findProd()">Tafuta</button>
-        <button type="button" class="btn-g" onclick="openCam('pos')">Scan Kamera</button>
+        <input id="pos_code" type="text" placeholder="Weka au scan barcode" />
+        <button type="button" id="btnFindPos" class="btn-b">Tafuta</button>
+        <button type="button" id="btnScanPos" class="btn-g">Scan Kamera</button>
       </div>
 
-      <div id="pos_info" class="card">Inatafuta bidhaa...</div>
+      <div id="pos_info" class="card">Weka au scan barcode kutafuta bidhaa.</div>
 
       <div class="row">
-        <input id="pos_qty" type="number" step="any" min="0.01" value="1" oninput="calcEst()" />
+        <input id="pos_qty" type="number" step="any" min="0.01" value="1" />
         <select id="pos_pay">
           <option value="cash">Cash</option>
           <option value="lipa_namba">Lipa Namba</option>
@@ -76,7 +76,7 @@
       </div>
 
       <div id="pos_est" style="font-weight:bold; margin-bottom:8px;">Makadirio ya Jumla: 0</div>
-      <button type="button" class="btn-b" style="width:100%;" onclick="saveSale()">Hifadhi Mauzo</button>
+      <button type="button" id="btnSaveSale" class="btn-b" style="width:100%;">Hifadhi Mauzo</button>
     </div>
 
     <div id="p_prod" class="pane">
@@ -88,7 +88,7 @@
         </div>
         <div class="row">
           <input id="pr_code" type="text" placeholder="Barcode" />
-          <button type="button" class="btn-g" onclick="openCam('prod')">Scan Kamera</button>
+          <button type="button" id="btnScanProd" class="btn-g">Scan Kamera</button>
         </div>
         <div class="row">
           <input id="pr_stock" type="number" step="any" placeholder="Stock" />
@@ -96,16 +96,16 @@
           <input id="pr_whole" type="number" step="any" placeholder="Bei ya jumla" />
         </div>
         <div class="row">
-          <button type="button" class="btn-b" onclick="saveProd()">Hifadhi Bidhaa</button>
-          <button type="button" class="btn-w" onclick="clearPr()">Futa / Mpya</button>
+          <button type="button" id="btnSaveProd" class="btn-b">Hifadhi Bidhaa</button>
+          <button type="button" id="btnClearProd" class="btn-w">Futa / Mpya</button>
         </div>
       </div>
 
       <div class="row">
-        <input id="pr_q" type="text" placeholder="Chuja jina au barcode..." oninput="paintPr()" />
-        <button type="button" class="btn-w" onclick="loadPr()">Sasisha</button>
+        <input id="pr_q" type="text" placeholder="Chuja jina au barcode..." />
+        <button type="button" id="btnReloadProd" class="btn-w">Sasisha</button>
       </div>
-      <div id="pr_list" class="card">Inapakia bidhaa...</div>
+      <div id="pr_list" class="card">Bonyeza Sasisha au fungua kichupo cha Bidhaa.</div>
     </div>
 
     <div id="p_staff" class="pane">
@@ -117,7 +117,7 @@
         </div>
         <div class="row">
           <input id="br_id" type="text" placeholder="Branch ID (hiari)" />
-          <button type="button" class="btn-b" onclick="addBr()">Hifadhi Duka</button>
+          <button type="button" id="btnAddBr" class="btn-b">Hifadhi Duka</button>
         </div>
       </div>
 
@@ -134,7 +134,7 @@
         </div>
         <div class="row">
           <select id="em_br"></select>
-          <button type="button" class="btn-g" onclick="addEm()">Hifadhi Mfanyakazi</button>
+          <button type="button" id="btnAddEm" class="btn-g">Hifadhi Mfanyakazi</button>
         </div>
       </div>
 
@@ -147,11 +147,11 @@
     <div id="p_rep" class="pane">
       <div class="card">
         <div class="row">
-          <input id="rp_date" type="date" onchange="loadRep()" />
-          <select id="rp_br" onchange="syncPick('rep')"></select>
-          <select id="rp_em" onchange="syncPick('rep')"></select>
+          <input id="rp_date" type="date" />
+          <select id="rp_br"></select>
+          <select id="rp_em"></select>
         </div>
-        <button type="button" class="btn-b" style="width:100%;" onclick="loadRep()">Pakia Ripoti</button>
+        <button type="button" id="btnLoadRep" class="btn-b" style="width:100%;">Pakia Ripoti</button>
       </div>
 
       <div class="card">
@@ -159,126 +159,116 @@
         <div style="margin-top:4px;"><b>Cash:</b> <span id="rp_cash">0</span> | <b>Lipa Namba:</b> <span id="rp_lipa">0</span></div>
       </div>
 
-      <div id="rp_list" class="card">Inapakia ripoti...</div>
+      <div id="rp_list" class="card">Chagua siku na ubonyeze Pakia Ripoti.</div>
     </div>
   </div>
 
   <script>
-    var SB_URL = "https://wsmlqijofwmpojdujsyy.supabase.co";
-    var SB_KEY = "sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq";
-    var DEF_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
-    var DEF_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
+    (function() {
+      var SB_URL = "https://wsmlqijofwmpojdujsyy.supabase.co";
+      var SB_KEY = "sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq";
+      var DEF_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
+      var DEF_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
 
-    var sb = null;
-    try {
-      if (window.supabase && window.supabase.createClient) {
-        sb = window.supabase.createClient(SB_URL, SB_KEY);
-      }
-    } catch (err) {}
-
-    var curProd = null;
-    var prods = [];
-    var branches = [{ id: DEF_B, name: "Duka Kuu (HQ)", region: "Moshi" }];
-    var emps = [{ id: DEF_E, name: "Mfanyakazi Mkuu", phone: "", branch_id: DEF_B }];
-    var qr = null;
-    var camTarget = "pos";
-
-    function showMsg(txt, bad) {
-      var el = document.getElementById("alertBar");
-      if (!el) return;
-      el.style.display = "block";
-      el.style.background = bad ? "#fef2f2" : "#eff6ff";
-      el.style.color = bad ? "#991b1b" : "#1e3a8a";
-      el.style.border = bad ? "1px solid #fecaca" : "1px solid #bfdbfe";
-      el.textContent = txt;
-    }
-
-    function uid() {
-      return "id-" + Date.now() + "-" + Math.floor(Math.random() * 99999);
-    }
-
-    function goTab(t) {
-      stopCam();
-      var keys = ["pos", "prod", "staff", "rep"];
-      for (var i = 0; i < keys.length; i++) {
-        var k = keys[i];
-        document.getElementById("t_" + k).className = (k === t) ? "on" : "";
-        document.getElementById("p_" + k).className = "pane" + ((k === t) ? " on" : "");
-      }
-      if (t === "pos") findProd();
-      if (t === "prod") loadPr();
-      if (t === "staff") paintStaff();
-      if (t === "rep") loadRep();
-    }
-
-    function loadLocal() {
+      var sb = null;
       try {
-        var b = JSON.parse(localStorage.getItem("tp_b1") || "[]");
-        if (b.length) branches = b;
+        if (window.supabase && typeof window.supabase.createClient === "function") {
+          sb = window.supabase.createClient(SB_URL, SB_KEY);
+        }
       } catch (e) {}
-      try {
-        var e = JSON.parse(localStorage.getItem("tp_e1") || "[]");
-        if (e.length) emps = e;
-      } catch (e) {}
-    }
 
-    function getB() {
-      var v = localStorage.getItem("tp_sb1");
-      return v || DEF_B;
-    }
+      var curProd = null;
+      var prods = [];
+      var branches = [
+        { id: DEF_B, name: "Duka Kuu (HQ)", region: "Moshi" },
+        { id: "branch-mwanga", name: "Tawi la Mwanga", region: "Kilimanjaro" },
+        { id: "branch-dsm", name: "Tawi la Dar es Salaam", region: "Dar es Salaam" }
+      ];
+      var emps = [
+        { id: DEF_E, name: "Mfanyakazi Mkuu", phone: "", branch_id: DEF_B }
+      ];
+      var qr = null;
+      var camTarget = "pos";
 
-    function getE() {
-      var v = localStorage.getItem("tp_se1");
-      return v || DEF_E;
-    }
-
-    function paintSelects() {
-      var bVal = getB();
-      var eVal = getE();
-      var bHtml = "";
-      for (var i = 0; i < branches.length; i++) {
-        bHtml += '<option value="' + branches[i].id + '">' + branches[i].name + (branches[i].region ? " (" + branches[i].region + ")" : "") + "</option>";
+      function showMsg(txt, bad) {
+        var el = document.getElementById("alertBar");
+        if (!el) return;
+        el.style.display = "block";
+        el.style.background = bad ? "#fef2f2" : "#eff6ff";
+        el.style.color = bad ? "#991b1b" : "#1e3a8a";
+        el.style.border = bad ? "1px solid #fecaca" : "1px solid #bfdbfe";
+        el.textContent = txt;
       }
-      var eHtml = "";
-      for (var j = 0; j < emps.length; j++) {
-        eHtml += '<option value="' + emps[j].id + '">' + emps[j].name + "</option>";
+
+      function uid() {
+        return "id-" + Date.now() + "-" + Math.floor(Math.random() * 99999);
       }
-      ["s_branch", "rp_br", "em_br"].forEach(function(id) {
-        var el = document.getElementById(id);
-        if (el) { el.innerHTML = bHtml; el.value = bVal; }
-      });
-      ["s_emp", "rp_em"].forEach(function(id) {
-        var el = document.getElementById(id);
-        if (el) { el.innerHTML = eHtml; el.value = eVal; }
-      });
-    }
 
-    function syncPick(src) {
-      var bEl = document.getElementById(src === "pos" ? "s_branch" : "rp_br");
-      var eEl = document.getElementById(src === "pos" ? "s_emp" : "rp_em");
-      if (bEl && bEl.value) localStorage.setItem("tp_sb1", bEl.value);
-      if (eEl && eEl.value) localStorage.setItem("tp_se1", eEl.value);
-      paintSelects();
-      if (src === "rep") loadRep();
-    }
+      function loadStorage() {
+        try {
+          var b = JSON.parse(localStorage.getItem("tp_b3") || "[]");
+          if (Array.isArray(b) && b.length) branches = b;
+        } catch (e) {}
+        try {
+          var e = JSON.parse(localStorage.getItem("tp_e3") || "[]");
+          if (Array.isArray(e) && e.length) emps = e;
+        } catch (e) {}
+      }
 
-    function addBr() {
-      var name = document.getElementById("br_name").value.trim();
-      var reg = document.getElementById("br_reg").value.trim();
-      var id = document.getElementById("br_id").value.trim() || uid();
-      if (!name) { showMsg("Andika jina la duka.", true); return; }
-      branches.push({ id: id, name: name, region: reg });
-      localStorage.setItem("tp_b1", JSON.stringify(branches));
-      localStorage.setItem("tp_sb1", id);
-      if (sb) { sb.from("branches").insert([{ id: id, name: name, region: reg }]).then(function(){}); }
-      document.getElementById("br_name").value = "";
-      document.getElementById("br_reg").value = "";
-      document.getElementById("br_id").value = "";
-      paintSelects();
-      paintStaff();
+      function getB() {
+        try { return localStorage.getItem("tp_sb3") || DEF_B; } catch (e) { return DEF_B; }
+      }
 
+      function getE() {
+        try { return localStorage.getItem("tp_se3") || DEF_E; } catch (e) { return DEF_E; }
+      }
 
+      function setB(id) {
+        try { localStorage.setItem("tp_sb3", id); } catch (e) {}
+      }
 
-          
+      function setE(id) {
+        try { localStorage.setItem("tp_se3", id); } catch (e) {}
+      }
 
+      function paintSelects() {
+        var bVal = getB();
+        var eVal = getE();
+        var bHtml = "";
+        for (var i = 0; i < branches.length; i++) {
+          bHtml += '<option value="' + branches[i].id + '">' + branches[i].name + (branches[i].region ? " (" + branches[i].region + ")" : "") + "</option>";
+        }
+        var eHtml = "";
+        for (var j = 0; j < emps.length; j++) {
+          eHtml += '<option value="' + emps[j].id + '">' + emps[j].name + "</option>";
+        }
 
+        ["s_branch", "rp_br", "em_br"].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) {
+            el.innerHTML = bHtml;
+            el.value = bVal;
+          }
+        });
+        ["s_emp", "rp_em"].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) {
+            el.innerHTML = eHtml;
+            el.value = eVal;
+          }
+        });
+      }
+
+      function paintStaff() {
+        var bHtml = "";
+        for (var i = 0; i < branches.length; i++) {
+          var b = branches[i];
+          bHtml += '<div class="list-row"><div><b>' + b.name + '</b><div style="font-size:12px;">Mkoa: ' + (b.region || "-") + " | ID: " + b.id +
+            '</div></div><button type="button" class="btn-w pick-b" data-id="' + b.id + '">Chagua</button></div>';
+        }
+        document.getElementById("br_list").innerHTML = bHtml;
+
+        var eHtml = "";
+        for (var j = 0; j < emps.length; j++) {
+          var e = emps[j];
+          eHtml += '<div class="list-row"><div><b>' + e.name + '</b><div style="font-size:12px;">Simu: ' + (e.
