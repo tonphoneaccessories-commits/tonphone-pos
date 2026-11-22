@@ -60,7 +60,7 @@
     @media (min-width: 640px) { .two-col { grid-template-columns: 1fr 1fr; } }
     .row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
     .row > * { flex: 1 1 140px; }
-    input, select, button {
+    input, select, textarea, button {
       width: 100%;
       padding: 10px;
       font-size: 14px;
@@ -68,10 +68,13 @@
       border: 1px solid #cbd5e1;
       background: #ffffff;
       color: #0f172a;
+      font-family: Arial, sans-serif;
     }
+    textarea { min-height: 76px; resize: vertical; }
     button { font-weight: bold; cursor: pointer; touch-action: manipulation; }
     .b-blue { background: #1d4ed8; color: #ffffff; border: none; }
     .b-teal { background: #0f766e; color: #ffffff; border: none; }
+    .b-green { background: #15803d; color: #ffffff; border: none; }
     .b-red { background: #b91c1c; color: #ffffff; border: none; }
     .b-light { background: #ffffff; color: #0f172a; border: 1px solid #cbd5e1; }
     .list-box {
@@ -122,6 +125,15 @@
       color: #166534;
     }
     .pill.off { background: #fee2e2; color: #991b1b; }
+    .link-box {
+      background: #eff6ff;
+      border: 1px dashed #3b82f6;
+      border-radius: 8px;
+      padding: 9px;
+      font-size: 12px;
+      word-break: break-all;
+      margin-top: 6px;
+    }
     #barMsg {
       display: none;
       padding: 9px;
@@ -179,9 +191,9 @@
     <!-- 1. HQ -->
     <div id="pg_hq" class="page on">
       <div class="card">
-        <b>Makao Makuu (HQ) — Msimamizi Mkuu</b>
+        <b>Makao Makuu (HQ) — Milton Elitwaza</b>
         <div style="margin-top:6px; font-size:13px;">
-          Msimamizi Mkuu: <b>Mkurugenzi Mkuu</b> | Rekodi za Mauzo Zilizopokelewa: <b id="hq_live_count">0</b>
+          Msimamizi Mkuu: <b>Milton Elitwaza</b> | Laini ya Vodacom: <b>0768829648</b> | Mauzo Yaliyopokelewa: <b id="hq_live_count">0</b>
         </div>
       </div>
 
@@ -203,27 +215,27 @@
       </div>
     </div>
 
-    <!-- 2. MAUZO (SCAN & KUUZA) -->
+    <!-- 2. MAUZO -->
     <div id="pg_mauzo" class="page">
       <div class="card">
-        <b>Scan Bidhaa &amp; Uza</b>
+        <b>Scan Bidhaa / QR Code &amp; Uza</b>
         <div class="row" style="margin-top:8px;">
           <div><small><b>Duka</b></small><select id="m_br"></select></div>
           <div><small><b>Anayeuza / Wakala</b></small><select id="m_emp"></select></div>
         </div>
         <div class="row">
-          <input id="m_code" type="text" placeholder="Scan au weka SKU / Barcode" />
-          <button type="button" class="b-blue" data-act="findProd">Tafuta</button>
-          <button type="button" class="b-teal" data-act="scanMauzo">Scan</button>
+          <input id="m_code" type="text" placeholder="Search au scan SKU / Barcode / QR code" />
+          <button type="button" class="b-blue" data-act="findProd">Search / Tafuta</button>
+          <button type="button" class="b-teal" data-act="scanMauzo">Scan QR / Bar</button>
         </div>
-        <div id="m_prod_box" class="card" style="background:#fff;">Scan bidhaa — jina na bei vitajitokeza hapa.</div>
+        <div id="m_prod_box" class="card" style="background:#fff;">Search au scan SKU / Barcode / QR — jina na bei vitajitokeza hapa.</div>
         <div class="row">
           <div><small><b>Idadi</b></small><input id="m_qty" type="number" step="any" min="0.01" value="1" /></div>
           <div>
             <small><b>Malipo</b></small>
             <select id="m_pay">
               <option value="cash">Cash</option>
-              <option value="lipa_namba">Lipa Namba</option>
+              <option value="lipa_namba">Lipa Namba / Vodacom (0768829648)</option>
             </select>
           </div>
         </div>
@@ -232,18 +244,21 @@
       </div>
     </div>
 
-    <!-- 3. STOCK (KUINGIZA STOKU KWA AJILI YA WAUZAJI) -->
+    <!-- 3. STOCK (KUINGIZA STOKU KWA DUKA NA/AU MFANYAKAZI) -->
     <div id="pg_stock" class="page">
       <div class="card">
-        <b>Ingiza Stoku Kwa SKU &amp; Tagi Duka</b>
+        <b>Ingiza Stoku / Bidhaa Kwa Duka &amp; Mfanyakazi</b>
         <div class="row" style="margin-top:8px;">
-          <input id="st_sku" type="text" placeholder="Ingiza SKU (mf. ZNX-20W-01)" />
-          <select id="st_br_tag"></select>
+          <div><small><b>Tagi Duka / Tawi</b></small><select id="st_br_tag"></select></div>
+          <div><small><b>Mpe Mfanyakazi / Wakala (Hiari)</b></small><select id="st_emp_tag"></select></div>
         </div>
         <div class="row">
+          <input id="st_sku" type="text" placeholder="SKU / QR Code (mf. ZNX-20W-01)" />
           <input id="st_name" type="text" placeholder="Jina la bidhaa (mf. Zonix Fast Charger 20W)" />
-          <input id="st_code" type="text" placeholder="Barcode (hiari — hutumia SKU kama haina)" />
-          <button type="button" class="b-teal" data-act="scanStock">Scan</button>
+        </div>
+        <div class="row">
+          <input id="st_code" type="text" placeholder="Barcode / QR value (hiari — hutumia SKU kama haina)" />
+          <button type="button" class="b-teal" data-act="scanStock">Scan QR / Bar</button>
         </div>
         <div class="row">
           <input id="st_qty" type="number" step="any" placeholder="Idadi ya stoku" />
@@ -251,11 +266,11 @@
           <input id="st_cost" type="number" step="any" placeholder="Bei ya jumla / mtaji" />
         </div>
         <div class="row" style="margin-bottom:0;">
-          <button type="button" class="b-blue" data-act="saveProd">Hifadhi Stoku</button>
+          <button type="button" class="b-blue" data-act="saveProd">Hifadhi Stoku Kwa Mfanyakazi / Duka</button>
           <button type="button" class="b-light" data-act="loadProds">Onyesha Stoku Zote</button>
         </div>
       </div>
-      <div id="st_list" class="card">Ingiza stoku yenye SKU na kuitagi duka, au gusa "Onyesha Stoku Zote".</div>
+      <div id="st_list" class="card">Ingiza bidhaa/stoku na mchague mfanyakazi au duka, au gusa "Onyesha Stoku Zote".</div>
     </div>
 
     <!-- 4. MADUKA -->
@@ -362,6 +377,11 @@
           </div>
 
           <div style="margin-top:10px;">
+            <b>Stoku Aliyopewa Mfanyakazi Huyu</b>
+            <div id="wf_assigned_stock" style="margin-top:6px; font-size:13px;"></div>
+          </div>
+
+          <div style="margin-top:10px;">
             <b>Vitu Alivyouza Leo</b>
             <div id="wf_sold_stock" style="margin-top:6px; font-size:13px;"></div>
           </div>
@@ -369,7 +389,7 @@
       </div>
     </div>
 
-    <!-- 6. COMMISSION (KUSOMA TU KAMISSHENI YA MFANYAKAZI YA AUTOMATIC) -->
+    <!-- 6. COMMISSION -->
     <div id="pg_commission" class="page">
       <div class="card">
         <b>Commission — Kamisheni ya Mfanyakazi (Automatic 55% / 45% Baada ya Nauli)</b>
@@ -423,6 +443,57 @@
         <div id="ag_list" style="margin-top:8px;"></div>
       </div>
     </div>
+
+    <!-- 9. MAWASILIANO (WHATSAPP, SMS & LINK YA MALIPO VODACOM) -->
+    <div id="pg_mawasiliano" class="page">
+      <div class="card">
+        <b>Mawasiliano na Mteja — WhatsApp Moja kwa Moja, SMS &amp; Malipo (Vodacom: 0768829648)</b>
+        <div style="font-size:12px; color:#334155; margin-top:4px;">
+          Mpokeaji Malipo: <b>Milton Elitwaza</b> | Laini ya Vodacom: <b>0768829648</b>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <div>
+            <small><b>Namba ya Mteja (WhatsApp / Simu)</b></small>
+            <input id="msg_phone" type="tel" placeholder="mf. 0768829648 au 255768829648" />
+          </div>
+          <div>
+            <small><b>Kiasi cha Malipo (TZS)</b></small>
+            <input id="msg_amt" type="number" step="any" min="0" placeholder="mf. 25000" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <small><b>Kumbukumbu / Bidhaa</b></small>
+            <input id="msg_ref" type="text" placeholder="mf. Charger 20W — TON-PHONE" />
+          </div>
+          <div>
+            <small><b>URL ya Malipo (Hiari ikishounganishwa)</b></small>
+            <input id="msg_pay_url" type="url" placeholder="https://... (au hutumia kiungo cha malipo ya 0768829648)" />
+          </div>
+        </div>
+
+        <div class="row">
+          <button type="button" class="b-blue" data-act="genPayLink">Tengeneza Link ya Malipo</button>
+          <button type="button" class="b-light" data-act="copyPayLink">Nakili Link</button>
+        </div>
+
+        <div id="pay_link_box" class="link-box">
+          Link ya Malipo (Vodacom 0768829648 — Milton Elitwaza): Bonyeza "Tengeneza Link ya Malipo".
+        </div>
+
+        <div style="margin-top:10px;">
+          <small><b>Ujumbe wa Kutuma</b></small>
+          <textarea id="msg_body" placeholder="Habari mteja, karibu TON-PHONE & ACCESSORIES. Lipa kupitia Vodacom 0768829648 (Milton Elitwaza)..."></textarea>
+        </div>
+
+        <div class="row" style="margin-top:8px; margin-bottom:0;">
+          <button type="button" class="b-green" data-act="sendWhatsApp">Tuma WhatsApp Moja kwa Moja</button>
+          <button type="button" class="b-teal" data-act="sendSms">Tuma SMS ya Kawaida</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="bottom-nav" id="bottomBar">
@@ -434,6 +505,7 @@
     <button type="button" id="nb_commission" data-pg="commission">Commission</button>
     <button type="button" id="nb_ripoti" data-pg="ripoti">Ripoti</button>
     <button type="button" id="nb_admin" data-pg="admin">Admin Mawakala</button>
+    <button type="button" id="nb_mawasiliano" data-pg="mawasiliano">Mawasiliano</button>
   </div>
 
   <script>
@@ -442,7 +514,9 @@
       var SB_KEY = "sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq";
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
-      var STORE_KEY = "tonphone_pos_hq_v5";
+      var VODACOM_LINE = "0768829648";
+      var OWNER_NAME = "Milton Elitwaza";
+      var STORE_KEY = "tonphone_pos_hq_v6";
 
       var sb = null;
       try {
@@ -451,7 +525,8 @@
         }
       } catch (e) {}
 
-      var order = ["hq", "mauzo", "stock", "maduka", "wafanyakazi", "commission", "ripoti", "admin"];
+      var order = ["hq", "mauzo", "stock", "maduka", "wafanyakazi", "commission", "ripoti", "admin", "mawasiliano"];
+      var generatedPayLink = "";
 
       function defaultState() {
         return {
@@ -464,7 +539,7 @@
             { id: "br-mwanza-buhongwa", name: "Tawi la Mwanza Buhongwa", region: "Mwanza" }
           ],
           staff: [
-            { id: DIR_E, name: "Mkurugenzi Mkuu", phone: "", branch_id: HQ_B },
+            { id: DIR_E, name: "Milton Elitwaza (HQ)", phone: VODACOM_LINE, branch_id: HQ_B },
             { id: "emp-02", name: "Baraka John", phone: "0755000102", branch_id: "br-mwanza-nyamagana" },
             { id: "emp-03", name: "Neema Hassan", phone: "0755000103", branch_id: "br-mwanza-ilemela" },
             { id: "emp-04", name: "Kelvin Musa", phone: "0755000104", branch_id: "br-mwanza-buhongwa" },
@@ -558,6 +633,7 @@
                 sku: p.sku || p.barcod,
                 barcod: p.barcod,
                 branch_id: p.branch_id || HQ_B,
+                employee_id: p.employee_id || "",
                 name: p.name,
                 stock: p.stock,
                 selling_price: p.selling_price,
@@ -566,6 +642,7 @@
             });
             saveLocalState();
             renderBranchInner();
+            renderStaffInner();
             loadProds();
           }
         });
@@ -626,6 +703,17 @@
         return state.staff[0];
       }
 
+      function staffNameById(id) {
+        if (!id) return "Duka Zima";
+        for (var i = 0; i < state.staff.length; i++) {
+          if (String(state.staff[i].id) === String(id)) return state.staff[i].name;
+        }
+        for (var j = 0; j < state.marketAgents.length; j++) {
+          if (String(state.marketAgents[j].id) === String(id)) return state.marketAgents[j].name;
+        }
+        return id;
+      }
+
       function summarizeRows(rows) {
         var totSales = 0, totCost = 0, totNauli = 0, totQty = 0;
         for (var i = 0; i < rows.length; i++) {
@@ -679,7 +767,8 @@
           var item = st.stockItems[i];
           sHtml += "<div>• SKU: <b>" + (item.sku || item.barcod) + "</b> — " + item.name +
             " | Stock: <b>" + item.stock + "</b> | Kuuza: <b>" + money(item.selling_price) +
-            "</b> | Mtaji: <b>" + money(item.wholesale_price) + "</b></div>";
+            "</b> | Mtaji: <b>" + money(item.wholesale_price) +
+            "</b> | Mfanyakazi: <b>" + staffNameById(item.employee_id) + "</b></div>";
         }
         document.getElementById("md_stock_list").innerHTML = sHtml || "Hakuna stoku zilizotagiwa kwenye duka hili bado.";
 
@@ -710,11 +799,20 @@
         document.getElementById("wf_cost").textContent = money(st.cost);
         document.getElementById("wf_items_cnt").textContent = String(st.totalQty);
 
+        var assigned = state.prods.filter(function(p) { return String(p.employee_id) === String(emp.id); });
+        var aHtml = "";
+        for (var a = 0; a < assigned.length; a++) {
+          var ap = assigned[a];
+          aHtml += "<div>• SKU/QR: <b>" + (ap.sku || ap.barcod) + "</b> — <b>" + ap.name +
+            "</b> | Stock: <b>" + ap.stock + "</b> | Bei: <b>" + money(ap.selling_price) + "</b></div>";
+        }
+        document.getElementById("wf_assigned_stock").innerHTML = aHtml || "Hakuna stoku iliyotengwa mahususi kwa mfanyakazi huyu bado.";
+
         var soldHtml = "";
         for (var i = 0; i < st.rows.length; i++) {
           var r = st.rows[i];
           var rowGross = Number(r.total_amount || 0) - Number(r.cost_amount || 0);
-          soldHtml += "<div>• SKU: <b>" + (r.sku || r.barcod || "-") + "</b> — <b>" + (r.product_name || "Bidhaa") +
+          soldHtml += "<div>• SKU/QR: <b>" + (r.sku || r.barcod || "-") + "</b> — <b>" + (r.product_name || "Bidhaa") +
             "</b> | Idadi: <b>" + r.quantity + "</b> | Kiasi Alichouza: <b>" + money(r.total_amount) +
             "</b> | Faida: <b>" + money(rowGross) + "</b> | Nauli: <b>" + money(r.transport_fee || 0) + "</b></div>";
         }
@@ -784,16 +882,24 @@
           slotSelects[sIdx].innerHTML = bOpt;
         }
 
-        var sOpt = "", sHtml = "";
+        var sOpt = "", stEmpOpt = '<option value="">-- Duka Zima (Bila Mfanyakazi Maalum) --</option>', sHtml = "";
         for (var j = 0; j < state.staff.length; j++) {
           var s = state.staff[j];
           var isStPick = (s.id === state.activeStaffId);
           sOpt += '<option value="' + s.id + '">' + s.name + "</option>";
+          stEmpOpt += '<option value="' + s.id + '">' + s.name + "</option>";
           sHtml += '<div class="list-box ' + (isStPick ? "pick" : "") + '" data-act="pickStaff" data-id="' + s.id + '">' +
             "<b>" + s.name + '</b> <span style="font-size:12px;color:#1d4ed8;">(Gusa kuona duka &amp; kamisheni)</span>' +
             '<div style="font-size:12px;color:#475569;">Duka: ' + brLabel(s.branch_id) + " | Simu: " + (s.phone || "-") + "</div></div>";
         }
+        for (var kAg = 0; kAg < state.marketAgents.length; kAg++) {
+          var agItem = state.marketAgents[kAg];
+          if (!state.staff.some(function(x) { return x.id === agItem.id; })) {
+            stEmpOpt += '<option value="' + agItem.id + '">' + agItem.name + ' (Wakala)</option>';
+          }
+        }
         document.getElementById("m_emp").innerHTML = sOpt;
+        document.getElementById("st_emp_tag").innerHTML = stEmpOpt;
         document.getElementById("cm_emp_sel").innerHTML = sOpt;
         document.getElementById("m_emp").value = state.activeStaffId;
         document.getElementById("cm_emp_sel").value = state.activeStaffId;
@@ -858,7 +964,7 @@
           stopCam();
           if (scanMode === "mauzo") { document.getElementById("m_code").value = c; findProd(); }
           else { document.getElementById("st_code").value = c; if (!document.getElementById("st_sku").value) document.getElementById("st_sku").value = c; }
-          msg("Imesomwa: " + c);
+          msg("QR/Barcode imesomwa: " + c);
         }, function(){}).catch(function(e) { msg("Kamera: " + e); });
       }
 
@@ -869,23 +975,30 @@
       }
 
       function findProd() {
-        var c = (document.getElementById("m_code").value || "").trim();
+        var c = (document.getElementById("m_code").value || "").trim().toLowerCase();
         var brSel = document.getElementById("m_br").value;
+        var empSel = document.getElementById("m_emp").value;
         var box = document.getElementById("m_prod_box");
-        if (!c) { pickedProd = null; box.textContent = "Scan au weka SKU / barcode."; estSale(); return; }
+        if (!c) { pickedProd = null; box.textContent = "Search au weka SKU / Barcode / QR."; estSale(); return; }
 
         for (var i = 0; i < state.prods.length; i++) {
           var p = state.prods[i];
-          var matchCode = (String(p.sku || "").toLowerCase() === c.toLowerCase()) || (String(p.barcod || "").toLowerCase() === c.toLowerCase());
-          if (matchCode && (!brSel || String(p.branch_id) === String(brSel))) {
+          var skuMatch = String(p.sku || "").toLowerCase().indexOf(c) !== -1;
+          var barMatch = String(p.barcod || "").toLowerCase().indexOf(c) !== -1;
+          var nameMatch = String(p.name || "").toLowerCase().indexOf(c) !== -1;
+          var empOk = !p.employee_id || String(p.employee_id) === String(empSel);
+          var brOk = !brSel || String(p.branch_id) === String(brSel);
+          if ((skuMatch || barMatch || nameMatch) && empOk && brOk) {
             pickedProd = p;
-            box.innerHTML = "<b>" + p.name + "</b> | Bei ya Kuuza: <b>" + money(p.selling_price) + "</b>";
+            box.innerHTML = "<b>" + p.name + "</b> | SKU/QR: <b>" + (p.sku || p.barcod) +
+              "</b> | Bei ya Kuuza: <b>" + money(p.selling_price) + "</b>";
             estSale();
             return;
           }
         }
+
         if (!sb) { box.textContent = "Bidhaa haijapatikana."; return; }
-        sb.from("productss").select("*").eq("barcod", c).maybeSingle().then(function(r) {
+        sb.from("productss").select("*").or("barcod.ilike.*" + c + "*,sku.ilike.*" + c + "*,name.ilike.*" + c + "*").limit(1).maybeSingle().then(function(r) {
           if (r.error || !r.data) { pickedProd = null; box.textContent = "Bidhaa haijapatikana."; }
           else {
             pickedProd = {
@@ -894,6 +1007,7 @@
               barcod: r.data.barcod,
               name: r.data.name,
               branch_id: r.data.branch_id || brSel || HQ_B,
+              employee_id: r.data.employee_id || "",
               stock: r.data.stock,
               selling_price: r.data.selling_price,
               wholesale_price: r.data.wholesale_price || 0
@@ -905,7 +1019,7 @@
       }
 
       function saveSale() {
-        if (!pickedProd) { msg("Scan au tafuta bidhaa kwanza."); return; }
+        if (!pickedProd) { msg("Search au scan bidhaa kwanza."); return; }
         var q = parseFloat(document.getElementById("m_qty").value) || 0;
         if (q <= 0) { msg("Weka idadi."); return; }
         var empId = document.getElementById("m_emp").value || state.activeStaffId;
@@ -952,6 +1066,7 @@
       function saveProd() {
         var sku = (document.getElementById("st_sku").value || "").trim();
         var brId = document.getElementById("st_br_tag").value || HQ_B;
+        var empId = document.getElementById("st_emp_tag").value || "";
         var name = (document.getElementById("st_name").value || "").trim();
         var code = (document.getElementById("st_code").value || "").trim() || sku;
         var qty = parseFloat(document.getElementById("st_qty").value);
@@ -959,7 +1074,7 @@
         var cost = parseFloat(document.getElementById("st_cost").value) || 0;
 
         if (!sku || !name || isNaN(qty) || isNaN(sell)) {
-          msg("Jaza SKU, jina la bidhaa, stoku, na bei ya kuuza.");
+          msg("Jaza SKU/QR, jina la bidhaa, stoku, na bei ya kuuza.");
           return;
         }
 
@@ -968,6 +1083,7 @@
           sku: sku,
           barcod: code,
           branch_id: brId,
+          employee_id: empId,
           name: name,
           stock: qty,
           selling_price: sell,
@@ -975,10 +1091,11 @@
         };
         state.prods.push(item);
         state.activeBranchId = brId;
+        if (empId) state.activeStaffId = empId;
         saveLocalState();
 
         if (sb) {
-          sb.from("productss").insert([{
+          var sbRow = {
             sku: sku,
             barcod: code,
             branch_id: brId,
@@ -986,7 +1103,21 @@
             stock: qty,
             selling_price: sell,
             wholesale_price: cost
-          }]).then(function(){});
+          };
+          if (empId) sbRow.employee_id = empId;
+          sb.from("productss").insert([sbRow]).then(function(r) {
+            if (r.error && empId) {
+              sb.from("productss").insert([{
+                sku: sku,
+                barcod: code,
+                branch_id: brId,
+                name: name,
+                stock: qty,
+                selling_price: sell,
+                wholesale_price: cost
+              }]).then(function(){});
+            }
+          });
         }
 
         document.getElementById("st_sku").value = "";
@@ -998,14 +1129,16 @@
 
         loadProds();
         renderBranchInner();
-        msg("Stoku (SKU: " + sku + ") imehifadhiwa kwenye " + brLabel(brId) + "!");
+        renderStaffInner();
+        msg("Stoku (SKU/QR: " + sku + ") imehifadhiwa kwa " + staffNameById(empId) + " (" + brLabel(brId) + ")!");
       }
 
       function loadProds() {
         var html = "";
         for (var i = 0; i < state.prods.length; i++) {
           var p = state.prods[i];
-          html += '<div class="list-box"><b>' + p.name + "</b> — SKU: <b>" + (p.sku || p.barcod) +
+          html += '<div class="list-box"><b>' + p.name + "</b> — SKU/QR: <b>" + (p.sku || p.barcod) +
+            "</b> | Mfanyakazi: <b>" + staffNameById(p.employee_id) +
             "</b> | Duka: <b>" + brLabel(p.branch_id) + "</b> | Stock: <b>" + p.stock +
             "</b> | Kuuza: <b>" + money(p.selling_price) + "</b> | Mtaji: <b>" + money(p.wholesale_price) + "</b></div>";
         }
@@ -1020,6 +1153,77 @@
           "</b> | Inayobaki: <b>" + money(st.profit) +
           "</b> | 55% Mfanyakazi: <b>" + money(st.staffComm) +
           "</b> | 45% Mmiliki: <b>" + money(st.ownerComm) + "</b>";
+      }
+
+      function normalizePhone(raw) {
+        var digits = String(raw || "").replace(/\D+/g, "");
+        if (!digits) return "";
+        if (digits.indexOf("0") === 0 && digits.length === 10) {
+          return "255" + digits.slice(1);
+        }
+        return digits;
+      }
+
+      function buildPayLink() {
+        var customUrl = (document.getElementById("msg_pay_url").value || "").trim();
+        var amt = parseFloat(document.getElementById("msg_amt").value) || 0;
+        var ref = (document.getElementById("msg_ref").value || "TON-PHONE").trim();
+        if (customUrl) {
+          var sep = customUrl.indexOf("?") === -1 ? "?" : "&";
+          generatedPayLink = customUrl + sep + "phone=" + encodeURIComponent(VODACOM_LINE) +
+            "&owner=" + encodeURIComponent(OWNER_NAME) +
+            "&amount=" + encodeURIComponent(String(amt)) +
+            "&ref=" + encodeURIComponent(ref);
+        } else {
+          generatedPayLink = "https://tonphone.tz/pay?vodacom=" + encodeURIComponent(VODACOM_LINE) +
+            "&name=" + encodeURIComponent(OWNER_NAME) +
+            "&amount=" + encodeURIComponent(String(amt)) +
+            "&ref=" + encodeURIComponent(ref);
+        }
+        var box = document.getElementById("pay_link_box");
+        if (box) {
+          box.innerHTML = "<b>Link ya Malipo (Vodacom " + VODACOM_LINE + " — " + OWNER_NAME + "):</b><br>" + generatedPayLink;
+        }
+        var bodyEl = document.getElementById("msg_body");
+        if (bodyEl && !bodyEl.value.trim()) {
+          bodyEl.value = "Habari mteja, karibu TON-PHONE & ACCESSORIES. Kiasi: TZS " + money(amt) +
+            " (" + ref + "). Lipa kupitia Vodacom " + VODACOM_LINE + " (" + OWNER_NAME + ") au fungua link: " + generatedPayLink;
+        } else if (bodyEl && bodyEl.value.indexOf(generatedPayLink) === -1) {
+          bodyEl.value = bodyEl.value.trim() + "\nLink ya Malipo (Vodacom " + VODACOM_LINE + "): " + generatedPayLink;
+        }
+        msg("Link ya malipo imetengenezwa kwa Vodacom " + VODACOM_LINE + " (" + OWNER_NAME + ").");
+      }
+
+      function copyPayLink() {
+        if (!generatedPayLink) buildPayLink();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(generatedPayLink).then(function() {
+            msg("Link ya malipo imenakiliwa!");
+          }).catch(function() {
+            msg("Nakili link kutoka kwenye kisanduku cha bluu.");
+          });
+        } else {
+          msg("Nakili link kutoka kwenye kisanduku cha bluu.");
+        }
+      }
+
+      function sendWhatsApp() {
+        var intlPhone = normalizePhone(document.getElementById("msg_phone").value);
+        if (!intlPhone) { msg("Ingiza namba ya mteja ya WhatsApp."); return; }
+        var text = (document.getElementById("msg_body").value || "").trim();
+        if (!text) { buildPayLink(); text = (document.getElementById("msg_body").value || "").trim(); }
+        var waUrl = "https://wa.me/" + intlPhone + "?text=" + encodeURIComponent(text);
+        window.open(waUrl, "_blank");
+        msg("Inafungua WhatsApp moja kwa moja kwa +" + intlPhone + "...");
+      }
+
+      function sendSms() {
+        var rawPhone = (document.getElementById("msg_phone").value || "").trim().replace(/\s+/g, "");
+        if (!rawPhone) { msg("Ingiza namba ya mteja ya kutuma SMS."); return; }
+        var text = (document.getElementById("msg_body").value || "").trim();
+        var smsUrl = "sms:" + encodeURIComponent(rawPhone) + (text ? ("?body=" + encodeURIComponent(text)) : "");
+        window.location.href = smsUrl;
+        msg("Inafungua SMS kwa " + rawPhone + "...");
       }
 
       function runAction(el) {
@@ -1039,6 +1243,10 @@
         else if (act === "loadProds") loadProds();
         else if (act === "runReport") runReport();
         else if (act === "saveFiveStaff") saveFiveStaff();
+        else if (act === "genPayLink") buildPayLink();
+        else if (act === "copyPayLink") copyPayLink();
+        else if (act === "sendWhatsApp") sendWhatsApp();
+        else if (act === "sendSms") sendSms();
         else if (act === "addBr") {
           var bn = (document.getElementById("hq_br_name").value || "").trim();
           var br = (document.getElementById("hq_br_reg").value || "").trim();
@@ -1140,7 +1348,9 @@
       }, false);
 
       document.body.addEventListener("input", function(ev) {
-        if (ev.target && ev.target.id === "m_qty") estSale();
+        if (!ev.target) return;
+        if (ev.target.id === "m_qty") estSale();
+        else if (ev.target.id === "m_code") findProd();
       });
 
       document.body.addEventListener("change", function(ev) {
@@ -1159,4 +1369,4 @@
     })();
   </script>
 </body>
-</html>
+              </html>
