@@ -2,29 +2,46 @@
 <html lang="sw">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TON-PHONE &amp; ACCESSORIES — POS</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
     * { box-sizing: border-box; }
-    html, body {
+    body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 10px 10px 90px 10px;
+      padding: 10px 10px 92px 10px;
       background: #eef2f6;
       color: #0f172a;
-      overflow-x: hidden;
     }
     .wrap {
       max-width: 860px;
       margin: 0 auto;
-      background: #fff;
+      background: #ffffff;
       border-radius: 12px;
       padding: 14px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+      box-shadow: 0 3px 12px rgba(15, 23, 42, 0.08);
     }
-    h2 { margin: 0 0 10px 0; font-size: 18px; }
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    h2 { margin: 0; font-size: 18px; }
+    .mini-btn {
+      width: auto;
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      font-weight: bold;
+      cursor: pointer;
+    }
     .page { display: none; }
     .page.on { display: block; }
     .card {
@@ -45,32 +62,29 @@
     .row > * { flex: 1 1 140px; }
     input, select, button {
       width: 100%;
-      padding: 11px;
+      padding: 10px;
       font-size: 14px;
       border-radius: 7px;
       border: 1px solid #cbd5e1;
-      background: #fff;
+      background: #ffffff;
       color: #0f172a;
     }
     button {
       font-weight: bold;
       cursor: pointer;
       touch-action: manipulation;
-      -webkit-tap-highlight-color: rgba(29, 78, 216, 0.25);
-      user-select: none;
     }
-    .b-blue { background: #1d4ed8; color: #fff; border: none; }
-    .b-teal { background: #0f766e; color: #fff; border: none; }
-    .b-red { background: #b91c1c; color: #fff; border: none; }
-    .b-light { background: #fff; color: #0f172a; border: 1px solid #cbd5e1; }
+    .b-blue { background: #1d4ed8; color: #ffffff; border: none; }
+    .b-teal { background: #0f766e; color: #ffffff; border: none; }
+    .b-red { background: #b91c1c; color: #ffffff; border: none; }
+    .b-light { background: #ffffff; color: #0f172a; border: 1px solid #cbd5e1; }
     .list-box {
       border: 1px solid #cbd5e1;
       border-radius: 8px;
       padding: 10px;
       margin-bottom: 8px;
-      background: #fff;
+      background: #ffffff;
       cursor: pointer;
-      touch-action: manipulation;
     }
     .list-box.pick { border-color: #1d4ed8; border-width: 2px; background: #eff6ff; }
     .inner-panel {
@@ -78,4 +92,102 @@
       border: 1px solid #86efac;
       border-radius: 9px;
       padding: 11px;
-      margin-top: 10px
+      margin-top: 10px;
+    }
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    @media (min-width: 640px) { .grid4 { grid-template-columns: repeat(4, 1fr); } }
+    .stat {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 9px;
+    }
+    .stat small { display: block; color: #334155; font-weight: bold; font-size: 11px; }
+    .stat b { font-size: 15px; color: #1e3a8a; }
+    .slot-box {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 9px;
+      margin-bottom: 8px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: bold;
+      background: #dcfce7;
+      color: #166534;
+    }
+    .pill.off { background: #fee2e2; color: #991b1b; }
+    #barMsg {
+      display: none;
+      padding: 9px;
+      border-radius: 7px;
+      margin-bottom: 10px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 13px;
+      font-weight: bold;
+    }
+    #qrView { display: none; max-width: 360px; margin: 8px auto; }
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #0f172a;
+      padding: 7px;
+      display: flex;
+      overflow-x: auto;
+      gap: 6px;
+      z-index: 999;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    }
+    .bottom-nav button {
+      flex: 0 0 auto;
+      width: auto;
+      padding: 10px 13px;
+      font-size: 12px;
+      border-radius: 7px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #e2e8f0;
+    }
+    .bottom-nav button.on {
+      background: #1d4ed8;
+      color: #ffffff;
+      border-color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-row">
+      <h2>TON-PHONE &amp; ACCESSORIES — POS</h2>
+      <button type="button" class="mini-btn" data-act="resetDemoData">Rejesha Data ya Awali</button>
+    </div>
+
+    <div id="barMsg"></div>
+    <div id="qrView"></div>
+    <div id="qrStopRow" style="display:none; margin-bottom:8px;">
+      <button type="button" class="b-red" data-act="stopScan">Zima Kamera</button>
+    </div>
+
+    <!-- 1. HQ -->
+    <div id="pg_hq" class="page on">
+      <div class="card">
+        <b>Makao Makuu (HQ) — Mkurugenzi Mkuu</b>
+        <div style="margin-top:6px; font-size:13px;">Msimamizi Mkuu: <b>Mkurugenzi Mkuu</b></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card" style="margin-bottom:0;">
+          <b>Ongeza Wafanyakazi (Pembeni)</b>
+          <div class="row" style="margin-top:8
