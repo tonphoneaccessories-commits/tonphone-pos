@@ -115,16 +115,6 @@
       padding: 9px;
       margin-bottom: 8px;
     }
-    .pill {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: bold;
-      background: #dcfce7;
-      color: #166534;
-    }
-    .pill.off { background: #fee2e2; color: #991b1b; }
     .link-box {
       background: #eff6ff;
       border: 1px dashed #3b82f6;
@@ -133,6 +123,14 @@
       font-size: 12px;
       word-break: break-all;
       margin-top: 6px;
+    }
+    #payCheckoutCard {
+      display: none;
+      background: #f0fdf4;
+      border: 2px solid #16a34a;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 12px;
     }
     #barMsg {
       display: none;
@@ -180,6 +178,15 @@
     <div class="top-row">
       <h2>TON-PHONE &amp; ACCESSORIES — HQ</h2>
       <button type="button" class="mini-btn" data-act="syncNow">Sawazisha HQ Sasa</button>
+    </div>
+
+    <div id="payCheckoutCard">
+      <h3 style="margin:0 0 6px 0; color:#14532d;">Malipo ya TON-PHONE &amp; ACCESSORIES</h3>
+      <div id="payCheckoutDetails" style="font-size:14px; line-height:1.5;"></div>
+      <div class="row" style="margin-top:10px; margin-bottom:0;">
+        <button type="button" class="b-green" data-act="copyCheckoutPhone">Nakili Namba ya Vodacom (0768829648)</button>
+        <button type="button" class="b-light" data-act="closeCheckout">Rudi Kwenye Mfumo</button>
+      </div>
     </div>
 
     <div id="barMsg"></div>
@@ -244,7 +251,7 @@
       </div>
     </div>
 
-    <!-- 3. STOCK (KUINGIZA STOKU KWA DUKA NA/AU MFANYAKAZI) -->
+    <!-- 3. STOCK -->
     <div id="pg_stock" class="page">
       <div class="card">
         <b>Ingiza Stoku / Bidhaa Kwa Duka &amp; Mfanyakazi</b>
@@ -420,31 +427,7 @@
       </div>
     </div>
 
-    <!-- 8. ADMIN MAWAKALA -->
-    <div id="pg_admin" class="page">
-      <div class="card">
-        <b>Admin — Simamia Mawakala Wanaoingia Sokoni &amp; Maduka</b>
-        <div class="row" style="margin-top:8px;">
-          <input id="ag_name" type="text" placeholder="Jina la wakala wa soko" />
-          <input id="ag_market" type="text" placeholder="Soko / Eneo (mf. Soko Kuu Moshi / Mwanga)" />
-        </div>
-        <div class="row" style="margin-bottom:0;">
-          <select id="ag_br"></select>
-          <select id="ag_status">
-            <option value="Sokoni (Active)">Sokoni (Active)</option>
-            <option value="Amepumzika (Off)">Amepumzika (Off)</option>
-          </select>
-          <button type="button" class="b-teal" data-act="addMarketAgent">Hifadhi Wakala</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <b>Orodha ya Mawakala Sokoni &amp; Maduka</b>
-        <div id="ag_list" style="margin-top:8px;"></div>
-      </div>
-    </div>
-
-    <!-- 9. MAWASILIANO (WHATSAPP, SMS & LINK YA MALIPO VODACOM) -->
+    <!-- 8. MAWASILIANO -->
     <div id="pg_mawasiliano" class="page">
       <div class="card">
         <b>Mawasiliano na Mteja — WhatsApp Moja kwa Moja, SMS &amp; Malipo (Vodacom: 0768829648)</b>
@@ -469,8 +452,8 @@
             <input id="msg_ref" type="text" placeholder="mf. Charger 20W — TON-PHONE" />
           </div>
           <div>
-            <small><b>URL ya Malipo (Hiari ikishounganishwa)</b></small>
-            <input id="msg_pay_url" type="url" placeholder="https://... (au hutumia kiungo cha malipo ya 0768829648)" />
+            <small><b>URL ya Malipo ya Nje (Hiari)</b></small>
+            <input id="msg_pay_url" type="url" placeholder="Acha wazi kutumia ukurasa wa tovuti hii" />
           </div>
         </div>
 
@@ -504,7 +487,6 @@
     <button type="button" id="nb_wafanyakazi" data-pg="wafanyakazi">Wafanyakazi</button>
     <button type="button" id="nb_commission" data-pg="commission">Commission</button>
     <button type="button" id="nb_ripoti" data-pg="ripoti">Ripoti</button>
-    <button type="button" id="nb_admin" data-pg="admin">Admin Mawakala</button>
     <button type="button" id="nb_mawasiliano" data-pg="mawasiliano">Mawasiliano</button>
   </div>
 
@@ -516,7 +498,7 @@
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
       var OWNER_NAME = "Milton Elitwaza";
-      var STORE_KEY = "tonphone_pos_hq_v6";
+      var STORE_KEY = "tonphone_pos_hq_v8";
 
       var sb = null;
       try {
@@ -525,7 +507,7 @@
         }
       } catch (e) {}
 
-      var order = ["hq", "mauzo", "stock", "maduka", "wafanyakazi", "commission", "ripoti", "admin", "mawasiliano"];
+      var order = ["hq", "mauzo", "stock", "maduka", "wafanyakazi", "commission", "ripoti", "mawasiliano"];
       var generatedPayLink = "";
 
       function defaultState() {
@@ -544,10 +526,6 @@
             { id: "emp-03", name: "Neema Hassan", phone: "0755000103", branch_id: "br-mwanza-ilemela" },
             { id: "emp-04", name: "Kelvin Musa", phone: "0755000104", branch_id: "br-mwanza-buhongwa" },
             { id: "emp-05", name: "Amina Salim", phone: "0755000105", branch_id: "br-mwanga" }
-          ],
-          marketAgents: [
-            { id: "ag-1", name: "Juma Ally", market: "Soko Kuu Moshi", branch_id: HQ_B, status: "Sokoni (Active)" },
-            { id: "ag-2", name: "Grace Peter", market: "Soko la Mwanga", branch_id: "br-mwanga", status: "Sokoni (Active)" }
           ],
           prods: [],
           sales: [],
@@ -575,7 +553,6 @@
           var parsed = JSON.parse(raw);
           if (parsed && Array.isArray(parsed.branches) && parsed.branches.length) state.branches = parsed.branches;
           if (parsed && Array.isArray(parsed.staff) && parsed.staff.length) state.staff = parsed.staff;
-          if (parsed && Array.isArray(parsed.marketAgents)) state.marketAgents = parsed.marketAgents;
           if (parsed && Array.isArray(parsed.prods)) state.prods = parsed.prods;
           if (parsed && Array.isArray(parsed.sales)) state.sales = parsed.sales;
           if (parsed && parsed.activeStaffId) state.activeStaffId = parsed.activeStaffId;
@@ -590,6 +567,27 @@
         if (!el) return;
         el.style.display = "block";
         el.textContent = t;
+      }
+
+      function checkCheckoutQuery() {
+        try {
+          var params = new URLSearchParams(window.location.search || "");
+          if (params.get("pay") !== "1") return;
+          var vLine = params.get("vodacom") || VODACOM_LINE;
+          var oName = params.get("name") || OWNER_NAME;
+          var amt = params.get("amount") || "0";
+          var ref = params.get("ref") || "TON-PHONE";
+          var card = document.getElementById("payCheckoutCard");
+          var det = document.getElementById("payCheckoutDetails");
+          if (card && det) {
+            det.innerHTML =
+              "Mpokeaji: <b>" + oName + "</b><br>" +
+              "Laini ya Vodacom: <b>" + vLine + "</b><br>" +
+              "Kiasi: <b>TZS " + money(amt) + "</b><br>" +
+              "Kumbukumbu: <b>" + ref + "</b>";
+            card.style.display = "block";
+          }
+        } catch (e) {}
       }
 
       function syncFromSupabase(silent) {
@@ -707,9 +705,6 @@
         if (!id) return "Duka Zima";
         for (var i = 0; i < state.staff.length; i++) {
           if (String(state.staff[i].id) === String(id)) return state.staff[i].name;
-        }
-        for (var j = 0; j < state.marketAgents.length; j++) {
-          if (String(state.marketAgents[j].id) === String(id)) return state.marketAgents[j].name;
         }
         return id;
       }
@@ -832,32 +827,6 @@
         document.getElementById("cm_cost").textContent = money(st.cost);
       }
 
-      function renderMarketAgents() {
-        var agBox = document.getElementById("ag_list");
-        if (!agBox) return;
-        var html = "";
-        for (var i = 0; i < state.marketAgents.length; i++) {
-          var ag = state.marketAgents[i];
-          var isOff = ag.status.indexOf("Off") !== -1;
-          var st = calcStaffStats(ag.id);
-          html += '<div class="list-box" data-act="toggleAgent" data-id="' + ag.id + '">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;">' +
-              '<b>' + ag.name + '</b>' +
-              '<span class="pill ' + (isOff ? 'off' : '') + '">' + ag.status + '</span>' +
-            '</div>' +
-            '<div style="font-size:12px;color:#334155;margin-top:4px;">' +
-              'Soko/Eneo: <b>' + (ag.market || '-') + '</b> | Duka: <b>' + brLabel(ag.branch_id) + '</b>' +
-            '</div>' +
-            '<div style="font-size:12px;color:#1e3a8a;margin-top:4px;">' +
-              'Mauzo: <b>' + money(st.sales) + '</b> | Faida: <b>' + money(st.grossProfit) +
-              '</b> | Nauli: <b>' + money(st.nauli) + '</b> | Inayobaki: <b>' + money(st.profit) +
-              '</b> | 55%: <b>' + money(st.staffComm) + '</b> | 45%: <b>' + money(st.ownerComm) + '</b>' +
-            '</div>' +
-          '</div>';
-        }
-        agBox.innerHTML = html || "Hakuna wakala aliyeongezwa sokoni bado.";
-      }
-
       function renderAll() {
         var hqCnt = document.getElementById("hq_live_count");
         if (hqCnt) hqCnt.textContent = String(state.sales.length);
@@ -874,7 +843,6 @@
         document.getElementById("hq_emp_br").innerHTML = bOpt;
         document.getElementById("m_br").innerHTML = bOpt;
         document.getElementById("st_br_tag").innerHTML = bOpt;
-        document.getElementById("ag_br").innerHTML = bOpt;
         document.getElementById("md_list").innerHTML = bHtml;
 
         var slotSelects = document.querySelectorAll(".slot-br-select");
@@ -892,12 +860,6 @@
             "<b>" + s.name + '</b> <span style="font-size:12px;color:#1d4ed8;">(Gusa kuona duka &amp; kamisheni)</span>' +
             '<div style="font-size:12px;color:#475569;">Duka: ' + brLabel(s.branch_id) + " | Simu: " + (s.phone || "-") + "</div></div>";
         }
-        for (var kAg = 0; kAg < state.marketAgents.length; kAg++) {
-          var agItem = state.marketAgents[kAg];
-          if (!state.staff.some(function(x) { return x.id === agItem.id; })) {
-            stEmpOpt += '<option value="' + agItem.id + '">' + agItem.name + ' (Wakala)</option>';
-          }
-        }
         document.getElementById("m_emp").innerHTML = sOpt;
         document.getElementById("st_emp_tag").innerHTML = stEmpOpt;
         document.getElementById("cm_emp_sel").innerHTML = sOpt;
@@ -908,7 +870,6 @@
         renderBranchInner();
         renderStaffInner();
         renderCommission();
-        renderMarketAgents();
       }
 
       function saveFiveStaff() {
@@ -1168,18 +1129,16 @@
         var customUrl = (document.getElementById("msg_pay_url").value || "").trim();
         var amt = parseFloat(document.getElementById("msg_amt").value) || 0;
         var ref = (document.getElementById("msg_ref").value || "TON-PHONE").trim();
-        if (customUrl) {
-          var sep = customUrl.indexOf("?") === -1 ? "?" : "&";
-          generatedPayLink = customUrl + sep + "phone=" + encodeURIComponent(VODACOM_LINE) +
-            "&owner=" + encodeURIComponent(OWNER_NAME) +
-            "&amount=" + encodeURIComponent(String(amt)) +
-            "&ref=" + encodeURIComponent(ref);
-        } else {
-          generatedPayLink = "https://tonphone.tz/pay?vodacom=" + encodeURIComponent(VODACOM_LINE) +
-            "&name=" + encodeURIComponent(OWNER_NAME) +
-            "&amount=" + encodeURIComponent(String(amt)) +
-            "&ref=" + encodeURIComponent(ref);
+        var baseUrl = customUrl || (window.location.origin + window.location.pathname);
+        if (!baseUrl || baseUrl.indexOf("http") !== 0) {
+          baseUrl = "https://tonphoneaccessories.github.io/tonphone-pos/";
         }
+        var sep = baseUrl.indexOf("?") === -1 ? "?" : "&";
+        generatedPayLink = baseUrl + sep + "pay=1&vodacom=" + encodeURIComponent(VODACOM_LINE) +
+          "&name=" + encodeURIComponent(OWNER_NAME) +
+          "&amount=" + encodeURIComponent(String(amt)) +
+          "&ref=" + encodeURIComponent(ref);
+
         var box = document.getElementById("pay_link_box");
         if (box) {
           box.innerHTML = "<b>Link ya Malipo (Vodacom " + VODACOM_LINE + " — " + OWNER_NAME + "):</b><br>" + generatedPayLink;
@@ -1191,20 +1150,24 @@
         } else if (bodyEl && bodyEl.value.indexOf(generatedPayLink) === -1) {
           bodyEl.value = bodyEl.value.trim() + "\nLink ya Malipo (Vodacom " + VODACOM_LINE + "): " + generatedPayLink;
         }
-        msg("Link ya malipo imetengenezwa kwa Vodacom " + VODACOM_LINE + " (" + OWNER_NAME + ").");
+        msg("Link ya malipo imetengenezwa na inafunguka vizuri kwenye kivinjari.");
+      }
+
+      function copyTextHelper(txt, okMsg) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(function() {
+            msg(okMsg);
+          }).catch(function() {
+            msg("Namba: " + txt);
+          });
+        } else {
+          msg("Namba: " + txt);
+        }
       }
 
       function copyPayLink() {
         if (!generatedPayLink) buildPayLink();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(generatedPayLink).then(function() {
-            msg("Link ya malipo imenakiliwa!");
-          }).catch(function() {
-            msg("Nakili link kutoka kwenye kisanduku cha bluu.");
-          });
-        } else {
-          msg("Nakili link kutoka kwenye kisanduku cha bluu.");
-        }
+        copyTextHelper(generatedPayLink, "Link ya malipo imenakiliwa!");
       }
 
       function sendWhatsApp() {
@@ -1234,6 +1197,8 @@
         if (!act) return;
 
         if (act === "syncNow") syncFromSupabase(false);
+        else if (act === "closeCheckout") document.getElementById("payCheckoutCard").style.display = "none";
+        else if (act === "copyCheckoutPhone") copyTextHelper(VODACOM_LINE, "Namba ya Vodacom " + VODACOM_LINE + " imenakiliwa!");
         else if (act === "stopScan") stopCam();
         else if (act === "scanMauzo") startCam("mauzo");
         else if (act === "scanStock") startCam("stock");
@@ -1274,42 +1239,6 @@
           document.getElementById("hq_emp_phone").value = "";
           renderAll();
           msg("Mfanyakazi ameongezwa: " + en);
-        } else if (act === "addMarketAgent") {
-          var agName = (document.getElementById("ag_name").value || "").trim();
-          var agMkt = (document.getElementById("ag_market").value || "").trim();
-          var agBr = document.getElementById("ag_br").value || HQ_B;
-          var agSt = document.getElementById("ag_status").value || "Sokoni (Active)";
-          if (!agName) { msg("Andika jina la wakala wa soko."); return; }
-          var agId = "ag-" + Date.now();
-          state.marketAgents.unshift({
-            id: agId,
-            name: agName,
-            market: agMkt || "Soko la Mtaa",
-            branch_id: agBr,
-            status: agSt
-          });
-          if (!state.staff.some(function(s) { return s.name === agName; })) {
-            state.staff.push({ id: agId, name: agName, phone: "", branch_id: agBr });
-            if (sb) sb.from("employees").insert([{ id: agId, name: agName, phone: "", branch_id: agBr }]).then(function(){});
-          }
-          saveLocalState();
-          document.getElementById("ag_name").value = "";
-          document.getElementById("ag_market").value = "";
-          renderAll();
-          msg("Wakala " + agName + " ameongezwa!");
-        } else if (act === "toggleAgent") {
-          var agTargetId = el.getAttribute("data-id");
-          for (var i = 0; i < state.marketAgents.length; i++) {
-            if (state.marketAgents[i].id === agTargetId) {
-              state.marketAgents[i].status = (state.marketAgents[i].status.indexOf("Active") !== -1)
-                ? "Amepumzika (Off)"
-                : "Sokoni (Active)";
-              saveLocalState();
-              msg("Hali ya " + state.marketAgents[i].name + " ni: " + state.marketAgents[i].status);
-              break;
-            }
-          }
-          renderMarketAgents();
         } else if (act === "pickStaff") {
           state.activeStaffId = el.getAttribute("data-id");
           saveLocalState();
@@ -1365,8 +1294,9 @@
       document.getElementById("rp_d").value = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
       loadLocalState();
       renderAll();
+      checkCheckoutQuery();
       syncFromSupabase(true);
     })();
   </script>
 </body>
-              </html>
+</html>
