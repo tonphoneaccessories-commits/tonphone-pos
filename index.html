@@ -15,7 +15,7 @@
       color: #0f172a;
     }
     .container {
-      max-width: 760px;
+      max-width: 780px;
       margin: auto;
       background: #ffffff;
       padding: 16px;
@@ -23,6 +23,7 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.07);
     }
     h2 { margin: 0 0 12px 0; font-size: 20px; }
+    h3 { margin: 0 0 10px 0; font-size: 16px; }
     .tabs {
       display: flex;
       gap: 6px;
@@ -48,13 +49,21 @@
     .section { display: none; }
     .section.active { display: block; }
     .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    label.field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      color: #334155;
+      margin-bottom: 4px;
+    }
+    .field-col { flex: 1; min-width: 160px; }
     input, select, button {
       padding: 10px;
       font-size: 14px;
       border-radius: 7px;
       border: 1px solid #cbd5e1;
     }
-    input, select { flex: 1; min-width: 120px; }
+    input, select { flex: 1; min-width: 120px; width: 100%; box-sizing: border-box; }
     button.primary {
       background: #1d4ed8;
       color: #fff;
@@ -112,6 +121,15 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #dbeafe;
+      color: #1e40af;
+      font-weight: bold;
+    }
     .status {
       margin: 10px 0;
       padding: 10px;
@@ -135,6 +153,7 @@
     <div class="tabs">
       <button type="button" id="tabPos" class="tab-btn active" onclick="switchTab('pos')">Mauzo (POS)</button>
       <button type="button" id="tabProducts" class="tab-btn" onclick="switchTab('products')">Bidhaa (productss)</button>
+      <button type="button" id="tabStaff" class="tab-btn" onclick="switchTab('staff')">Maduka &amp; Wafanyakazi</button>
       <button type="button" id="tabReport" class="tab-btn" onclick="switchTab('report')">Ripoti ya Siku</button>
     </div>
 
@@ -148,6 +167,19 @@
 
     <!-- SEHEMU 1: MAUZO (POS) -->
     <div id="sectionPos" class="section active">
+      <div class="card">
+        <div class="row" style="margin-bottom:0;">
+          <div class="field-col">
+            <label class="field-label" for="posBranchSelect">Duka / Tawi (Mkoa)</label>
+            <select id="posBranchSelect" onchange="onContextSelectionChange('pos')"></select>
+          </div>
+          <div class="field-col">
+            <label class="field-label" for="posEmployeeSelect">Mfanyakazi / Wakala</label>
+            <select id="posEmployeeSelect" onchange="onContextSelectionChange('pos')"></select>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <input id="posBarcode" type="text" value="8901234567890" placeholder="Barcode ya bidhaa" />
         <button type="button" class="primary" onclick="findPosProduct()">Tafuta</button>
@@ -172,7 +204,7 @@
     <!-- SEHEMU 2: ONGEZA / HARIRI BIDHAA -->
     <div id="sectionProducts" class="section">
       <div class="card">
-        <h3 id="prodFormTitle" style="margin-top:0;">Ongeza Bidhaa Mpya</h3>
+        <h3 id="prodFormTitle">Ongeza Bidhaa Mpya</h3>
         <input id="editProductId" type="hidden" />
 
         <div class="row">
@@ -187,7 +219,7 @@
           <input id="prodSellingPrice" type="number" step="any" placeholder="Bei ya kuuza (selling_price)" />
           <input id="prodWholesalePrice" type="number" step="any" placeholder="Bei ya jumla (wholesale_price)" />
         </div>
-        <div class="row">
+        <div class="row" style="margin-bottom:0;">
           <button type="button" class="primary" onclick="saveProduct()">Hifadhi Bidhaa</button>
           <button type="button" class="ghost" onclick="resetProductForm()">Futa / Mpya</button>
         </div>
@@ -201,12 +233,62 @@
       <div id="productsList" class="card">Inapakia orodha ya bidhaa...</div>
     </div>
 
-    <!-- SEHEMU 3: RIPOTI YA JUMLA YA MAUZO KWA SIKU -->
+    <!-- SEHEMU 3: MADUKA YA MKOANI & WAFANYAKAZI -->
+    <div id="sectionStaff" class="section">
+      <div class="card">
+        <h3>Ongeza Duka / Tawi (Mkoa)</h3>
+        <div class="row">
+          <input id="branchName" type="text" placeholder="Jina la duka (mf. Duka la Moshi)" />
+          <input id="branchRegion" type="text" placeholder="Mkoa / Eneo (mf. Kilimanjaro / Mwanga / DSM)" />
+        </div>
+        <div class="row" style="margin-bottom:0;">
+          <input id="branchIdInput" type="text" placeholder="Branch ID (hiari — ukiacha wazi itatengenezwa)" />
+          <button type="button" class="primary" onclick="addBranch()">Hifadhi Duka</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Orodha ya Maduka</h3>
+        <div id="branchesList">Inapakia maduka...</div>
+      </div>
+
+      <div class="card">
+        <h3>Ongeza Mfanyakazi / Field Agent</h3>
+        <div class="row">
+          <input id="empName" type="text" placeholder="Jina kamili la mfanyakazi" />
+          <input id="empPhone" type="text" placeholder="Namba ya simu (hiari)" />
+        </div>
+        <div class="row" style="margin-bottom:0;">
+          <select id="empBranchSelect"></select>
+          <input id="empIdInput" type="text" placeholder="Employee ID (hiari)" />
+          <button type="button" class="secondary" onclick="addEmployee()">Hifadhi Mfanyakazi</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Orodha ya Wafanyakazi</h3>
+        <div id="employeesList">Inapakia wafanyakazi...</div>
+      </div>
+    </div>
+
+    <!-- SEHEMU 4: RIPOTI YA JUMLA YA MAUZO KWA SIKU -->
     <div id="sectionReport" class="section">
-      <div class="row" style="align-items:center;">
-        <label for="reportDate" style="font-weight:bold;">Chagua Siku:</label>
-        <input id="reportDate" type="date" onchange="loadDailyReport()" />
-        <button type="button" class="primary" onclick="loadDailyReport()">Pakia Ripoti</button>
+      <div class="card">
+        <div class="row" style="align-items:flex-end; margin-bottom:0;">
+          <div class="field-col">
+            <label class="field-label" for="reportDate">Chagua Siku</label>
+            <input id="reportDate" type="date" onchange="loadDailyReport()" />
+          </div>
+          <div class="field-col">
+            <label class="field-label" for="repBranchSelect">Duka / Tawi</label>
+            <select id="repBranchSelect" onchange="onContextSelectionChange('report')"></select>
+          </div>
+          <div class="field-col">
+            <label class="field-label" for="repEmployeeSelect">Mfanyakazi</label>
+            <select id="repEmployeeSelect" onchange="onContextSelectionChange('report')"></select>
+          </div>
+          <button type="button" class="primary" onclick="loadDailyReport()">Pakia Ripoti</button>
+        </div>
       </div>
 
       <div class="summary-grid">
@@ -216,401 +298,6 @@
         </div>
         <div class="stat-box">
           <div class="stat-label">Idadi ya Miamala</div>
-          <div id="repTxCount" class="stat-value">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Cash</div>
-          <div id="repCashTotal" class="stat-value">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Lipa Namba</div>
-          <div id="repLipaTotal" class="stat-value">0</div>
-        </div>
-      </div>
+          
 
-      <div id="reportSalesList" class="card">Inapakia miamala ya siku...</div>
-    </div>
-  </div>
-
-  <script>
-    const SUPABASE_URL = 'https://wsmlqijofwmpojdujsyy.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq';
-
-    const HQ_BRANCH_ID = 'eec9702a-d5fa-4fdf-9466-7d8e0e4def0d';
-    const DEFAULT_EMPLOYEE_ID = '3e549b90-ad40-4c81-84cd-4a78869fddda';
-
-    let supabaseClient = null;
-    try {
-      if (window.supabase && typeof window.supabase.createClient === 'function') {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      } else {
-        throw new Error('Maktaba ya Supabase haijapakiwa kwenye kivinjari.');
-      }
-    } catch (initErr) {
-      window.addEventListener('DOMContentLoaded', () => {
-        showStatus(`Hitilafu ya kuanzisha Supabase: ${initErr.message}`, true);
-      });
-    }
-
-    let posCurrentProduct = null;
-    let allProducts = [];
-    let html5QrCode = null;
-    let scannerTarget = 'pos';
-
-    function showStatus(msg, isError = false) {
-      const box = document.getElementById('statusBox');
-      if (!box) return;
-      box.style.display = 'block';
-      box.style.background = isError ? '#fef2f2' : '#eff6ff';
-      box.style.color = isError ? '#991b1b' : '#1e3a8a';
-      box.style.border = isError ? '1px solid #fecaca' : '1px solid #bfdbfe';
-      box.textContent = msg;
-    }
-
-    function switchTab(tabName) {
-      stopScanner();
-      ['pos', 'products', 'report'].forEach(t => {
-        const cap = t.charAt(0).toUpperCase() + t.slice(1);
-        document.getElementById('tab' + cap).classList.toggle('active', t === tabName);
-        document.getElementById('section' + cap).classList.toggle('active', t === tabName);
-      });
-
-      if (tabName === 'pos') findPosProduct();
-      if (tabName === 'products') loadProducts();
-      if (tabName === 'report') loadDailyReport();
-    }
-
-    // --- KAMERA BARCODE SCANNER ---
-    async function startScanner(target) {
-      scannerTarget = target;
-      const readerEl = document.getElementById('reader');
-      const stopRow = document.getElementById('stopScanRow');
-      readerEl.style.display = 'block';
-      stopRow.style.display = 'flex';
-
-      if (typeof Html5Qrcode === 'undefined') {
-        showStatus('Scanner ya kamera haijapakiwa; hakikisha intaneti ipo vizuri.', true);
-        return;
-      }
-
-      if (!html5QrCode) {
-        html5QrCode = new Html5Qrcode('reader');
-      }
-
-      try {
-        await html5QrCode.start(
-          { facingMode: 'environment' },
-          { fps: 10, qrbox: { width: 240, height: 140 } },
-          async (decodedText) => {
-            const code = decodedText.trim();
-            await stopScanner();
-
-            if (scannerTarget === 'pos') {
-              document.getElementById('posBarcode').value = code;
-              await findPosProduct();
-              showStatus(`Barcode imesomwa: ${code}`);
-            } else {
-              document.getElementById('prodBarcode').value = code;
-              showStatus(`Barcode imewekwa kwenye fomu: ${code}`);
-            }
-          },
-          () => {}
-        );
-      } catch (err) {
-        showStatus(`Imeshindikana kufungua kamera: ${err}`, true);
-        await stopScanner();
-      }
-    }
-
-    async function stopScanner() {
-      const readerEl = document.getElementById('reader');
-      const stopRow = document.getElementById('stopScanRow');
-      if (html5QrCode && html5QrCode.isScanning) {
-        try {
-          await html5QrCode.stop();
-        } catch (_) {}
-      }
-      readerEl.style.display = 'none';
-      stopRow.style.display = 'none';
-    }
-
-    // --- MAUZO (POS) ---
-    function updatePosEstimate() {
-      const qty = parseFloat(document.getElementById('posQty').value) || 0;
-      const price = posCurrentProduct ? Number(posCurrentProduct.selling_price || 0) : 0;
-      document.getElementById('posEstimate').textContent =
-        `Makadirio ya Jumla: ${(qty * price).toLocaleString()}`;
-    }
-
-    async function findPosProduct() {
-      const barcode = document.getElementById('posBarcode').value.trim();
-      const card = document.getElementById('posProductCard');
-
-      if (!supabaseClient) {
-        card.innerHTML = 'Supabase haijaunganishwa.';
-        updatePosEstimate();
-        return;
-      }
-
-      if (!barcode) {
-        posCurrentProduct = null;
-        card.innerHTML = 'Weka au scan barcode kutafuta bidhaa.';
-        updatePosEstimate();
-        return;
-      }
-
-      const { data, error } = await supabaseClient
-        .from('productss')
-        .select('id, name, barcod, stock, selling_price')
-        .eq('barcod', barcode)
-        .maybeSingle();
-
-      if (error) {
-        posCurrentProduct = null;
-        card.innerHTML = `Hitilafu: ${error.message}`;
-      } else if (!data) {
-        posCurrentProduct = null;
-        card.innerHTML = `Hakuna bidhaa yenye barcode <b>${barcode}</b> kwenye <code>productss</code>.`;
-      } else {
-        posCurrentProduct = data;
-        card.innerHTML = `
-          <div><b>${data.name}</b></div>
-          <div>Barcode: ${data.barcod} | Stock: <b>${data.stock}</b> | Bei: <b>${Number(data.selling_price).toLocaleString()}</b></div>
-        `;
-      }
-      updatePosEstimate();
-    }
-
-    async function submitSale() {
-      if (!supabaseClient) {
-        showStatus('Supabase haijaunganishwa.', true);
-        return;
-      }
-      if (!posCurrentProduct) {
-        showStatus('Tafuta bidhaa kwanza kabla ya kurekodi mauzo.', true);
-        return;
-      }
-
-      const qty = parseFloat(document.getElementById('posQty').value);
-      if (!qty || qty <= 0) {
-        showStatus('Ingiza idadi sahihi inayouzwa.', true);
-        return;
-      }
-
-      const unitPrice = Number(posCurrentProduct.selling_price || 0);
-      const totalAmount = qty * unitPrice;
-      const paymentMethod = document.getElementById('posPayment').value;
-
-      const { error } = await supabaseClient.rpc('record_sale', {
-        p_branch_id: HQ_BRANCH_ID,
-        p_employee_id: DEFAULT_EMPLOYEE_ID,
-        p_product_id: posCurrentProduct.id,
-        p_barcod: String(posCurrentProduct.barcod),
-        p_quantity: qty,
-        p_total_amount: totalAmount,
-        p_payment_method: paymentMethod
-      });
-
-      if (error) {
-        showStatus(`Imeshindikana kurekodi mauzo: ${error.message}`, true);
-        return;
-      }
-
-      showStatus('Mauzo yamerekodiwa kikamilifu!');
-      await findPosProduct();
-    }
-
-    // --- ONGEZA / HARIRI BIDHAA (productss) ---
-    function resetProductForm() {
-      document.getElementById('editProductId').value = '';
-      document.getElementById('prodFormTitle').textContent = 'Ongeza Bidhaa Mpya';
-      document.getElementById('prodName').value = '';
-      document.getElementById('prodBarcode').value = '';
-      document.getElementById('prodStock').value = '';
-      document.getElementById('prodSellingPrice').value = '';
-      document.getElementById('prodWholesalePrice').value = '';
-    }
-
-    function editProduct(prod) {
-      document.getElementById('editProductId').value = prod.id;
-      document.getElementById('prodFormTitle').textContent = `Hariri Bidhaa #${prod.id}`;
-      document.getElementById('prodName').value = prod.name || '';
-      document.getElementById('prodBarcode').value = prod.barcod || '';
-      document.getElementById('prodStock').value = prod.stock ?? '';
-      document.getElementById('prodSellingPrice').value = prod.selling_price ?? '';
-      document.getElementById('prodWholesalePrice').value = prod.wholesale_price ?? '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    async function saveProduct() {
-      if (!supabaseClient) {
-        showStatus('Supabase haijaunganishwa.', true);
-        return;
-      }
-
-      const idVal = document.getElementById('editProductId').value.trim();
-      const name = document.getElementById('prodName').value.trim();
-      const barcod = document.getElementById('prodBarcode').value.trim();
-      const stock = parseFloat(document.getElementById('prodStock').value);
-      const selling_price = parseFloat(document.getElementById('prodSellingPrice').value);
-      const wholesale_price = parseFloat(document.getElementById('prodWholesalePrice').value);
-
-      if (!name || !barcod || isNaN(stock) || isNaN(selling_price)) {
-        showStatus('Jaza jina, barcode, stock, na bei ya kuuza kwa usahihi.', true);
-        return;
-      }
-
-      const payload = {
-        name,
-        barcod,
-        stock,
-        selling_price,
-        wholesale_price: isNaN(wholesale_price) ? 0 : wholesale_price
-      };
-
-      let result;
-      if (idVal) {
-        result = await supabaseClient
-          .from('productss')
-          .update(payload)
-          .eq('id', Number(idVal));
-      } else {
-        result = await supabaseClient
-          .from('productss')
-          .insert([payload]);
-      }
-
-      if (result.error) {
-        showStatus(`Hitilafu kuhifadhi bidhaa: ${result.error.message}`, true);
-        return;
-      }
-
-      showStatus(idVal ? 'Bidhaa imehaririwa kikamilifu!' : 'Bidhaa mpya imeongezwa!');
-      resetProductForm();
-      await loadProducts();
-    }
-
-    async function loadProducts() {
-      const listEl = document.getElementById('productsList');
-      if (!supabaseClient) {
-        listEl.innerHTML = 'Supabase haijaunganishwa.';
-        return;
-      }
-
-      const { data, error } = await supabaseClient
-        .from('productss')
-        .select('id, name, barcod, stock, selling_price, wholesale_price')
-        .order('id', { ascending: true });
-
-      if (error) {
-        listEl.innerHTML = `Hitilafu kusoma bidhaa: ${error.message}`;
-        return;
-      }
-
-      allProducts = data || [];
-      renderProductsList();
-    }
-
-    function renderProductsList() {
-      const q = (document.getElementById('prodSearch').value || '').trim().toLowerCase();
-      const listEl = document.getElementById('productsList');
-
-      const filtered = allProducts.filter(p =>
-        String(p.name || '').toLowerCase().includes(q) ||
-        String(p.barcod || '').toLowerCase().includes(q)
-      );
-
-      if (!filtered.length) {
-        listEl.innerHTML = 'Hakuna bidhaa zinazolingana na utafutaji.';
-        return;
-      }
-
-      listEl.innerHTML = filtered.map(p => `
-        <div class="list-item">
-          <div>
-            <div><b>${p.name}</b> <span style="color:#64748b;">(#${p.id})</span></div>
-            <div style="font-size:13px; color:#334155;">
-              Barcode: ${p.barcod} | Stock: <b>${p.stock}</b> | Kuuza: <b>${Number(p.selling_price).toLocaleString()}</b> | Jumla: ${Number(p.wholesale_price || 0).toLocaleString()}
-            </div>
-          </div>
-          <button type="button" class="ghost" onclick='editProduct(${JSON.stringify(p)})'>Hariri</button>
-        </div>
-      `).join('');
-    }
-
-    // --- RIPOTI YA JUMLA YA MAUZO KWA SIKU ---
-    function setTodayDateInput() {
-      const now = new Date();
-      const yyyy = now.getFullYear();
-      const mm = String(now.getMonth() + 1).padStart(2, '0');
-      const dd = String(now.getDate()).padStart(2, '0');
-      document.getElementById('reportDate').value = `${yyyy}-${mm}-${dd}`;
-    }
-
-    async function loadDailyReport() {
-      const listEl = document.getElementById('reportSalesList');
-      if (!supabaseClient) {
-        listEl.innerHTML = 'Supabase haijaunganishwa.';
-        return;
-      }
-
-      const dateStr = document.getElementById('reportDate').value;
-      if (!dateStr) return;
-
-      const [y, m, d] = dateStr.split('-').map(Number);
-      const startOfDay = new Date(y, m - 1, d, 0, 0, 0, 0).toISOString();
-      const endOfDay = new Date(y, m - 1, d, 23, 59, 59, 999).toISOString();
-
-      const { data, error } = await supabaseClient
-        .from('sales')
-        .select('id, quantity, total_amount, payment_method, created_at')
-        .eq('employee_id', DEFAULT_EMPLOYEE_ID)
-        .eq('branch_id', HQ_BRANCH_ID)
-        .gte('created_at', startOfDay)
-        .lte('created_at', endOfDay)
-        .order('created_at', { ascending: false });
-
-      if (error) {
-        listEl.innerHTML = `Hitilafu kupakia ripoti: ${error.message}`;
-        return;
-      }
-
-      const rows = data || [];
-      let totalAll = 0;
-      let totalCash = 0;
-      let totalLipa = 0;
-
-      for (const r of rows) {
-        const amt = Number(r.total_amount || 0);
-        totalAll += amt;
-        if (r.payment_method === 'cash') totalCash += amt;
-        if (r.payment_method === 'lipa_namba') totalLipa += amt;
-      }
-
-      document.getElementById('repTotalAmount').textContent = totalAll.toLocaleString();
-      document.getElementById('repTxCount').textContent = String(rows.length);
-      document.getElementById('repCashTotal').textContent = totalCash.toLocaleString();
-      document.getElementById('repLipaTotal').textContent = totalLipa.toLocaleString();
-
-      if (!rows.length) {
-        listEl.innerHTML = `Hakuna mauzo yaliyorekodiwa tarehe <b>${dateStr}</b>.`;
-        return;
-      }
-
-      listEl.innerHTML = rows.map(r => `
-        <div class="list-item">
-          <div>
-            <div><b>Kiasi: ${Number(r.total_amount).toLocaleString()}</b> — ${r.payment_method}</div>
-            <div style="font-size:13px; color:#475569;">Idadi: ${r.quantity} | Muda: ${new Date(r.created_at).toLocaleTimeString()}</div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    setTodayDateInput();
-    findPosProduct();
-    loadDailyReport();
-  </script>
-</body>
-</html>
 
