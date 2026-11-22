@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="sw">
 <head>
@@ -119,6 +118,7 @@
       border-radius: 8px;
       font-size: 14px;
       display: none;
+      word-break: break-word;
     }
     #reader {
       width: 100%;
@@ -133,9 +133,9 @@
     <h2>TON-PHONE &amp; ACCESSORIES — POS</h2>
 
     <div class="tabs">
-      <button id="tabPos" class="tab-btn active" onclick="switchTab('pos')">Mauzo (POS)</button>
-      <button id="tabProducts" class="tab-btn" onclick="switchTab('products')">Bidhaa (productss)</button>
-      <button id="tabReport" class="tab-btn" onclick="switchTab('report')">Ripoti ya Siku</button>
+      <button type="button" id="tabPos" class="tab-btn active" onclick="switchTab('pos')">Mauzo (POS)</button>
+      <button type="button" id="tabProducts" class="tab-btn" onclick="switchTab('products')">Bidhaa (productss)</button>
+      <button type="button" id="tabReport" class="tab-btn" onclick="switchTab('report')">Ripoti ya Siku</button>
     </div>
 
     <div id="statusBox" class="status"></div>
@@ -143,15 +143,15 @@
     <!-- Kamera Barcode Scanner -->
     <div id="reader"></div>
     <div id="stopScanRow" class="row" style="display:none; justify-content:center;">
-      <button class="danger" onclick="stopScanner()">Zima Kamera</button>
+      <button type="button" class="danger" onclick="stopScanner()">Zima Kamera</button>
     </div>
 
     <!-- SEHEMU 1: MAUZO (POS) -->
     <div id="sectionPos" class="section active">
       <div class="row">
         <input id="posBarcode" type="text" value="8901234567890" placeholder="Barcode ya bidhaa" />
-        <button class="primary" onclick="findPosProduct()">Tafuta</button>
-        <button class="secondary" onclick="startScanner('pos')">Scan Kamera</button>
+        <button type="button" class="primary" onclick="findPosProduct()">Tafuta</button>
+        <button type="button" class="secondary" onclick="startScanner('pos')">Scan Kamera</button>
       </div>
 
       <div id="posProductCard" class="card">Inatafuta bidhaa...</div>
@@ -166,7 +166,7 @@
 
       <div id="posEstimate" style="font-weight:bold; margin-bottom:10px;">Makadirio ya Jumla: 0</div>
 
-      <button class="primary" style="width:100%;" onclick="submitSale()">Hifadhi Mauzo</button>
+      <button type="button" class="primary" style="width:100%;" onclick="submitSale()">Hifadhi Mauzo</button>
     </div>
 
     <!-- SEHEMU 2: ONGEZA / HARIRI BIDHAA -->
@@ -180,7 +180,7 @@
         </div>
         <div class="row">
           <input id="prodBarcode" type="text" placeholder="Barcode" />
-          <button class="secondary" onclick="startScanner('product')">Scan</button>
+          <button type="button" class="secondary" onclick="startScanner('product')">Scan</button>
         </div>
         <div class="row">
           <input id="prodStock" type="number" step="any" placeholder="Stock" />
@@ -188,14 +188,14 @@
           <input id="prodWholesalePrice" type="number" step="any" placeholder="Bei ya jumla (wholesale_price)" />
         </div>
         <div class="row">
-          <button class="primary" onclick="saveProduct()">Hifadhi Bidhaa</button>
-          <button class="ghost" onclick="resetProductForm()">Futa / Mpya</button>
+          <button type="button" class="primary" onclick="saveProduct()">Hifadhi Bidhaa</button>
+          <button type="button" class="ghost" onclick="resetProductForm()">Futa / Mpya</button>
         </div>
       </div>
 
       <div class="row">
         <input id="prodSearch" type="text" placeholder="Chuja kwa jina au barcode..." oninput="renderProductsList()" />
-        <button class="ghost" onclick="loadProducts()">Sasisha</button>
+        <button type="button" class="ghost" onclick="loadProducts()">Sasisha</button>
       </div>
 
       <div id="productsList" class="card">Inapakia orodha ya bidhaa...</div>
@@ -206,7 +206,7 @@
       <div class="row" style="align-items:center;">
         <label for="reportDate" style="font-weight:bold;">Chagua Siku:</label>
         <input id="reportDate" type="date" onchange="loadDailyReport()" />
-        <button class="primary" onclick="loadDailyReport()">Pakia Ripoti</button>
+        <button type="button" class="primary" onclick="loadDailyReport()">Pakia Ripoti</button>
       </div>
 
       <div class="summary-grid">
@@ -222,4 +222,395 @@
           <div class="stat-label">Cash</div>
           <div id="repCashTotal" class="stat-value">0</div>
         </div>
-        <div class
+        <div class="stat-box">
+          <div class="stat-label">Lipa Namba</div>
+          <div id="repLipaTotal" class="stat-value">0</div>
+        </div>
+      </div>
+
+      <div id="reportSalesList" class="card">Inapakia miamala ya siku...</div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://wsmlqijofwmpojdujsyy.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_z4es7uxHUzaI7EHM6112hg_eTCUrRKq';
+
+    const HQ_BRANCH_ID = 'eec9702a-d5fa-4fdf-9466-7d8e0e4def0d';
+    const DEFAULT_EMPLOYEE_ID = '3e549b90-ad40-4c81-84cd-4a78869fddda';
+
+    let supabaseClient = null;
+    try {
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      } else {
+        throw new Error('Maktaba ya Supabase haijapakiwa kwenye kivinjari.');
+      }
+    } catch (initErr) {
+      window.addEventListener('DOMContentLoaded', () => {
+        showStatus(`Hitilafu ya kuanzisha Supabase: ${initErr.message}`, true);
+      });
+    }
+
+    let posCurrentProduct = null;
+    let allProducts = [];
+    let html5QrCode = null;
+    let scannerTarget = 'pos';
+
+    function showStatus(msg, isError = false) {
+      const box = document.getElementById('statusBox');
+      if (!box) return;
+      box.style.display = 'block';
+      box.style.background = isError ? '#fef2f2' : '#eff6ff';
+      box.style.color = isError ? '#991b1b' : '#1e3a8a';
+      box.style.border = isError ? '1px solid #fecaca' : '1px solid #bfdbfe';
+      box.textContent = msg;
+    }
+
+    function switchTab(tabName) {
+      stopScanner();
+      ['pos', 'products', 'report'].forEach(t => {
+        const cap = t.charAt(0).toUpperCase() + t.slice(1);
+        document.getElementById('tab' + cap).classList.toggle('active', t === tabName);
+        document.getElementById('section' + cap).classList.toggle('active', t === tabName);
+      });
+
+      if (tabName === 'pos') findPosProduct();
+      if (tabName === 'products') loadProducts();
+      if (tabName === 'report') loadDailyReport();
+    }
+
+    // --- KAMERA BARCODE SCANNER ---
+    async function startScanner(target) {
+      scannerTarget = target;
+      const readerEl = document.getElementById('reader');
+      const stopRow = document.getElementById('stopScanRow');
+      readerEl.style.display = 'block';
+      stopRow.style.display = 'flex';
+
+      if (typeof Html5Qrcode === 'undefined') {
+        showStatus('Scanner ya kamera haijapakiwa; hakikisha intaneti ipo vizuri.', true);
+        return;
+      }
+
+      if (!html5QrCode) {
+        html5QrCode = new Html5Qrcode('reader');
+      }
+
+      try {
+        await html5QrCode.start(
+          { facingMode: 'environment' },
+          { fps: 10, qrbox: { width: 240, height: 140 } },
+          async (decodedText) => {
+            const code = decodedText.trim();
+            await stopScanner();
+
+            if (scannerTarget === 'pos') {
+              document.getElementById('posBarcode').value = code;
+              await findPosProduct();
+              showStatus(`Barcode imesomwa: ${code}`);
+            } else {
+              document.getElementById('prodBarcode').value = code;
+              showStatus(`Barcode imewekwa kwenye fomu: ${code}`);
+            }
+          },
+          () => {}
+        );
+      } catch (err) {
+        showStatus(`Imeshindikana kufungua kamera: ${err}`, true);
+        await stopScanner();
+      }
+    }
+
+    async function stopScanner() {
+      const readerEl = document.getElementById('reader');
+      const stopRow = document.getElementById('stopScanRow');
+      if (html5QrCode && html5QrCode.isScanning) {
+        try {
+          await html5QrCode.stop();
+        } catch (_) {}
+      }
+      readerEl.style.display = 'none';
+      stopRow.style.display = 'none';
+    }
+
+    // --- MAUZO (POS) ---
+    function updatePosEstimate() {
+      const qty = parseFloat(document.getElementById('posQty').value) || 0;
+      const price = posCurrentProduct ? Number(posCurrentProduct.selling_price || 0) : 0;
+      document.getElementById('posEstimate').textContent =
+        `Makadirio ya Jumla: ${(qty * price).toLocaleString()}`;
+    }
+
+    async function findPosProduct() {
+      const barcode = document.getElementById('posBarcode').value.trim();
+      const card = document.getElementById('posProductCard');
+
+      if (!supabaseClient) {
+        card.innerHTML = 'Supabase haijaunganishwa.';
+        updatePosEstimate();
+        return;
+      }
+
+      if (!barcode) {
+        posCurrentProduct = null;
+        card.innerHTML = 'Weka au scan barcode kutafuta bidhaa.';
+        updatePosEstimate();
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from('productss')
+        .select('id, name, barcod, stock, selling_price')
+        .eq('barcod', barcode)
+        .maybeSingle();
+
+      if (error) {
+        posCurrentProduct = null;
+        card.innerHTML = `Hitilafu: ${error.message}`;
+      } else if (!data) {
+        posCurrentProduct = null;
+        card.innerHTML = `Hakuna bidhaa yenye barcode <b>${barcode}</b> kwenye <code>productss</code>.`;
+      } else {
+        posCurrentProduct = data;
+        card.innerHTML = `
+          <div><b>${data.name}</b></div>
+          <div>Barcode: ${data.barcod} | Stock: <b>${data.stock}</b> | Bei: <b>${Number(data.selling_price).toLocaleString()}</b></div>
+        `;
+      }
+      updatePosEstimate();
+    }
+
+    async function submitSale() {
+      if (!supabaseClient) {
+        showStatus('Supabase haijaunganishwa.', true);
+        return;
+      }
+      if (!posCurrentProduct) {
+        showStatus('Tafuta bidhaa kwanza kabla ya kurekodi mauzo.', true);
+        return;
+      }
+
+      const qty = parseFloat(document.getElementById('posQty').value);
+      if (!qty || qty <= 0) {
+        showStatus('Ingiza idadi sahihi inayouzwa.', true);
+        return;
+      }
+
+      const unitPrice = Number(posCurrentProduct.selling_price || 0);
+      const totalAmount = qty * unitPrice;
+      const paymentMethod = document.getElementById('posPayment').value;
+
+      const { error } = await supabaseClient.rpc('record_sale', {
+        p_branch_id: HQ_BRANCH_ID,
+        p_employee_id: DEFAULT_EMPLOYEE_ID,
+        p_product_id: posCurrentProduct.id,
+        p_barcod: String(posCurrentProduct.barcod),
+        p_quantity: qty,
+        p_total_amount: totalAmount,
+        p_payment_method: paymentMethod
+      });
+
+      if (error) {
+        showStatus(`Imeshindikana kurekodi mauzo: ${error.message}`, true);
+        return;
+      }
+
+      showStatus('Mauzo yamerekodiwa kikamilifu!');
+      await findPosProduct();
+    }
+
+    // --- ONGEZA / HARIRI BIDHAA (productss) ---
+    function resetProductForm() {
+      document.getElementById('editProductId').value = '';
+      document.getElementById('prodFormTitle').textContent = 'Ongeza Bidhaa Mpya';
+      document.getElementById('prodName').value = '';
+      document.getElementById('prodBarcode').value = '';
+      document.getElementById('prodStock').value = '';
+      document.getElementById('prodSellingPrice').value = '';
+      document.getElementById('prodWholesalePrice').value = '';
+    }
+
+    function editProduct(prod) {
+      document.getElementById('editProductId').value = prod.id;
+      document.getElementById('prodFormTitle').textContent = `Hariri Bidhaa #${prod.id}`;
+      document.getElementById('prodName').value = prod.name || '';
+      document.getElementById('prodBarcode').value = prod.barcod || '';
+      document.getElementById('prodStock').value = prod.stock ?? '';
+      document.getElementById('prodSellingPrice').value = prod.selling_price ?? '';
+      document.getElementById('prodWholesalePrice').value = prod.wholesale_price ?? '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function saveProduct() {
+      if (!supabaseClient) {
+        showStatus('Supabase haijaunganishwa.', true);
+        return;
+      }
+
+      const idVal = document.getElementById('editProductId').value.trim();
+      const name = document.getElementById('prodName').value.trim();
+      const barcod = document.getElementById('prodBarcode').value.trim();
+      const stock = parseFloat(document.getElementById('prodStock').value);
+      const selling_price = parseFloat(document.getElementById('prodSellingPrice').value);
+      const wholesale_price = parseFloat(document.getElementById('prodWholesalePrice').value);
+
+      if (!name || !barcod || isNaN(stock) || isNaN(selling_price)) {
+        showStatus('Jaza jina, barcode, stock, na bei ya kuuza kwa usahihi.', true);
+        return;
+      }
+
+      const payload = {
+        name,
+        barcod,
+        stock,
+        selling_price,
+        wholesale_price: isNaN(wholesale_price) ? 0 : wholesale_price
+      };
+
+      let result;
+      if (idVal) {
+        result = await supabaseClient
+          .from('productss')
+          .update(payload)
+          .eq('id', Number(idVal));
+      } else {
+        result = await supabaseClient
+          .from('productss')
+          .insert([payload]);
+      }
+
+      if (result.error) {
+        showStatus(`Hitilafu kuhifadhi bidhaa: ${result.error.message}`, true);
+        return;
+      }
+
+      showStatus(idVal ? 'Bidhaa imehaririwa kikamilifu!' : 'Bidhaa mpya imeongezwa!');
+      resetProductForm();
+      await loadProducts();
+    }
+
+    async function loadProducts() {
+      const listEl = document.getElementById('productsList');
+      if (!supabaseClient) {
+        listEl.innerHTML = 'Supabase haijaunganishwa.';
+        return;
+      }
+
+      const { data, error } = await supabaseClient
+        .from('productss')
+        .select('id, name, barcod, stock, selling_price, wholesale_price')
+        .order('id', { ascending: true });
+
+      if (error) {
+        listEl.innerHTML = `Hitilafu kusoma bidhaa: ${error.message}`;
+        return;
+      }
+
+      allProducts = data || [];
+      renderProductsList();
+    }
+
+    function renderProductsList() {
+      const q = (document.getElementById('prodSearch').value || '').trim().toLowerCase();
+      const listEl = document.getElementById('productsList');
+
+      const filtered = allProducts.filter(p =>
+        String(p.name || '').toLowerCase().includes(q) ||
+        String(p.barcod || '').toLowerCase().includes(q)
+      );
+
+      if (!filtered.length) {
+        listEl.innerHTML = 'Hakuna bidhaa zinazolingana na utafutaji.';
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(p => `
+        <div class="list-item">
+          <div>
+            <div><b>${p.name}</b> <span style="color:#64748b;">(#${p.id})</span></div>
+            <div style="font-size:13px; color:#334155;">
+              Barcode: ${p.barcod} | Stock: <b>${p.stock}</b> | Kuuza: <b>${Number(p.selling_price).toLocaleString()}</b> | Jumla: ${Number(p.wholesale_price || 0).toLocaleString()}
+            </div>
+          </div>
+          <button type="button" class="ghost" onclick='editProduct(${JSON.stringify(p)})'>Hariri</button>
+        </div>
+      `).join('');
+    }
+
+    // --- RIPOTI YA JUMLA YA MAUZO KWA SIKU ---
+    function setTodayDateInput() {
+      const now = new Date();
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      document.getElementById('reportDate').value = `${yyyy}-${mm}-${dd}`;
+    }
+
+    async function loadDailyReport() {
+      const listEl = document.getElementById('reportSalesList');
+      if (!supabaseClient) {
+        listEl.innerHTML = 'Supabase haijaunganishwa.';
+        return;
+      }
+
+      const dateStr = document.getElementById('reportDate').value;
+      if (!dateStr) return;
+
+      const [y, m, d] = dateStr.split('-').map(Number);
+      const startOfDay = new Date(y, m - 1, d, 0, 0, 0, 0).toISOString();
+      const endOfDay = new Date(y, m - 1, d, 23, 59, 59, 999).toISOString();
+
+      const { data, error } = await supabaseClient
+        .from('sales')
+        .select('id, quantity, total_amount, payment_method, created_at')
+        .eq('employee_id', DEFAULT_EMPLOYEE_ID)
+        .eq('branch_id', HQ_BRANCH_ID)
+        .gte('created_at', startOfDay)
+        .lte('created_at', endOfDay)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        listEl.innerHTML = `Hitilafu kupakia ripoti: ${error.message}`;
+        return;
+      }
+
+      const rows = data || [];
+      let totalAll = 0;
+      let totalCash = 0;
+      let totalLipa = 0;
+
+      for (const r of rows) {
+        const amt = Number(r.total_amount || 0);
+        totalAll += amt;
+        if (r.payment_method === 'cash') totalCash += amt;
+        if (r.payment_method === 'lipa_namba') totalLipa += amt;
+      }
+
+      document.getElementById('repTotalAmount').textContent = totalAll.toLocaleString();
+      document.getElementById('repTxCount').textContent = String(rows.length);
+      document.getElementById('repCashTotal').textContent = totalCash.toLocaleString();
+      document.getElementById('repLipaTotal').textContent = totalLipa.toLocaleString();
+
+      if (!rows.length) {
+        listEl.innerHTML = `Hakuna mauzo yaliyorekodiwa tarehe <b>${dateStr}</b>.`;
+        return;
+      }
+
+      listEl.innerHTML = rows.map(r => `
+        <div class="list-item">
+          <div>
+            <div><b>Kiasi: ${Number(r.total_amount).toLocaleString()}</b> — ${r.payment_method}</div>
+            <div style="font-size:13px; color:#475569;">Idadi: ${r.quantity} | Muda: ${new Date(r.created_at).toLocaleTimeString()}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    setTodayDateInput();
+    findPosProduct();
+    loadDailyReport();
+  </script>
+</body>
+</html>
+
