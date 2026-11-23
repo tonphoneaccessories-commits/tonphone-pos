@@ -63,6 +63,48 @@
       color: #fde68a;
       margin-top: 2px;
     }
+    .elec-top-board {
+      background: #f0f9ff;
+      border: 2px solid #0284c7;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+    .elec-cat-list {
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    @media (min-width: 680px) {
+      .elec-cat-list { grid-template-columns: 1fr 1fr; }
+    }
+    .elec-cat-row {
+      background: #ffffff;
+      border: 1px solid #bae6fd;
+      border-left: 4px solid #0284c7;
+      border-radius: 7px;
+      padding: 7px 10px;
+      font-size: 12px;
+      line-height: 1.45;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .elec-cat-row.hq-style {
+      border-left-color: #1e3a8a;
+      border-color: #bfdbfe;
+    }
+    .elec-pcs-badge {
+      font-weight: bold;
+      color: #0f172a;
+      background: #e0f2fe;
+      padding: 3px 7px;
+      border-radius: 6px;
+      font-size: 11px;
+    }
     .top-row {
       display: flex;
       justify-content: space-between;
@@ -537,20 +579,38 @@
       </div>
     </div>
 
+    <!-- BODI YA JUU — MFUMO WA NDANI (HQ) YA MAKUNDI YA ELEKTRONIKI & STOKU (INATUMANA NA MFUMO WA NJE) -->
+    <div id="hqTopElectronicsBoard" class="elec-top-board" style="background:#eff6ff; border-color:#1e3a8a;">
+      <div class="box-head">
+        <b style="color:#1e3a8a;">Mfumo wa Ndani (HQ) — Elektroniki Zote &amp; Stoku (Inasomeka Kiotomatiki na Mfumo wa Nje)</b>
+        <span id="hq_elec_branch_badge" style="font-size:11px; font-weight:bold; color:#1e3a8a; background:#dbeafe; padding:3px 8px; border-radius:6px;">Duka: HQ / Duka Lililochaguliwa</span>
+      </div>
+      <div id="hq_electronics_top_summary" style="margin-top:8px;">Inapakia makundi ya elektroniki...</div>
+    </div>
+
     <div class="top-row">
       <h2 id="mainAppTitle">Msimamizi HQ</h2>
     </div>
 
-    <!-- MFUMO WA NJE WA DUKA — MAUZO (UNASOMA STOCK & BEI YA REJAREJA TOKA HQ, HAUONI BEI YA JUMLA) -->
+    <!-- MFUMO WA NJE WA DUKA — SEHEMU YA JUU YA ELEKTRONIKI ZOTE & MAUZO -->
     <div id="shopScanPortalModal">
       <div class="box-head">
         <div>
-          <h3 style="margin:0; color:#0369a1;">Mfumo wa Nje wa Duka — Mauzo (<span id="sh_active_branch_banner">Duka la Mwanza Mjini (Nyamagana)</span>)</h3>
+          <h3 style="margin:0; color:#0369a1;">Mfumo wa Nje wa Duka — <span id="sh_active_branch_banner">Duka la Mwanza Mjini (Nyamagana)</span></h3>
           <div id="sh_branch_unique_link_info" style="font-size:11px; color:#0369a1; margin-top:2px; word-break:break-all;"></div>
         </div>
         <span id="sh_swahili_clock" style="font-size:12px; font-weight:bold; color:#0369a1; background:#e0f2fe; padding:4px 8px; border-radius:6px;">
           Tarehe &amp; Saa ya Kiswahili...
         </span>
+      </div>
+
+      <!-- SEHEMU YA JUU KABISA YA MFUMO WA NJE: ELEKTRONIKI ZOTE + JUMLA YA PCS ZILIZOREKODIWA & ZILIZOBAKI -->
+      <div class="elec-top-board" style="margin-top:8px;">
+        <div class="box-head">
+          <b style="color:#0369a1;">Elektroniki Zote (Mfumo wa Nje — Zinaongezeka &amp; Kupungua Kiotomatiki na Kusomeka HQ)</b>
+          <span style="font-size:11px; font-weight:bold; color:#0369a1; background:#e0f2fe; padding:3px 8px; border-radius:6px;">Pcs Zilizorekodiwa &amp; Zilizobaki</span>
+        </div>
+        <div id="sh_electronics_top_summary" style="margin-top:8px;">Inapakia makundi ya elektroniki...</div>
       </div>
 
       <div class="card" style="background:#ffffff; margin-top:8px;">
@@ -580,13 +640,13 @@
           <button type="button" class="b-teal" data-act="scanShopExternal">Scan QR / Bar</button>
         </div>
         <div id="sh_auto_pick_status" style="font-size:12px; font-weight:bold; color:#0369a1; margin-top:6px;">
-          Stoku na bei ya rejareja vimetumwa kiotomatiki kutoka HQ — bei ya jumla imefichwa kwenye mfumo wa nje wa duka, na stock inajipunguza kiotomatiki duka la ndani na mfumo wa nje wa duka.
+          Stoku na bei ya rejareja vimetumwa kiotomatiki kutoka HQ — bei ya jumla imefichwa kwenye mfumo wa nje wa duka, na pcs zilizorekodiwa/zilizobaki zinajiongeza na kujipunguza kiotomatiki.
         </div>
       </div>
 
       <!-- ORODHA YA BIDHAA ZILIZOTUMWA KWA DUKA HILI (BEI YA REJAREJA TU, BILA BEI YA JUMLA) -->
       <div class="card" style="background:#ffffff; border:1px solid #93c5fd;">
-        <b>Stoku ya Duka Hili (Mfumo wa Nje — Bei ya Rejareja Tu, Stock Inapungua Kiotomatiki)</b>
+        <b>Stoku ya Duka Hili (Mfumo wa Nje — Bei ya Rejareja Tu, Pcs Zinapungua &amp; Kuongezeka Kiotomatiki)</b>
         <div id="sh_branch_stock_feed" style="margin-top:8px; font-size:12px;">Inapakia stoku ya duka...</div>
       </div>
 
@@ -763,7 +823,7 @@
       </div>
     </div>
 
-    <!-- 2. MAUZO YA MADUKA (MFUMO WA NDANI — HQ INAONA BEI YA REJAREJA TU YA KUUZIA HAPA, NA BEI YA JUMLA YA KUNUNULIA) -->
+    <!-- 2. MAUZO YA MADUKA -->
     <div id="pg_mauzo" class="page">
       <div class="card">
         <b>Ingiza Mauzo ya Maduka — Bei ya Rejareja (HQ) &amp; Bei ya Jumla / Kununulia (HQ Pekee)</b>
@@ -811,24 +871,37 @@
       </div>
     </div>
 
-    <!-- 3. STOCK (TUMA MOJA KWA MOJA KWENYE DUKA LILILOCHAGULIWA + BEI YA JUMLA YA HQ PEKEE) -->
+    <!-- 3. STOCK -->
     <div id="pg_stock" class="page">
       <div class="card">
         <b>Ingiza Stoku / Bidhaa — Tuma Moja kwa Moja Kwenye Duka Ulilochagua (Mfumo wa Nje &amp; Ndani)</b>
         <div class="row" style="margin-top:8px;">
+          <div><small><b>Chagua Kundi la Elektroniki</b></small>
+            <select id="st_elec_cat">
+              <option value="Chaji zote">Chaji zote</option>
+              <option value="USB zote">USB zote</option>
+              <option value="Battery zote">Battery zote</option>
+              <option value="Protector zote">Protector zote</option>
+              <option value="Simu ndogo zote">Simu ndogo zote</option>
+              <option value="Simu kubwa mpya zote">Simu kubwa mpya zote</option>
+              <option value="Simu used zote">Simu used zote</option>
+              <option value="Flash zote">Flash zote</option>
+              <option value="Memory card zote">Memory card zote</option>
+            </select>
+          </div>
           <div><small><b>Chagua Duka la Kutumia Stoku</b></small><select id="st_br_tag"></select></div>
           <div><small><b>Mpe Mfanyakazi / Wakala (Hiari)</b></small><select id="st_emp_tag"></select></div>
         </div>
         <div class="row">
           <input id="st_sku" type="text" placeholder="SKU / QR Code (mf. ZNX-20W-01)" />
-          <input id="st_name" type="text" placeholder="Jina la bidhaa (mf. Oking 2160)" />
+          <input id="st_name" type="text" placeholder="Jina la bidhaa (mf. Chaja Zonix 20W / Simu ndogo...)" />
         </div>
         <div class="row">
           <input id="st_code" type="text" placeholder="Barcode / QR value (hiari — hutumia SKU kama haina)" />
           <button type="button" class="b-teal" data-act="scanStock">Scan QR / Bar</button>
         </div>
         <div class="row">
-          <input id="st_qty" type="number" step="any" placeholder="Idadi ya stoku" />
+          <input id="st_qty" type="number" step="any" placeholder="Idadi ya stoku (Pcs)" />
           <input id="st_sell" type="number" step="any" placeholder="Bei ya rejareja (HQ &amp; Duka)" />
           <input id="st_cost" type="number" step="any" placeholder="Bei ya jumla (HQ pekee — mfumo wa nje hauoni)" />
         </div>
@@ -841,7 +914,7 @@
       <div id="st_list" class="card">Ingiza bidhaa/stoku na gusa "Tuma Moja kwa Moja Kwenye Duka" ili ifike moja kwa moja kwenye mfumo wa nje na ndani wa duka ulilochagua.</div>
     </div>
 
-    <!-- 4. MADUKA (FAIDA, STOCK, MATUMIZI — BILA KAMISHEN) -->
+    <!-- 4. MADUKA -->
     <div id="pg_maduka" class="page">
       <div class="card">
         <div class="box-head">
@@ -856,7 +929,7 @@
         <div id="md_detail" class="inner-panel">
           <div class="box-head">
             <div>
-              <b id="md_d_title">Duka Lilililochaguliwa</b>
+              <b id="md_d_title">Duka Lililochaguliwa</b>
               <div id="md_d_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
             </div>
             <button type="button" class="mini-btn" data-act="copyShopPortalLink">Nakili Link ya Duka Hili</button>
@@ -1179,8 +1252,20 @@
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
-      var STORE_KEY = "tonphone_pos_hq_v40";
-      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v40";
+      var STORE_KEY = "tonphone_pos_hq_v41";
+      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v41";
+
+      var ELECTRONICS_CATEGORIES = [
+        { key: "chaji", label: "Chaji zote" },
+        { key: "usb", label: "USB zote" },
+        { key: "battery", label: "Battery zote" },
+        { key: "protector", label: "Protector zote" },
+        { key: "simu_ndogo", label: "Simu ndogo zote" },
+        { key: "simu_kubwa_mpya", label: "Simu kubwa mpya zote" },
+        { key: "simu_used", label: "Simu used zote" },
+        { key: "flash", label: "Flash zote" },
+        { key: "memory_card", label: "Memory card zote" }
+      ];
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160", "Itel 2161", "Itel 2165", "Tecno T101", "Tecno T301",
@@ -1261,6 +1346,84 @@
       var pickedProd = null;
       var qr = null;
       var scanMode = "mauzo";
+
+      function detectCategoryKey(itemName, skuStr, explicitCat) {
+        if (explicitCat) {
+          var eLow = String(explicitCat).toLowerCase();
+          if (eLow.indexOf("chaj") !== -1) return "chaji";
+          if (eLow.indexOf("usb") !== -1) return "usb";
+          if (eLow.indexOf("batt") !== -1 || eLow.indexOf("betr") !== -1) return "battery";
+          if (eLow.indexOf("prot") !== -1 || eLow.indexOf("kioo") !== -1) return "protector";
+          if (eLow.indexOf("ndogo") !== -1) return "simu_ndogo";
+          if (eLow.indexOf("mpya") !== -1) return "simu_kubwa_mpya";
+          if (eLow.indexOf("used") !== -1) return "simu_used";
+          if (eLow.indexOf("flash") !== -1) return "flash";
+          if (eLow.indexOf("memor") !== -1 || eLow.indexOf("sd") !== -1) return "memory_card";
+        }
+        var txt = (String(itemName || "") + " " + String(skuStr || "")).toLowerCase();
+        if (txt.indexOf("chaj") !== -1 || txt.indexOf("charg") !== -1 || txt.indexOf("zonix") !== -1 || txt.indexOf("20w") !== -1) return "chaji";
+        if (txt.indexOf("usb") !== -1 || txt.indexOf("cable") !== -1 || txt.indexOf("waya") !== -1 || txt.indexOf("type-c") !== -1 || txt.indexOf("type c") !== -1) return "usb";
+        if (txt.indexOf("batt") !== -1 || txt.indexOf("betr") !== -1 || txt.indexOf("bl 5c") !== -1 || txt.indexOf("5l") !== -1) return "battery";
+        if (txt.indexOf("prot") !== -1 || txt.indexOf("glass") !== -1 || txt.indexOf("kioo") !== -1) return "protector";
+        if (txt.indexOf("ndogo") !== -1 || txt.indexOf("itel") !== -1 || txt.indexOf("tecno t") !== -1 || txt.indexOf("kigtel") !== -1 || txt.indexOf("oking") !== -1 || txt.indexOf("ctel") !== -1 || txt.indexOf("calus") !== -1 || txt.indexOf("2160") !== -1 || txt.indexOf("t101") !== -1) return "simu_ndogo";
+        if (txt.indexOf("mpya") !== -1 || txt.indexOf("new") !== -1 || txt.indexOf("samsung") !== -1 || txt.indexOf("iphone") !== -1 || txt.indexOf("redmi") !== -1 || txt.indexOf("infinix") !== -1) return "simu_kubwa_mpya";
+        if (txt.indexOf("used") !== -1 || txt.indexOf("mtumba") !== -1 || txt.indexOf("iliyotumiwa") !== -1) return "simu_used";
+        if (txt.indexOf("flash") !== -1) return "flash";
+        if (txt.indexOf("memor") !== -1 || txt.indexOf("microsd") !== -1 || txt.indexOf("sd card") !== -1 || txt.indexOf("gb") !== -1) return "memory_card";
+        return "chaji";
+      }
+
+      function computeCategoryPcsSummary(scopeBrId) {
+        var totals = {};
+        for (var i = 0; i < ELECTRONICS_CATEGORIES.length; i++) {
+          totals[ELECTRONICS_CATEGORIES[i].key] = { recorded: 0, remaining: 0 };
+        }
+
+        recalculateAllProductStocks();
+
+        for (var pIdx = 0; pIdx < state.prods.length; pIdx++) {
+          var p = state.prods[pIdx];
+          if (scopeBrId && scopeBrId !== "ALL" && String(p.branch_id || "") !== String(scopeBrId)) continue;
+          var cKey = detectCategoryKey(p.name, p.sku || p.barcod, p.category);
+          var scopeSales = state.sales.filter(function(s) {
+            if (p.employee_id && s.employee_id && normEmpId(p.employee_id) !== normEmpId(s.employee_id)) return false;
+            return true;
+          });
+          var m = getProductDetailedMetrics(p, scopeSales);
+          totals[cKey].recorded += Number(m.initial || 0);
+          totals[cKey].remaining += Number(m.remaining || 0);
+        }
+
+        return totals;
+      }
+
+      function renderElectronicsTopBoards() {
+        var activeBr = lockedShopBranchId || state.activeBranchId || HQ_B;
+        var catMap = computeCategoryPcsSummary(activeBr);
+
+        var buildHtml = function(isHqBoard) {
+          var html = '<div class="elec-cat-list">';
+          for (var i = 0; i < ELECTRONICS_CATEGORIES.length; i++) {
+            var cat = ELECTRONICS_CATEGORIES[i];
+            var st = catMap[cat.key] || { recorded: 0, remaining: 0 };
+            html += '<div class="elec-cat-row ' + (isHqBoard ? 'hq-style' : '') + '">' +
+              '<span><b>' + (i + 1) + '. ' + cat.label + '</b></span>' +
+              '<span class="elec-pcs-badge">Jumla ya Pcs Zilizorekodiwa: <b>' + st.recorded + '</b> | Zilizobaki: <b>' + st.remaining + '</b></span>' +
+              '</div>';
+          }
+          html += '</div>';
+          return html;
+        };
+
+        var shBoard = document.getElementById("sh_electronics_top_summary");
+        if (shBoard) shBoard.innerHTML = buildHtml(false);
+
+        var hqBoard = document.getElementById("hq_electronics_top_summary");
+        if (hqBoard) hqBoard.innerHTML = buildHtml(true);
+
+        var hqBadge = document.getElementById("hq_elec_branch_badge");
+        if (hqBadge) hqBadge.textContent = "Duka: " + brLabel(activeBr);
+      }
 
       function appendPermanentRecord(sourceSystem, actionLabel, empId, brId, detailsObj) {
         if (!Array.isArray(state.permanentRecordsLedger)) state.permanentRecordsLedger = [];
@@ -1400,6 +1563,7 @@
         loadLocalState();
         if (lockedShopBranchId) state.activeBranchId = lockedShopBranchId;
         recalculateAllProductStocks();
+        renderElectronicsTopBoards();
         if (portalConfig) {
           if (state.staffPasswords && state.staffPasswords[portalConfig.empId]) {
             portalConfig.expectedPass = state.staffPasswords[portalConfig.empId];
@@ -1430,10 +1594,11 @@
       window.addEventListener("storage", function(ev) {
         if (ev && ev.key === STORE_KEY) {
           if (isStaffOnlyView || isShopScanPortalView) {
-            applyExternalSync("Mfumo wa ndani (HQ) na duka vimesomana kiotomatiki (" + formatSwahiliTimeOfDay(new Date()) + ")!", true);
+            applyExternalSync("Mfumo wa nje na wa ndani (HQ) vimesomana kiotomatiki (" + formatSwahiliTimeOfDay(new Date()) + ")!", true);
           } else {
             loadLocalState();
             recalculateAllProductStocks();
+            renderElectronicsTopBoards();
             if (!isUserCurrentlyTyping()) {
               renderBranchInner();
               renderStaffInner();
@@ -1443,7 +1608,7 @@
             renderHqStaffHistory(staffObj(state.activeStaffId));
             renderHqEfdReceiptsBottom();
             lastSyncSnapshot = computeStateFingerprint();
-            msg("Mfumo wa ndani (HQ) na duka vimesomana kiotomatiki (" + formatSwahiliTimeOfDay(new Date()) + ")!");
+            msg("Mfumo wa nje na wa ndani (HQ) vimesomana kiotomatiki (" + formatSwahiliTimeOfDay(new Date()) + ")!");
           }
         }
       });
@@ -1452,13 +1617,14 @@
         bc.onmessage = function(ev) {
           if (ev && ev.data && ev.data.type === "state_sync") {
             var swNow = formatSwahiliTimeOfDay(new Date());
-            var baseNote = ev.data.note || "Mfumo wa ndani na wa duka vimesomana kiotomatiki.";
+            var baseNote = ev.data.note || "Mfumo wa nje na wa ndani vimesomana kiotomatiki.";
             var fullNote = baseNote + " (" + swNow + ")";
             if (isStaffOnlyView || isShopScanPortalView) {
               applyExternalSync(fullNote, true);
             } else {
               loadLocalState();
               recalculateAllProductStocks();
+              renderElectronicsTopBoards();
               if (!isUserCurrentlyTyping()) {
                 renderBranchInner();
                 renderStaffInner();
@@ -1495,7 +1661,7 @@
           var nextFp = slLen + "|" + prLen + ":" + prStockSum + "|" + appLen + "|" + hqLen + ":" + hqSum + "|" + bnLen + ":" + bnSum + "|" + efdLen + ":" + efdReprints;
 
           if (nextFp !== lastSyncSnapshot) {
-            applyExternalSync("Mfumo wa ndani (HQ) na duka vimesomana kiotomatiki (" + formatSwahiliTimeOfDay(new Date()) + ")!", true);
+            applyExternalSync("Mfumo wa nje na wa ndani (HQ) vimesomana kiotomatiki (" + formatSwahiliTimeOfDay(new Date()) + ")!", true);
           } else if (isStaffOnlyView && portalConfig) {
             renderPortalApprovedComm();
           }
@@ -1874,7 +2040,6 @@
         };
       }
 
-      // HQ / Duka la ndani: inaonyesha bei ya rejareja pamoja na kiasi cha kununua (bei ya jumla)
       function formatCatalogBlockHtml(labelName, m) {
         return '◇ ' + labelName + ' = ' + m.initial + '<br>' +
           '◇ stock iliyouzwa = ' + m.reduced + '<br>' +
@@ -1885,11 +2050,10 @@
           '◇ kiasi kilichouzwa mwezi huu = ' + money(m.soldMonth);
       }
 
-      // Mfumo wa nje wa duka: HAONI kabisa bei ya jumla; anaona idadi, stock iliyouzwa, baki, na bei ya rejareja pekee
       function formatExternalShopStockHtml(labelName, m) {
-        return '<b>' + labelName + '</b> — Iliyowekwa: <b>' + m.initial +
-          '</b> | Stock Iliyouzwa: <b>' + m.reduced +
-          '</b> | Baki: <b>' + m.remaining +
+        return '<b>' + labelName + '</b> — Jumla ya Pcs Zilizorekodiwa: <b>' + m.initial +
+          '</b> | Zilizouzwa: <b>' + m.reduced +
+          '</b> | Zilizobaki: <b>' + m.remaining +
           '</b> | Bei ya Rejareja: <b>TZS ' + money(m.retailPrice) + '</b>';
       }
 
@@ -1946,7 +2110,8 @@
           }
         }
         recalculateAllProductStocks();
-        saveLocalState("Taarifa ya " + staffNameById(saleRow.employee_id) + " imefika kiotomatiki HQ na stock imesomana!");
+        renderElectronicsTopBoards();
+        saveLocalState("Mfumo wa nje na wa ndani vimesomana kiotomatiki — pcs zimepungua!");
         if (isShopScanPortalView) {
           renderShopScanPortal();
         } else if (!isUserCurrentlyTyping()) {
@@ -2005,7 +2170,6 @@
         openHqNoPassPortal();
       }
 
-      // Bei ya rejareja pekee kwenye mfumo wa nje na mauzo ya HQ; bei ya jumla ni ya HQ pekee.
       function getHqGuidePrice(prod, tier) {
         var retail = Number(prod.selling_price || 0);
         if (tier === "wholesale_hq_only") {
@@ -2162,6 +2326,8 @@
 
       function renderShopScanPortal() {
         var activeBrId = lockedShopBranchId || state.activeBranchId || "br-mwanza-nyamagana";
+        renderElectronicsTopBoards();
+
         var brSel = document.getElementById("sh_br_sel");
         if (brSel) {
           var opts = "";
@@ -2195,7 +2361,6 @@
           linkInfoEl.textContent = "Link ya Mfumo wa Nje wa Duka: " + buildShopScanPortalUrl(activeBrId);
         }
 
-        // Onyesha stoku ya duka hili kwenye mfumo wa nje (BEI YA REJAREJA TU — bei ya jumla imefichwa kabisa)
         var shStockFeed = document.getElementById("sh_branch_stock_feed");
         if (shStockFeed) {
           var brProds = state.prods.filter(function(p) {
@@ -2365,6 +2530,7 @@
         }
 
         recalculateAllProductStocks();
+        renderElectronicsTopBoards();
 
         var efdRecord = {
           efd_no: efdNo,
@@ -2397,7 +2563,7 @@
 
         renderShopScanPortal();
         window.print();
-        msg("Risiti moja ya EFD (" + efdNo + ") yenye bidhaa zote (Jumla: TZS " + money(totSales) + ") imechapishwa, stock imepungua kiotomatiki duka la ndani na mfumo wa nje wa duka (" + swTimeTxt + ")!");
+        msg("Risiti moja ya EFD (" + efdNo + ") yenye bidhaa zote (Jumla: TZS " + money(totSales) + ") imechapishwa, pcs zimepungua kiotomatiki mfumo wa nje na wa ndani (" + swTimeTxt + ")!");
       }
 
       function populateHqSilentOverrideFields() {
@@ -2766,6 +2932,7 @@
             barcod: (targetProd && targetProd.barcod) ? targetProd.barcod : ("BAR-" + Date.now().toString().slice(-5)),
             branch_id: emp.branch_id || HQ_B,
             employee_id: emp.id,
+            category: detectCategoryKey(prodName, "", ""),
             name: prodName,
             initial_stock: addQty,
             stock: addQty,
@@ -2782,6 +2949,7 @@
         });
 
         recalculateAllProductStocks();
+        renderElectronicsTopBoards();
         document.getElementById("wf_quick_add_qty").value = "";
         saveLocalState("Stoku ya " + prodName + " (+" + addQty + ") imeongezwa kwa " + emp.name + ".");
         renderAll();
@@ -2891,6 +3059,7 @@
         state.activeStaffId = empId;
         state.activeBranchId = brId;
         recalculateAllProductStocks();
+        renderElectronicsTopBoards();
 
         var empName = staffNameById(empId);
         var totBundleSales = sentRows.reduce(function(acc, it) { return acc + Number(it.total_amount || 0); }, 0);
@@ -2957,7 +3126,7 @@
               lockedShopBranchId = "br-mwanza-nyamagana";
               state.activeBranchId = "br-mwanza-nyamagana";
             }
-            document.getElementById("mainAppTitle").textContent = "Mfumo wa Nje wa Duka — Mauzo";
+            document.getElementById("mainAppTitle").textContent = "Mfumo wa Nje wa Duka";
             document.getElementById("shopScanPortalModal").style.display = "block";
             renderShopScanPortal();
             return;
@@ -3163,6 +3332,7 @@
                 barcod: p.barcod,
                 branch_id: p.branch_id || HQ_B,
                 employee_id: p.employee_id || "",
+                category: detectCategoryKey(p.name, p.sku || p.barcod, p.category),
                 name: p.name,
                 initial_stock: (typeof p.initial_stock === "number") ? p.initial_stock : null,
                 stock: p.stock,
@@ -3171,6 +3341,7 @@
               };
             }).concat(localOnly);
             recalculateAllProductStocks();
+            renderElectronicsTopBoards();
             saveLocalState();
             if (!isUserCurrentlyTyping()) {
               renderBranchInner();
@@ -3201,6 +3372,7 @@
             });
             state.sales = merged;
             recalculateAllProductStocks();
+            renderElectronicsTopBoards();
             saveLocalState();
             if (!isUserCurrentlyTyping()) {
               renderAll();
@@ -3700,6 +3872,7 @@
       }
 
       function renderAll() {
+        renderElectronicsTopBoards();
         if (isStaffOnlyView || isShopScanPortalView) return;
         var bOpt = "", bHtml = "";
         for (var i = 0; i < state.branches.length; i++) {
@@ -3812,7 +3985,6 @@
         document.getElementById("qrStopRow").style.display = "block";
         if (typeof Html5Qrcode === "undefined") { msg("Scanner haipo."); return; }
         if (!qr) qr = new Html5Qrcode("qrView");
-        // Kamera inawaka kwa nyuma ("environment") kama kawaida
         qr.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 230, height: 130 } }, function(code) {
           var c = (code || "").trim();
           stopCam();
@@ -3950,6 +4122,7 @@
         var sku = (document.getElementById("st_sku").value || "").trim();
         var brId = document.getElementById("st_br_tag").value || HQ_B;
         var empId = document.getElementById("st_emp_tag").value || "";
+        var catSel = document.getElementById("st_elec_cat") ? document.getElementById("st_elec_cat").value : "";
         var name = (document.getElementById("st_name").value || "").trim();
         var code = (document.getElementById("st_code").value || "").trim() || sku;
         var qty = parseFloat(document.getElementById("st_qty").value);
@@ -3960,6 +4133,8 @@
           msg("Jaza SKU/QR, jina la bidhaa, stoku, na bei ya rejareja.");
           return;
         }
+
+        var catKey = detectCategoryKey(name, sku, catSel);
 
         var existingProd = null;
         for (var i = 0; i < state.prods.length; i++) {
@@ -3977,6 +4152,7 @@
           existingProd.initial_stock = prevInit + qty;
           existingProd.stock = Number(existingProd.stock || 0) + qty;
           existingProd.selling_price = sell;
+          if (!existingProd.category) existingProd.category = catKey;
           if (cost > 0) existingProd.wholesale_price = cost;
         } else {
           var item = {
@@ -3985,6 +4161,7 @@
             barcod: code,
             branch_id: brId,
             employee_id: empId,
+            category: catKey,
             name: name,
             initial_stock: qty,
             stock: qty,
@@ -4002,6 +4179,7 @@
           {
             sku: sku,
             name: name,
+            category: catKey,
             qty: qty,
             sell: sell,
             cost: cost,
@@ -4010,6 +4188,7 @@
         );
 
         recalculateAllProductStocks();
+        renderElectronicsTopBoards();
         state.activeBranchId = brId;
         if (empId) state.activeStaffId = empId;
         branchStockOpen = true;
@@ -4018,8 +4197,8 @@
         var targetBrName = brLabel(brId);
         var swNow = formatSwahiliTimeOfDay(new Date());
         var syncMsg = directSendToBranch
-          ? ("Stoku ya " + name + " (+" + qty + ") imetumwa moja kwa moja kwenye " + targetBrName + " (" + swNow + ") — mfumo wa nje na ndani vimesomana!")
-          : ("Stoku mpya (" + name + " +" + qty + ") imeingizwa kwa " + targetBrName + ".");
+          ? ("Stoku ya " + name + " (+" + qty + " pcs) imetumwa moja kwa moja kwenye " + targetBrName + " (" + swNow + ") — mfumo wa nje na wa ndani vimesomana!")
+          : ("Stoku mpya (" + name + " +" + qty + " pcs) imeingizwa kwa " + targetBrName + ".");
         saveLocalState(syncMsg);
 
         if (sb) {
@@ -4063,6 +4242,7 @@
       function loadProds() {
         if (isStaffOnlyView || isShopScanPortalView) return;
         recalculateAllProductStocks();
+        renderElectronicsTopBoards();
         var html = "";
         for (var i = 0; i < state.prods.length; i++) {
           var p = state.prods[i];
