@@ -102,21 +102,21 @@
       margin-top: 12px;
       margin-bottom: 12px;
     }
-    .vault-card {
-      background: #ecfdf5;
-      border: 2px solid #10b981;
+    .seller-view-card {
+      background: #fffbeb;
+      border: 2px solid #d97706;
       border-radius: 10px;
       padding: 12px;
+      margin-top: 10px;
       margin-bottom: 10px;
     }
-    .lipa-badge {
-      background: #ffffff;
-      border: 1px solid #6ee7b7;
-      border-radius: 8px;
-      padding: 10px;
-      margin-top: 8px;
-      font-size: 13px;
-      line-height: 1.5;
+    .branch-rep-card {
+      background: #f8fafc;
+      border: 1px solid #93c5fd;
+      border-left: 5px solid #1d4ed8;
+      border-radius: 9px;
+      padding: 11px;
+      margin-bottom: 10px;
     }
     .two-col {
       display: grid;
@@ -402,9 +402,9 @@
       <h2 id="mainAppTitle">TON-PHONE &amp; ACCESSORIES — HQ</h2>
     </div>
 
-    <!-- LANGO LA MFANYAKAZI / WAKALA -->
+    <!-- LANGO LA MFANYAKAZI / WAKALA (MWONEKANO WA NJE) -->
     <div id="staffPortalModal">
-      <h3 style="margin:0 0 6px 0; color:#92400e;">Lango la Mfanyakazi / Wakala</h3>
+      <h3 style="margin:0 0 6px 0; color:#92400e;">Lango la Mfanyakazi / Wakala (Mfumo wa Nje)</h3>
       <div id="portalLockBox">
         <div style="font-size:13px; margin-bottom:8px;">
           Mfanyakazi: <b id="portalEmpLabel">-</b> | Weka <b>Password</b> yako kuingia:
@@ -586,7 +586,7 @@
         <div id="md_list" style="margin-top:8px;"></div>
 
         <div id="md_detail" class="inner-panel">
-          <b id="md_d_title">Duka Lililochaguliwa</b>
+          <b id="md_d_title">Duka Lilililochaguliwa</b>
           <div id="md_d_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
 
           <div class="grid4">
@@ -681,15 +681,21 @@
 
       <div class="card">
         <div class="box-head">
-          <b>Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Stoku Aliyoingiziwa &amp; Zilizopungua)</b>
+          <b>Jina la Mfanyakazi &amp; Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Stoku Yake na Anachokiona Kule Kwake)</b>
           <button type="button" class="del-btn" data-act="deleteActiveStaff">Futa Mfanyakazi Aliyechaguliwa</button>
         </div>
         <div id="wf_list" style="margin-top:8px;"></div>
 
         <div id="wf_inner" class="inner-panel">
           <div class="box-head">
-            <b id="wf_i_title">Muhtasari wa Mfanyakazi</b>
-            <button type="button" class="mini-btn" data-act="copyStaffPortalLink">Nakili Link ya Lango la Mfanyakazi</button>
+            <div>
+              <small style="color:#065f46; font-weight:bold;">JINA LA MFANYAKAZI:</small><br>
+              <b id="wf_i_title" style="font-size:16px;">Muhtasari wa Mfanyakazi</b>
+            </div>
+            <div class="row" style="margin-bottom:0; flex:0 0 auto;">
+              <button type="button" class="mini-btn" data-act="copyStaffPortalLink">Nakili Link ya Mfumo wa Nje</button>
+              <button type="button" class="b-amber" style="width:auto; padding:6px 10px; font-size:12px;" data-act="openExternalSellerPreview">Fungua Mfumo wa Nje wa Mfanyakazi</button>
+            </div>
           </div>
           <div id="wf_i_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
           <div id="wf_portal_link_box" style="font-size:11px; color:#0f766e; word-break:break-all; margin-top:4px;"></div>
@@ -735,6 +741,9 @@
               <div id="wf_assigned_stock" style="margin-top:4px;"></div>
             </div>
           </div>
+
+          <!-- MWONEKANO WA KULE ANACHOKIONA MFANYAKAZI MWENYEWE (MFUMO WA NJE) -->
+          <div id="wf_outside_seller_box" class="seller-view-card"></div>
         </div>
       </div>
     </div>
@@ -835,73 +844,33 @@
       </div>
     </div>
 
-    <!-- 7. RIPOTI -->
+    <!-- 7. RIPOTI (KILA DUKA NA RIPOTI YAKE) -->
     <div id="pg_ripoti" class="page">
       <div class="card">
-        <b>Ripoti ya Mauzo</b>
-        <div class="row" style="margin-top:8px;"><input id="rp_d" type="date" /></div>
-        <button type="button" class="b-blue" data-act="runReport">Angalia Ripoti</button>
+        <b>Ripoti ya Mauzo kwa Kila Duka</b>
+        <div class="row" style="margin-top:8px;">
+          <input id="rp_d" type="date" />
+          <button type="button" class="b-blue" data-act="runReport">Angalia Ripoti</button>
+        </div>
         <div id="rp_box" style="margin-top:10px; font-size:13px;">Chagua siku na ubonyeze Angalia Ripoti.</div>
+        <div id="rp_branches_box" style="margin-top:12px;"></div>
       </div>
     </div>
 
-    <!-- 8. MAWASILIANO -->
+    <!-- 8. MAWASILIANO -> STOKU YA MUUZAJI / MFANYAKAZI (MFUMO WA NJE) -->
     <div id="pg_mawasiliano" class="page">
-      <div class="vault-card">
+      <div class="seller-view-card">
         <div class="box-head">
-          <b>Akaunti Maalum ya Kidigitali (Kibubu / Lipa Namba ya Mitandao Yote &amp; Benki)</b>
-          <button type="button" class="mini-btn" data-act="copyLipaCode">Nakili Kodi ya Lipa Namba</button>
-        </div>
-
-        <div class="lipa-badge">
-          Namba ya Akaunti: <b id="vault_acc_no">TON-WALLET-768829648</b><br>
-          Kodi Fupi ya Lipa Namba (Tarakimu 7): <b id="vault_lipa_code">7688296</b> | Mmiliki: <b>Milton Elitwaza</b><br>
-          Mteja analipa kupitia <b>Mitandao Yote ya Simu</b> (Vodacom, Airtel, Tigo/Yas, Halotel) au <b>Benki</b> kwa kodi <b>7688296</b> na hela inakuja humu.
-        </div>
-
-        <div class="grid4">
-          <div class="stat"><small>Salio Lililohifadhiwa</small><b id="vault_bal">0</b></div>
-          <div class="stat"><small>Jumla Iliyoingia</small><b id="vault_in">0</b></div>
-          <div class="stat"><small>Jumla Iliyotolewa</small><b id="vault_out">0</b></div>
-          <div class="stat"><small>Miamala ya Akaunti</small><b id="vault_cnt">0</b></div>
-        </div>
-
-        <div class="row" style="margin-top:10px;">
-          <div>
-            <small><b>Kiasi (TZS)</b></small>
-            <input id="vault_amt" type="number" step="any" min="0" placeholder="mf. 50000" />
-          </div>
-          <div>
-            <small><b>Mtandao / Benki / Maelezo</b></small>
-            <input id="vault_note" type="text" placeholder="mf. M-Pesa / Airtel / Benki / Toa kwenda simu au benki" />
-          </div>
-        </div>
-
-        <div class="row" style="margin-bottom:6px;">
-          <button type="button" class="b-green" data-act="vaultDeposit">Pokea / Hifadhi Kwenye Akaunti (+)</button>
-          <button type="button" class="b-blue" data-act="vaultWithdrawPhone">Tuma Mtandao wa Simu (-)</button>
-          <button type="button" class="b-teal" data-act="vaultWithdrawBank">Tuma Kwenda Benki (-)</button>
-        </div>
-
-        <div id="vault_tx_list" style="margin-top:8px; font-size:12px; color:#1e293b;">
-          Hakuna miamala ya akaunti bado.
-        </div>
-      </div>
-
-      <div class="card">
-        <b>Vuta File la WhatsApp &amp; Jiunge Upya na Mteja</b>
-        <div style="font-size:12px; color:#334155; margin-top:4px;">
-          Chagua file la chat ya WhatsApp (<code>.txt</code>) ulilotoa WhatsApp ili kuvuta namba na ujumbe wa mteja ndani.
+          <b>Stoku ya Muuzaji / Mfanyakazi — Mfumo wa Nje (Unachokiona Kule Kwake)</b>
+          <button type="button" class="b-amber" style="width:auto; padding:6px 10px; font-size:12px;" data-act="openExternalSellerPreview">Fungua Mfumo wa Nje</button>
         </div>
         <div class="row" style="margin-top:8px;">
-          <input id="wa_file_input" type="file" accept=".txt,text/plain" />
-          <button type="button" class="b-teal" data-act="importWaFile">Vuta File la WhatsApp</button>
+          <div>
+            <small><b>Chagua Muuzaji / Mfanyakazi Kuona Mfumo Wake wa Nje</b></small>
+            <select id="mw_seller_sel"></select>
+          </div>
         </div>
-        <div id="wa_import_summary" style="font-size:12px; color:#1e3a8a; margin-bottom:6px;">Hakuna file la WhatsApp lililovutwa bado.</div>
-        <select id="wa_contact_sel">
-          <option value="">-- Chagua Mteja / Ujumbe Uliovutwa --</option>
-        </select>
-        <div id="wa_selected_preview" style="font-size:12px; color:#0f172a; margin-top:6px;"></div>
+        <div id="mw_seller_console"></div>
       </div>
     </div>
   </div>
@@ -924,10 +893,8 @@
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
-      var LIPA_CODE = "7688296";
-      var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v28";
-      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v28";
+      var STORE_KEY = "tonphone_pos_hq_v29";
+      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v29";
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160", "Itel 2161", "Itel 2165", "Tecno T101", "Tecno T301",
@@ -956,7 +923,6 @@
       } catch (e) {}
 
       var order = ["hq", "mauzo", "stock", "maduka", "wafanyakazi", "commission", "ripoti", "mawasiliano"];
-      var importedWaEntries = [];
       var portalConfig = null;
       var portalPickedProd = null;
       var wfPickedProd = null;
@@ -987,7 +953,6 @@
           approvedSaleIds: [],
           hqProfitEntries: [],
           commBonuses: [],
-          vaultTxs: [],
           staffPasswords: {},
           activeStaffId: DIR_E,
           activeBranchId: "br-mwanza-nyamagana"
@@ -1031,7 +996,6 @@
           if (parsed && Array.isArray(parsed.approvedSaleIds)) state.approvedSaleIds = parsed.approvedSaleIds;
           if (parsed && Array.isArray(parsed.hqProfitEntries)) state.hqProfitEntries = parsed.hqProfitEntries;
           if (parsed && Array.isArray(parsed.commBonuses)) state.commBonuses = parsed.commBonuses;
-          if (parsed && Array.isArray(parsed.vaultTxs)) state.vaultTxs = parsed.vaultTxs;
           if (parsed && parsed.staffPasswords && typeof parsed.staffPasswords === "object") state.staffPasswords = parsed.staffPasswords;
           if (parsed && parsed.activeStaffId) state.activeStaffId = parsed.activeStaffId;
           if (parsed && parsed.activeBranchId) state.activeBranchId = parsed.activeBranchId;
@@ -1345,65 +1309,6 @@
         }
       }
 
-      function renderVault() {
-        if (!Array.isArray(state.vaultTxs)) state.vaultTxs = [];
-        var totIn = 0, totOut = 0;
-        for (var i = 0; i < state.vaultTxs.length; i++) {
-          var tx = state.vaultTxs[i];
-          var amt = Number(tx.amount || 0);
-          if (tx.type === "in") totIn += amt;
-          else totOut += amt;
-        }
-        var bal = totIn - totOut;
-        document.getElementById("vault_acc_no").textContent = VAULT_ACC_NO;
-        document.getElementById("vault_lipa_code").textContent = LIPA_CODE;
-        document.getElementById("vault_bal").textContent = "TZS " + money(bal);
-        document.getElementById("vault_in").textContent = "TZS " + money(totIn);
-        document.getElementById("vault_out").textContent = "TZS " + money(totOut);
-        document.getElementById("vault_cnt").textContent = String(state.vaultTxs.length);
-
-        var html = "";
-        for (var j = 0; j < state.vaultTxs.length; j++) {
-          var item = state.vaultTxs[j];
-          var sign = item.type === "in" ? "+" : "-";
-          html += "<div>• <b>" + sign + " TZS " + money(item.amount) + "</b> — " +
-            (item.label || (item.type === "in" ? "Malipo ya Lipa Namba" : "Kutoa")) +
-            " (" + (item.note || "-") + ")</div>";
-        }
-        document.getElementById("vault_tx_list").innerHTML = html || "Hakuna miamala ya akaunti bado.";
-      }
-
-      function addVaultTx(type, label) {
-        var amt = parseFloat(document.getElementById("vault_amt").value) || 0;
-        var note = (document.getElementById("vault_note").value || "").trim();
-        if (amt <= 0) { msg("Weka kiasi cha hela kwanza."); return; }
-
-        var totIn = 0, totOut = 0;
-        for (var i = 0; i < state.vaultTxs.length; i++) {
-          if (state.vaultTxs[i].type === "in") totIn += Number(state.vaultTxs[i].amount || 0);
-          else totOut += Number(state.vaultTxs[i].amount || 0);
-        }
-        var bal = totIn - totOut;
-        if (type === "out" && amt > bal) {
-          msg("Salio la akaunti halitoshi kutoa TZS " + money(amt) + " (Salio: TZS " + money(bal) + ").");
-          return;
-        }
-
-        state.vaultTxs.unshift({
-          id: "vtx-" + Date.now(),
-          type: type,
-          amount: amt,
-          label: label,
-          note: note || (type === "in" ? "Lipa Namba " + LIPA_CODE : "Imetumwa"),
-          created_at: new Date().toISOString()
-        });
-        document.getElementById("vault_amt").value = "";
-        document.getElementById("vault_note").value = "";
-        saveLocalState();
-        renderVault();
-        msg(label + ": TZS " + money(amt) + " imekamilika kwenye akaunti " + VAULT_ACC_NO + ".");
-      }
-
       function buildStaffPortalUrl(empId, brId, pass) {
         var baseUrl = window.location.origin + window.location.pathname;
         if (!baseUrl || baseUrl.indexOf("http") !== 0) {
@@ -1413,6 +1318,120 @@
         var safePass = pass || (state.staffPasswords && state.staffPasswords[empId]) || "1234";
         return baseUrl + sep + "staff_portal=1&emp=" + encodeURIComponent(empId) +
           "&br=" + encodeURIComponent(brId || HQ_B) + "&key=" + encodeURIComponent(safePass);
+      }
+
+      function openExternalSellerPreview() {
+        var emp = staffObj(state.activeStaffId);
+        if (!emp) return;
+        var url = buildStaffPortalUrl(emp.id, emp.branch_id, (state.staffPasswords && state.staffPasswords[emp.id]) || "1234");
+        window.open(url, "_blank", "noopener");
+      }
+
+      function renderOutsideSellerConsole() {
+        if (isStaffOnlyView) return;
+        var emp = staffObj(state.activeStaffId);
+        if (!emp) return;
+        recalculateAllProductStocks();
+        var st = calcStaffStats(emp.id);
+        var assigned = getStaffAssignedStockItems(emp.id, emp.branch_id);
+        var totInit = 0, totUsed = 0, totRem = 0;
+
+        var stockRowsHtml = "";
+        for (var i = 0; i < assigned.length; i++) {
+          var p = assigned[i];
+          var m = getProductDetailedMetrics(p, st.rows);
+          totInit += m.initial;
+          totUsed += m.reduced;
+          totRem += m.remaining;
+          stockRowsHtml += '<div class="pt-assigned-row" data-act="outsideQuickSellProd" data-pid="' + String(p.id) + '">' +
+            '<div><b>' + (i + 1) + '. ' + p.name + '</b> <span style="font-size:11px;color:#475569;">(' + (p.sku || p.barcod) + ')</span></div>' +
+            '<div style="font-size:12px;">Aliyopewa: <b>' + m.initial + '</b> | Iliyopungua: <b>' + m.reduced + '</b> | Baki: <b>' + m.remaining + '</b> | Bei: <b>TZS ' + money(p.selling_price) + '</b></div>' +
+            '</div>';
+        }
+
+        var outsideHtml =
+          '<div class="box-head">' +
+            '<b>Kule Anachokiona Mfanyakazi / Muuzaji (Mfumo wa Nje — ' + emp.name + ')</b>' +
+            '<span style="font-size:12px; color:#92400e; font-weight:bold;">Duka: ' + brLabel(emp.branch_id) + '</span>' +
+          '</div>' +
+          '<div style="font-size:12px; color:#475569; margin-top:3px;">Muhtasari anaouona muuzaji kule kwake (bila kuona bei ya jumla ya HQ):</div>' +
+          '<div class="grid4">' +
+            '<div class="stat"><small>Stoku Niliyopewa</small><b>' + totInit + '</b></div>' +
+            '<div class="stat"><small>Stoku Iliyopungua</small><b>' + totUsed + '</b></div>' +
+            '<div class="stat"><small>Stoku Iliyobaki</small><b>' + totRem + '</b></div>' +
+            '<div class="stat comm-emp"><small>Commission Yangu (HQ)</small><b>TZS ' + money(st.totalStaffComm) + '</b></div>' +
+          '</div>' +
+          '<div style="margin-top:10px; font-weight:bold; font-size:13px;">Stoku Yangu ya Kuuza (Gusa Bidhaa Kurekodi Mauzo Kama Muuzaji):</div>' +
+          '<div class="pt-assigned-box" style="margin-top:6px;">' +
+            (stockRowsHtml || "Hakuna stoku aliyopewa muuzaji huyu bado.") +
+          '</div>' +
+          '<div class="row" style="margin-bottom:0;">' +
+            '<div><small><b>Idadi Anayouza Muuzaji</b></small><input id="ext_sell_qty" type="number" step="any" min="0.01" value="1" /></div>' +
+            '<div><small><b>Bei Aliyouza Muuzaji (TZS)</b></small><input id="ext_sell_price" type="number" step="any" min="0" placeholder="Tumia bei ya bidhaa au weka" /></div>' +
+            '<div><small><b>Nauli ya Muuzaji (TZS)</b></small><input id="ext_sell_nauli" type="number" step="any" min="0" value="0" /></div>' +
+          '</div>';
+
+        var wfBox = document.getElementById("wf_outside_seller_box");
+        if (wfBox) wfBox.innerHTML = outsideHtml;
+
+        var mwSel = document.getElementById("mw_seller_sel");
+        if (mwSel) {
+          var opts = "";
+          for (var s = 0; s < state.staff.length; s++) {
+            var stObj = state.staff[s];
+            opts += '<option value="' + stObj.id + '"' + (String(stObj.id) === String(emp.id) ? ' selected' : '') + '>' +
+              stObj.name + ' — ' + brLabel(stObj.branch_id) + '</option>';
+          }
+          mwSel.innerHTML = opts;
+        }
+        var mwBox = document.getElementById("mw_seller_console");
+        if (mwBox) mwBox.innerHTML = outsideHtml;
+      }
+
+      function outsideQuickSellProd(pid) {
+        var emp = staffObj(state.activeStaffId);
+        if (!emp) return;
+        var items = getAllSelectableProducts(emp.id, emp.branch_id);
+        var prod = null;
+        for (var i = 0; i < items.length; i++) {
+          if (String(items[i].id) === String(pid)) {
+            prod = items[i];
+            break;
+          }
+        }
+        if (!prod) return;
+
+        var qEl = document.getElementById("ext_sell_qty") || document.getElementById("pt_qty");
+        var pEl = document.getElementById("ext_sell_price") || document.getElementById("pt_sold_price");
+        var nEl = document.getElementById("ext_sell_nauli") || document.getElementById("pt_nauli");
+
+        var qty = parseFloat(qEl ? qEl.value : "1");
+        if (isNaN(qty) || qty <= 0) qty = 1;
+        var typedPrice = parseFloat(pEl ? pEl.value : "");
+        var unitPrice = (!isNaN(typedPrice) && typedPrice > 0) ? typedPrice : Number(prod.selling_price || 0);
+        var nauli = parseFloat(nEl ? nEl.value : "0");
+        if (isNaN(nauli) || nauli < 0) nauli = 0;
+
+        var saleRow = {
+          id: "sl-" + Date.now(),
+          employee_id: emp.id,
+          branch_id: emp.branch_id || prod.branch_id || HQ_B,
+          product_id: String(prod.id || ""),
+          sku: prod.sku || prod.barcod,
+          barcod: String(prod.barcod),
+          product_name: prod.name,
+          quantity: qty,
+          unit_sold_price: unitPrice,
+          total_amount: qty * unitPrice,
+          cost_amount: qty * Number(prod.wholesale_price || 0),
+          transport_fee: nauli,
+          payment_method: "cash",
+          commission_approved: false,
+          created_at: new Date().toISOString()
+        };
+
+        ingestSaleAuto(saleRow, false);
+        msg("Muuzaji " + emp.name + " ameza " + prod.name + " x" + qty + " (Bei: TZS " + money(unitPrice) + ", Nauli: TZS " + money(nauli) + ") — stoku imepungua na kuhesabiwa!");
       }
 
       function renderPortalApprovedComm() {
@@ -2013,42 +2032,6 @@
         msg("Mfanyakazi '" + target.name + "' amefutwa.");
       }
 
-      function importWaFile() {
-        var inp = document.getElementById("wa_file_input");
-        var file = inp && inp.files && inp.files[0];
-        if (!file) { msg("Chagua file la WhatsApp (.txt) kwanza."); return; }
-        var reader = new FileReader();
-        reader.onload = function(ev) {
-          var txt = String(ev.target.result || "");
-          var lines = txt.split(/\r?\n/);
-          importedWaEntries = [];
-          var sel = document.getElementById("wa_contact_sel");
-          sel.innerHTML = '<option value="">-- Chagua Mteja / Ujumbe Uliovutwa --</option>';
-
-          for (var i = 0; i < lines.length; i++) {
-            var line = lines[i].trim();
-            if (!line) continue;
-            var phoneMatch = line.match(/(?:\+?255|0)[67]\d{8}/);
-            var senderMatch = line.match(/-\s*([^:]+):\s*(.+)$/);
-            var phone = phoneMatch ? phoneMatch[0] : "";
-            var sender = senderMatch ? senderMatch[1].trim() : ("Ujumbe #" + (i + 1));
-            var body = senderMatch ? senderMatch[2].trim() : line;
-            if (phone || senderMatch) {
-              var idx = importedWaEntries.length;
-              importedWaEntries.push({ sender: sender, phone: phone, body: body, raw: line });
-              var opt = document.createElement("option");
-              opt.value = String(idx);
-              opt.textContent = sender + (phone ? (" (" + phone + ")") : "") + " — " + body.slice(0, 40);
-              sel.appendChild(opt);
-            }
-          }
-          document.getElementById("wa_import_summary").textContent =
-            "File '" + file.name + "' limevutwa: rekodi " + importedWaEntries.length + " zimepatikana.";
-          msg("File la WhatsApp limevutwa ndani. Chagua mteja kujiunga naye upya.");
-        };
-        reader.readAsText(file);
-      }
-
       function bindRealtimeSales() {
         if (!sb || typeof sb.channel !== "function") return;
         try {
@@ -2411,9 +2394,9 @@
         }
 
         document.getElementById("wf_i_title").textContent = emp.name + " — Duka: " + brLabel(emp.branch_id);
-        document.getElementById("wf_i_sub").textContent = "Simu: " + (emp.phone || "-") + " | Aina Alizoingiziwa: " + assigned.length + " | Stoku Iliyoingizwa: " + totEmpInit + " | Vitu Alivyouza: " + st.totalQty;
+        document.getElementById("wf_i_sub").textContent = "Mfanyakazi: " + emp.name + " | Simu: " + (emp.phone || "-") + " | Aina Alizoingiziwa: " + assigned.length + " | Stoku Iliyoingizwa: " + totEmpInit + " | Vitu Alivyouza: " + st.totalQty;
         var pUrl = buildStaffPortalUrl(emp.id, emp.branch_id, (state.staffPasswords && state.staffPasswords[emp.id]) || "1234");
-        document.getElementById("wf_portal_link_box").innerHTML = "Link ya Lango la Mfanyakazi: <a href='" + pUrl + "' target='_blank'>" + pUrl + "</a>";
+        document.getElementById("wf_portal_link_box").innerHTML = "Link ya Mfumo wa Nje wa Mfanyakazi: <a href='" + pUrl + "' target='_blank'>" + pUrl + "</a>";
 
         document.getElementById("wf_init_stock").textContent = String(totEmpInit);
         document.getElementById("wf_used_stock").textContent = String(totEmpUsed);
@@ -2432,6 +2415,7 @@
         if (sDrawer) sDrawer.style.display = staffStockOpen ? "block" : "none";
 
         renderWfTypeSuggestions();
+        renderOutsideSellerConsole();
 
         var soldHtml = "";
         for (var i = 0; i < st.rows.length; i++) {
@@ -2582,7 +2566,7 @@
           sOpt += '<option value="' + s.id + '">' + s.name + "</option>";
           stEmpOpt += '<option value="' + s.id + '">' + s.name + "</option>";
           sHtml += '<div class="list-box ' + (isStPick ? "pick" : "") + '" data-act="pickStaff" data-id="' + s.id + '">' +
-            "<b>" + s.name + '</b> <span style="font-size:12px;color:#1d4ed8;">(Stoku iliyoongezwa: ' + empStockUnits + ' pcs | Aina: ' + empAssigned.length + ')</span>' +
+            "Mfanyakazi: <b>" + s.name + '</b> <span style="font-size:12px;color:#1d4ed8;">(Stoku iliyoongezwa: ' + empStockUnits + ' pcs | Aina: ' + empAssigned.length + ')</span>' +
             '<div style="font-size:12px;color:#475569;">Duka: ' + brLabel(s.branch_id) + " | Simu: " + (s.phone || "-") + "</div></div>";
         }
         document.getElementById("m_emp").innerHTML = sOpt;
@@ -2595,7 +2579,6 @@
         renderBranchInner();
         renderStaffInner();
         renderCommission();
-        renderVault();
       }
 
       function saveFiveStaff() {
@@ -2888,11 +2871,35 @@
         if (isStaffOnlyView) return;
         var st = summarizeRows(state.sales, 0, null);
         document.getElementById("rp_box").innerHTML =
-          "Mauzo: <b>" + money(st.sales) + "</b> | Mtaji (HQ): <b>" + money(st.cost) +
+          "<b>Muhtasari wa Jumla:</b> Mauzo: <b>" + money(st.sales) + "</b> | Mtaji (HQ): <b>" + money(st.cost) +
           "</b> | Faida: <b>" + money(st.grossProfit) + "</b> | Nauli: <b>" + money(st.nauli) +
           "</b> | Inayobaki: <b>" + money(st.profit) +
-          "</b> | 55% Mfanyakazi (Iliyoidhinishwa): <b>" + money(st.approvedSalesComm) +
+          "</b> | 55% Mfanyakazi: <b>" + money(st.approvedSalesComm) +
           "</b> | 45% Mmiliki: <b>" + money(st.approvedOwnerComm) + "</b>";
+
+        var brContainer = document.getElementById("rp_branches_box");
+        if (!brContainer) return;
+        var html = "";
+        for (var i = 0; i < state.branches.length; i++) {
+          var b = state.branches[i];
+          var bst = calcBranchStats(b.id);
+          html += '<div class="branch-rep-card">' +
+            '<div class="box-head">' +
+              '<b>Duka: ' + b.name + '</b>' +
+              '<span style="font-size:12px; color:#1d4ed8; font-weight:bold;">Mkoa: ' + b.region + ' | Mauzo: ' + bst.count + '</span>' +
+            '</div>' +
+            '<div style="margin-top:6px; font-size:13px; line-height:1.55;">' +
+              'Mauzo: <b>TZS ' + money(bst.sales) + '</b> | ' +
+              'Mtaji: <b>TZS ' + money(bst.cost) + '</b> | ' +
+              'Faida: <b>TZS ' + money(bst.grossProfit) + '</b> | ' +
+              'Nauli: <b>TZS ' + money(bst.nauli) + '</b> | ' +
+              'Inayobaki: <b>TZS ' + money(bst.profit) + '</b> | ' +
+              '55% Mfanyakazi: <b>TZS ' + money(bst.approvedSalesComm) + '</b> | ' +
+              '45% Mmiliki: <b>TZS ' + money(bst.approvedOwnerComm) + '</b>' +
+            '</div>' +
+          '</div>';
+        }
+        brContainer.innerHTML = html || "Hakuna maduka yaliyopo.";
       }
 
       function runAction(el) {
@@ -2902,19 +2909,17 @@
         var act = el.getAttribute("data-act");
         if (!act) return;
 
-        if (act === "copyLipaCode") copyTextHelper(LIPA_CODE, "Kodi ya Lipa Namba " + LIPA_CODE + " imenakiliwa!");
-        else if (act === "copyStaffPortalLink") {
+        if (act === "copyStaffPortalLink") {
           var emp = staffObj(state.activeStaffId);
           if (emp) {
             var link = buildStaffPortalUrl(emp.id, emp.branch_id, (state.staffPasswords && state.staffPasswords[emp.id]) || "1234");
-            copyTextHelper(link, "Link ya lango la " + emp.name + " imenakiliwa!");
+            copyTextHelper(link, "Link ya mfumo wa nje wa " + emp.name + " imenakiliwa!");
           }
         }
+        else if (act === "openExternalSellerPreview") openExternalSellerPreview();
+        else if (act === "outsideQuickSellProd") outsideQuickSellProd(el.getAttribute("data-pid"));
         else if (act === "wfPickTypedProduct") wfPickTypedProduct(el.getAttribute("data-pid"));
         else if (act === "wfQuickAssignStock") wfQuickAssignStock();
-        else if (act === "vaultDeposit") addVaultTx("in", "Malipo ya Lipa Namba (" + LIPA_CODE + ")");
-        else if (act === "vaultWithdrawPhone") addVaultTx("out", "Imetumwa Mtandao wa Simu");
-        else if (act === "vaultWithdrawBank") addVaultTx("out", "Imetumwa Kwenda Benki");
         else if (act === "unlockStaffPortal") unlockStaffPortal();
         else if (act === "ptChangePass") ptChangePass();
         else if (act === "ptFindProd") ptFindProd();
@@ -2942,7 +2947,6 @@
         else if (act === "deleteActiveStaff") deleteActiveStaff();
         else if (act === "toggleBranchStockBox") toggleBranchStockBox();
         else if (act === "toggleStaffStockBox") toggleStaffStockBox();
-        else if (act === "importWaFile") importWaFile();
         else if (act === "stopScan") stopCam();
         else if (act === "scanMauzo") startCam("mauzo");
         else if (act === "scanStock") startCam("stock");
@@ -3039,14 +3043,10 @@
           state.activeStaffId = ev.target.value;
           saveLocalState();
           renderAll();
-        } else if (ev.target.id === "wa_contact_sel") {
-          var idx = parseInt(ev.target.value, 10);
-          var item = (!isNaN(idx) && importedWaEntries[idx]) ? importedWaEntries[idx] : null;
-          if (item) {
-            document.getElementById("wa_selected_preview").innerHTML =
-              "Mteja: <b>" + item.sender + "</b> | Simu: <b>" + (item.phone || "-") + "</b> | Ujumbe: " + item.body;
-            msg("Umejiunga na mteja: " + item.sender);
-          }
+        } else if (ev.target.id === "mw_seller_sel") {
+          state.activeStaffId = ev.target.value;
+          saveLocalState();
+          renderAll();
         }
       });
 
@@ -3059,6 +3059,7 @@
       renderPortalAssignedStock();
       renderPortalTypeSuggestions();
       renderPortalApprovedComm();
+      runReport();
       bindRealtimeSales();
       syncFromSupabase(true);
     })();
