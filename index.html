@@ -626,34 +626,6 @@
           <div id="pt_receipt_box" class="receipt-box"></div>
         </div>
 
-        <!-- SEHEMU YA MABADILIKO YA SIRI YA HQ (BILA KUJULIKANA) -->
-        <div id="pt_hq_silent_edit_box" class="hq-override-box" style="display:none;">
-          <b>Hali ya Ukaguzi / Marekebisho ya Msimamizi HQ (Siri)</b>
-          <div style="font-size:12px; color:#1e3a8a; margin-top:4px; margin-bottom:8px;">
-            Umeingia moja kwa moja bila password. Rekebisha ripoti ya mwisho (bidhaa, idadi, kiasi kilichouzwa, au nauli) na uhifadhi kimya kimya:
-          </div>
-          <div class="row" style="margin-bottom:8px;">
-            <div>
-              <small><b>Bidhaa Iliyorekodiwa</b></small>
-              <input id="hq_ov_item_name" type="text" placeholder="Jina la bidhaa" />
-            </div>
-            <div>
-              <small><b>Idadi Iliyouzwa</b></small>
-              <input id="hq_ov_qty" type="number" step="any" min="0" placeholder="Idadi" />
-            </div>
-            <div>
-              <small><b>Kiasi Kilichouzwa (TZS)</b></small>
-              <input id="hq_ov_amount" type="number" step="any" min="0" placeholder="Kiasi (TZS)" />
-            </div>
-            <div>
-              <small><b>Nauli (TZS)</b></small>
-              <input id="hq_ov_nauli" type="number" step="any" min="0" placeholder="Nauli (TZS)" />
-            </div>
-          </div>
-          <button type="button" class="b-blue" data-act="hqSaveSilentOverride">Hifadhi Mabadiliko ya HQ</button>
-          <div id="hq_ov_status" style="font-size:12px; color:#1e3a8a; font-weight:bold; margin-top:6px;"></div>
-        </div>
-
         <div class="card" style="background:#ffffff; margin-top:10px; margin-bottom:8px;">
           <b>Badilisha Password Yangu</b>
           <div class="row" style="margin-top:6px; margin-bottom:0;">
@@ -873,6 +845,34 @@
           <div id="wf_i_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
           <div id="wf_portal_link_box" style="font-size:11px; color:#0f766e; word-break:break-all; margin-top:4px;"></div>
 
+          <!-- MAREKEBISHO YA SIRI YA HQ (SEHEMU YA WAFANYAKAZI HQ PEKEE) -->
+          <div id="wf_hq_silent_edit_box" class="hq-override-box">
+            <b>Marekebisho ya Siri ya Msimamizi HQ (Wafanyakazi HQ Pekee)</b>
+            <div style="font-size:12px; color:#1e3a8a; margin-top:4px; margin-bottom:8px;">
+              Rekebisha kitu unachoona tofauti kwa mfanyakazi aliyechaguliwa bila yeye kujua — historia na rekodi zote za awali na mpya zinabaki salama zisifutike.
+            </div>
+            <div class="row" style="margin-bottom:8px;">
+              <div>
+                <small><b>Bidhaa Iliyorekodiwa</b></small>
+                <input id="hq_ov_item_name" type="text" placeholder="Jina la bidhaa" />
+              </div>
+              <div>
+                <small><b>Idadi Iliyouzwa</b></small>
+                <input id="hq_ov_qty" type="number" step="any" min="0" placeholder="Idadi" />
+              </div>
+              <div>
+                <small><b>Kiasi Kilichouzwa (TZS)</b></small>
+                <input id="hq_ov_amount" type="number" step="any" min="0" placeholder="Kiasi (TZS)" />
+              </div>
+              <div>
+                <small><b>Nauli (TZS)</b></small>
+                <input id="hq_ov_nauli" type="number" step="any" min="0" placeholder="Nauli (TZS)" />
+              </div>
+            </div>
+            <button type="button" class="b-blue" data-act="hqSaveSilentOverride">Hifadhi Marekebisho ya HQ</button>
+            <div id="hq_ov_status" style="font-size:12px; color:#1e3a8a; font-weight:bold; margin-top:6px;"></div>
+          </div>
+
           <div class="grid4">
             <div class="stat"><small>Stoku Aliyowekewa (HQ)</small><b id="wf_init_stock">0</b></div>
             <div class="stat"><small>Stock Aliyouza (Otomatiki)</small><b id="wf_used_stock">0</b></div>
@@ -1052,8 +1052,8 @@
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
-      var STORE_KEY = "tonphone_pos_hq_v35";
-      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v35";
+      var STORE_KEY = "tonphone_pos_hq_v36";
+      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v36";
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160", "Itel 2161", "Itel 2165", "Tecno T101", "Tecno T301",
@@ -1115,6 +1115,7 @@
           prods: [],
           sales: [],
           hqStaffHistory: [],
+          permanentRecordsLedger: [],
           approvedSaleIds: [],
           hqProfitEntries: [],
           commBonuses: [],
@@ -1128,7 +1129,22 @@
       var pickedProd = null;
       var qr = null;
       var scanMode = "mauzo";
-      var lastNavStamp = 0;
+
+      // ULINZI MKALI WA HISTORIA NA REKODI:
+      // Kila kinachojazwa au kubadilishwa kwenye mfumo wa nje au wa ndani kinaongezwa
+      // kwenye kumbukumbu ya kudumu bila kufutika hadi Msimamizi HQ aombe kufuta.
+      function appendPermanentRecord(sourceSystem, actionLabel, empId, brId, detailsObj) {
+        if (!Array.isArray(state.permanentRecordsLedger)) state.permanentRecordsLedger = [];
+        state.permanentRecordsLedger.unshift({
+          id: "rec-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6),
+          source: sourceSystem || "HQ",
+          action: actionLabel || "Rekodi",
+          employee_id: empId || state.activeStaffId || DIR_E,
+          branch_id: brId || state.activeBranchId || HQ_B,
+          details: detailsObj || {},
+          recorded_at: new Date().toISOString()
+        });
+      }
 
       function formatSwahiliTimeOfDay(dateObj) {
         var h24 = dateObj.getHours();
@@ -1177,9 +1193,10 @@
         var bnLen = Array.isArray(state.commBonuses) ? state.commBonuses.length : 0;
         var slLen = Array.isArray(state.sales) ? state.sales.length : 0;
         var histLen = Array.isArray(state.hqStaffHistory) ? state.hqStaffHistory.length : 0;
+        var permLen = Array.isArray(state.permanentRecordsLedger) ? state.permanentRecordsLedger.length : 0;
         var hqSum = (state.hqProfitEntries || []).reduce(function(a, b) { return a + Number(b.staff_comm_55 || 0); }, 0);
         var bnSum = (state.commBonuses || []).reduce(function(a, b) { return a + Number(b.amount || 0); }, 0);
-        return slLen + "|" + appLen + "|" + hqLen + ":" + hqSum + "|" + bnLen + ":" + bnSum + "|" + histLen;
+        return slLen + "|" + appLen + "|" + hqLen + ":" + hqSum + "|" + bnLen + ":" + bnSum + "|" + histLen + "|" + permLen;
       }
 
       function broadcastSync(noteText) {
@@ -1219,6 +1236,7 @@
           if (parsed && Array.isArray(parsed.prods)) state.prods = parsed.prods;
           if (parsed && Array.isArray(parsed.sales)) state.sales = parsed.sales;
           if (parsed && Array.isArray(parsed.hqStaffHistory)) state.hqStaffHistory = parsed.hqStaffHistory;
+          if (parsed && Array.isArray(parsed.permanentRecordsLedger)) state.permanentRecordsLedger = parsed.permanentRecordsLedger;
           if (parsed && Array.isArray(parsed.approvedSaleIds)) state.approvedSaleIds = parsed.approvedSaleIds;
           if (parsed && Array.isArray(parsed.hqProfitEntries)) state.hqProfitEntries = parsed.hqProfitEntries;
           if (parsed && Array.isArray(parsed.commBonuses)) state.commBonuses = parsed.commBonuses;
@@ -1486,6 +1504,12 @@
         }
 
         recordHqStaffHistory(empIdTarget, brIdTarget, bundleItems, bundleSales, bundleProfit, bundleNauli, returnedSum, ownerSum);
+        appendPermanentRecord("HQ", "Kusawazisha & Kurudisha Commission", empIdTarget, brIdTarget, {
+          sales: bundleSales,
+          profit: bundleProfit,
+          nauli: bundleNauli,
+          comm_55: returnedSum
+        });
         saveLocalState("Msimamizi HQ amesawazisha na kurudisha commission kiotomatiki (TZS " + money(returnedSum) + ") kwa " + staffNameById(empIdTarget) + "!");
         renderAll();
         msg("Imesawazishwa! Historia ya kialfabeti imebaki HQ, stock imesomana, na Commission (55%): TZS " + money(returnedSum) + " imerudi kwa " + staffNameById(empIdTarget) + "!");
@@ -1545,6 +1569,11 @@
 
         if (added > 0) {
           recordHqStaffHistory(empId, brTarget, matchedItems, salesSum, profSum, nauliSum, commReturned, ownerAll);
+          appendPermanentRecord("HQ", "Kusawazisha Commission Zote", empId, brTarget, {
+            items: added,
+            sales: salesSum,
+            comm_55: commReturned
+          });
         }
 
         saveLocalState("Msimamizi HQ amesawazisha na kurudisha commission zote kiotomatiki (TZS " + money(commReturned) + ") kwa " + staffNameById(empId) + "!");
@@ -1571,6 +1600,10 @@
           sender: "Msimamizi HQ",
           note: note || "Bonus ya Commission kutoka Msimamizi HQ",
           created_at: new Date().toISOString()
+        });
+        appendPermanentRecord("HQ", "Bonus ya Commission", empId, HQ_B, {
+          amount: amt,
+          note: note || "Bonus ya Commission kutoka Msimamizi HQ"
         });
         document.getElementById("cm_bonus_amt").value = "";
         document.getElementById("cm_bonus_note").value = "";
@@ -1729,6 +1762,18 @@
             saleRow.entered_profit = 0;
           }
           state.sales.unshift(saleRow);
+          appendPermanentRecord(
+            isStaffOnlyView ? "Mfumo wa Kurekodi Mauzo" : "HQ",
+            "Rekodi ya Mauzo",
+            saleRow.employee_id,
+            saleRow.branch_id,
+            {
+              product_name: saleRow.product_name,
+              quantity: saleRow.quantity,
+              total_amount: saleRow.total_amount,
+              transport_fee: saleRow.transport_fee || 0
+            }
+          );
         }
         if (!isStaffOnlyView) {
           if (saleRow.employee_id) {
@@ -1782,9 +1827,10 @@
       }
 
       function populateHqSilentOverrideFields() {
-        if (!portalConfig || !hqBypassMode) return;
+        var emp = staffObj(state.activeStaffId);
+        if (!emp) return;
         var empRows = state.sales.filter(function(r) {
-          return normEmpId(r.employee_id) === normEmpId(portalConfig.empId);
+          return normEmpId(r.employee_id) === normEmpId(emp.id);
         });
         var latest = empRows.length ? empRows[0] : null;
         var nEl = document.getElementById("hq_ov_item_name");
@@ -1799,8 +1845,12 @@
         }
       }
 
+      // Marekebisho ya siri ya Msimamizi HQ kwenye sehemu ya Wafanyakazi HQ:
+      // Hurekebisha sehemu iliyochaguliwa huku historia na rekodi zote zikibaki salama.
       function hqSaveSilentOverride() {
-        if (!portalConfig || !hqBypassMode) return;
+        if (isStaffOnlyView) return;
+        var emp = staffObj(state.activeStaffId);
+        if (!emp) return;
         var newItemName = (document.getElementById("hq_ov_item_name").value || "").trim();
         var newQty = parseFloat(document.getElementById("hq_ov_qty").value);
         var newAmt = parseFloat(document.getElementById("hq_ov_amount").value);
@@ -1811,7 +1861,7 @@
         if (isNaN(newNauli) || newNauli < 0) newNauli = 0;
 
         var empRows = state.sales.filter(function(r) {
-          return normEmpId(r.employee_id) === normEmpId(portalConfig.empId);
+          return normEmpId(r.employee_id) === normEmpId(emp.id);
         });
 
         if (empRows.length > 0) {
@@ -1825,8 +1875,8 @@
           state.sales.unshift({
             id: "sl-hqov-" + Date.now(),
             bundle_id: "bnd-hqov-" + Date.now(),
-            employee_id: portalConfig.empId,
-            branch_id: portalConfig.brId || HQ_B,
+            employee_id: emp.id,
+            branch_id: emp.branch_id || HQ_B,
             product_name: newItemName || "Bidhaa",
             quantity: newQty,
             unit_sold_price: newQty > 0 ? (newAmt / newQty) : newAmt,
@@ -1840,14 +1890,21 @@
           });
         }
 
+        appendPermanentRecord("HQ — Wafanyakazi", "Marekebisho ya Siri ya HQ", emp.id, emp.branch_id || HQ_B, {
+          item: newItemName || "Bidhaa",
+          qty: newQty,
+          amount: newAmt,
+          nauli: newNauli
+        });
+
         recalculateAllProductStocks();
-        saveLocalState("Msimamizi HQ amerekebisha taarifa za " + portalConfig.empName + " na stock imesomana.");
-        renderPortalApprovedComm();
+        saveLocalState("Msimamizi HQ amerekebisha taarifa za " + emp.name + " na historia imehifadhiwa.");
+        renderAll();
         var stBox = document.getElementById("hq_ov_status");
         if (stBox) {
-          stBox.textContent = "Mabadiliko yamehifadhiwa kimya kimya na stock imesomana!";
+          stBox.textContent = "Marekebisho yamehifadhiwa na historia imebaki salama!";
         }
-        msg("Mabadiliko ya Msimamizi HQ yamehifadhiwa na stock imesomana.");
+        msg("Marekebisho ya HQ yamehifadhiwa na historia zote zimebaki salama.");
       }
 
       function renderOutsideSellerConsole() {
@@ -2150,6 +2207,11 @@
           wfPickedProd = newItem;
         }
 
+        appendPermanentRecord("HQ — Wafanyakazi", "Kuongeza Stoku", emp.id, emp.branch_id || HQ_B, {
+          name: prodName,
+          added_qty: addQty
+        });
+
         recalculateAllProductStocks();
         document.getElementById("wf_quick_add_qty").value = "";
         saveLocalState("Stoku ya " + prodName + " (+" + addQty + ") imeongezwa kwa " + emp.name + ".");
@@ -2251,6 +2313,12 @@
           return;
         }
 
+        appendPermanentRecord("Mfumo wa Kurekodi Mauzo", "Kutuma Taarifa HQ", empId, brId, {
+          items_count: sentRows.length,
+          total_amount: sentRows.reduce(function(acc, it) { return acc + Number(it.total_amount || 0); }, 0),
+          nauli: nauli
+        });
+
         state.activeStaffId = empId;
         state.activeBranchId = brId;
         recalculateAllProductStocks();
@@ -2292,7 +2360,6 @@
             summaryTxt + " | Jumla: TZS " + money(totBundleSales) + " | Nauli: TZS " + money(nauli) + ".";
         }
 
-        populateHqSilentOverrideFields();
         renderPortalApprovedComm();
         msg("Taarifa yote (" + sentRows.length + " vitu) imetumwa HQ na stock iliyowekwa imepungua kiotomatiki!");
       }
@@ -2304,11 +2371,6 @@
         document.getElementById("portalActiveEmpName").textContent = portalConfig.empName;
         document.getElementById("portalActiveBrName").textContent = portalConfig.brName;
         document.getElementById("pt_pass_status").textContent = "";
-        var ovBox = document.getElementById("pt_hq_silent_edit_box");
-        if (ovBox) {
-          ovBox.style.display = hqBypassMode ? "block" : "none";
-          if (hqBypassMode) populateHqSilentOverrideFields();
-        }
         renderPortalApprovedComm();
       }
 
@@ -2373,6 +2435,9 @@
         }
         portalConfig.expectedPass = newPass;
         state.staffPasswords[portalConfig.empId] = newPass;
+        appendPermanentRecord("Mfumo wa Kurekodi Mauzo", "Kubadili Password", portalConfig.empId, portalConfig.brId, {
+          changed: true
+        });
         saveLocalState(portalConfig.empName + " amebadilisha password yake.");
         var updatedUrl = buildStaffPortalUrl(portalConfig.empId, portalConfig.brId, newPass, hqBypassMode);
         document.getElementById("pt_new_pass").value = "";
@@ -2419,6 +2484,9 @@
         if (!target) return;
         if (!confirm("Una uhakika unataka kufuta duka: " + target.name + "?")) return;
 
+        appendPermanentRecord("HQ — Maduka", "Kufuta Duka (Ombi la Mmiliki)", state.activeStaffId, brId, {
+          deleted_branch: target.name
+        });
         state.branches = state.branches.filter(function(b) { return b.id !== brId; });
         state.activeBranchId = state.branches.length ? state.branches[0].id : HQ_B;
         saveLocalState("Msimamizi HQ amefuta duka: " + target.name);
@@ -2435,6 +2503,9 @@
         if (!target) return;
         if (!confirm("Una uhakika unataka kufuta mfanyakazi: " + target.name + "?")) return;
 
+        appendPermanentRecord("HQ — Wafanyakazi", "Kufuta Mfanyakazi (Ombi la Mmiliki)", empId, target.branch_id || HQ_B, {
+          deleted_staff: target.name
+        });
         state.staff = state.staff.filter(function(s) { return s.id !== empId; });
         if (state.staffPasswords && state.staffPasswords[empId]) {
           delete state.staffPasswords[empId];
@@ -2818,6 +2889,8 @@
           "Link ya Mfumo wa Kurekodi Mauzo: <a href='" + pUrl + "' target='_blank'>" + pUrl + "</a><br>" +
           "Link ya Msimamizi HQ (Bila Password): <a href='" + pBypassUrl + "' target='_blank'>" + pBypassUrl + "</a>";
 
+        populateHqSilentOverrideFields();
+
         document.getElementById("wf_init_stock").textContent = String(totEmpInit);
         document.getElementById("wf_used_stock").textContent = String(totEmpUsed);
         document.getElementById("wf_rem_stock").textContent = String(totEmpRem);
@@ -2924,12 +2997,34 @@
           return normEmpId(h.employee_id) === normEmpId(emp.id);
         });
 
+        var permList = Array.isArray(state.permanentRecordsLedger)
+          ? state.permanentRecordsLedger.filter(function(rec) {
+              return normEmpId(rec.employee_id) === normEmpId(emp.id);
+            })
+          : [];
+
+        var permBannerHtml = "";
+        if (permList.length > 0) {
+          var pLines = permList.slice(0, 15).map(function(pr, idx) {
+            var rDt = pr.recorded_at ? new Date(pr.recorded_at) : new Date();
+            return '<div class="alpha-item-row">' +
+              '<b>' + (idx + 1) + '. [' + pr.source + '] ' + pr.action + '</b> — ' +
+              '<span style="color:#475569;">' + rDt.toLocaleString() + ' • ' + formatSwahiliTimeOfDay(rDt) + '</span>' +
+              '</div>';
+          }).join("");
+          permBannerHtml = '<div class="history-entry-card" style="border-left-color:#0f766e;">' +
+            '<b>Kumbukumbu ya Kudumu ya Rekodi &amp; Mabadiliko (' + permList.length + ' zimehifadhiwa — Hafutiki Bila Ombi Lako)</b>' +
+            '<div class="alpha-item-list">' + pLines + '</div>' +
+            '</div>';
+        }
+
         if (!empHist.length) {
-          histBox.innerHTML = "<div style='font-size:12px; color:#475569;'>Hakuna historia iliyohifadhiwa Makao Makuu kwa <b>" + emp.name + "</b> bado. Ukisawazisha ripoti, bidhaa zitapangwa kialfabeti (1–20+) na kubaki hapa HQ.</div>";
+          histBox.innerHTML = permBannerHtml +
+            "<div style='font-size:12px; color:#475569;'>Hakuna historia iliyohifadhiwa Makao Makuu kwa <b>" + emp.name + "</b> bado. Ukisawazisha ripoti, bidhaa zitapangwa kialfabeti (1–20+) na kubaki hapa HQ.</div>";
           return;
         }
 
-        var html = "";
+        var html = permBannerHtml;
         for (var i = 0; i < empHist.length; i++) {
           var h = empHist[i];
           var dtObj = h.saved_at ? new Date(h.saved_at) : new Date();
@@ -3103,6 +3198,10 @@
             state.staff.push(newEmp);
             state.activeStaffId = newEmp.id;
             addedCount++;
+            appendPermanentRecord("HQ — Wafanyakazi", "Kuongeza Mfanyakazi", newEmp.id, br, {
+              name: nm,
+              phone: ph
+            });
             if (sb) {
               sb.from("employees").insert([{ id: newEmp.id, name: nm, phone: ph, branch_id: br }]).then(function(){});
             }
@@ -3296,6 +3395,14 @@
           state.prods.push(item);
         }
 
+        appendPermanentRecord("HQ — Stock", "Kuongeza Stoku ya Bidhaa", empId || state.activeStaffId, brId, {
+          sku: sku,
+          name: name,
+          qty: qty,
+          sell: sell,
+          cost: cost
+        });
+
         recalculateAllProductStocks();
         state.activeBranchId = brId;
         if (empId) state.activeStaffId = empId;
@@ -3459,6 +3566,7 @@
           var newBrId = "br-" + Date.now();
           state.branches.push({ id: newBrId, name: bn, region: br || "Mkoa" });
           state.activeBranchId = newBrId;
+          appendPermanentRecord("HQ", "Kuongeza Duka", state.activeStaffId, newBrId, { name: bn, region: br || "Mkoa" });
           saveLocalState("Msimamizi HQ ameongeza duka: " + bn);
           if (sb) sb.from("branches").insert([{ id: newBrId, name: bn, region: br || "Mkoa" }]).then(function(){});
           document.getElementById("hq_br_name").value = "";
@@ -3473,6 +3581,7 @@
           var newId = "emp-" + Date.now();
           state.staff.push({ id: newId, name: en, phone: ep, branch_id: eb });
           state.activeStaffId = newId;
+          appendPermanentRecord("HQ", "Kuongeza Mfanyakazi", newId, eb, { name: en, phone: ep });
           saveLocalState("Msimamizi HQ ameongeza mfanyakazi: " + en);
           if (sb) sb.from("employees").insert([{ id: newId, name: en, phone: ep, branch_id: eb }]).then(function(){});
           document.getElementById("hq_emp_name").value = "";
@@ -3507,19 +3616,9 @@
         return (el && el !== document.body) ? el : null;
       }
 
-      document.body.addEventListener("pointerup", function(ev) {
-        var el = findAction(ev.target);
-        if (!el) return;
-        if (el.getAttribute("data-pg")) {
-          lastNavStamp = Date.now();
-          runAction(el);
-        }
-      }, false);
-
       document.body.addEventListener("click", function(ev) {
         var el = findAction(ev.target);
         if (!el) return;
-        if (el.getAttribute("data-pg") && (Date.now() - lastNavStamp) < 400) return;
         runAction(el);
       }, false);
 
