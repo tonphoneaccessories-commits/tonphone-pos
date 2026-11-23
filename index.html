@@ -586,7 +586,7 @@
         <div id="md_list" style="margin-top:8px;"></div>
 
         <div id="md_detail" class="inner-panel">
-          <b id="md_d_title">Duka Lilililochaguliwa</b>
+          <b id="md_d_title">Duka Lililochaguliwa</b>
           <div id="md_d_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
 
           <div class="grid4">
@@ -742,7 +742,6 @@
             </div>
           </div>
 
-          <!-- MWONEKANO WA KULE ANACHOKIONA MFANYAKAZI MWENYEWE (MFUMO WA NJE) -->
           <div id="wf_outside_seller_box" class="seller-view-card"></div>
         </div>
       </div>
@@ -844,7 +843,7 @@
       </div>
     </div>
 
-    <!-- 7. RIPOTI (KILA DUKA NA RIPOTI YAKE) -->
+    <!-- 7. RIPOTI -->
     <div id="pg_ripoti" class="page">
       <div class="card">
         <b>Ripoti ya Mauzo kwa Kila Duka</b>
@@ -857,16 +856,16 @@
       </div>
     </div>
 
-    <!-- 8. MAWASILIANO -> STOKU YA MUUZAJI / MFANYAKAZI (MFUMO WA NJE) -->
+    <!-- 8. STOCK MFANYAKAZI -->
     <div id="pg_mawasiliano" class="page">
       <div class="seller-view-card">
         <div class="box-head">
-          <b>Stoku ya Muuzaji / Mfanyakazi — Mfumo wa Nje (Unachokiona Kule Kwake)</b>
+          <b>Stock Mfanyakazi (Mfumo wa Nje — Unachokiona Kule Kwake)</b>
           <button type="button" class="b-amber" style="width:auto; padding:6px 10px; font-size:12px;" data-act="openExternalSellerPreview">Fungua Mfumo wa Nje</button>
         </div>
         <div class="row" style="margin-top:8px;">
           <div>
-            <small><b>Chagua Muuzaji / Mfanyakazi Kuona Mfumo Wake wa Nje</b></small>
+            <small><b>Chagua Mfanyakazi Kuona Stock Yake</b></small>
             <select id="mw_seller_sel"></select>
           </div>
         </div>
@@ -883,7 +882,7 @@
     <button type="button" id="nb_wafanyakazi" data-pg="wafanyakazi">Wafanyakazi</button>
     <button type="button" id="nb_commission" data-pg="commission">Commission</button>
     <button type="button" id="nb_ripoti" data-pg="ripoti">Ripoti</button>
-    <button type="button" id="nb_mawasiliano" data-pg="mawasiliano">Mawasiliano</button>
+    <button type="button" id="nb_mawasiliano" data-pg="mawasiliano">Stock Mfanyakazi</button>
   </div>
 
   <script>
@@ -893,8 +892,8 @@
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
-      var STORE_KEY = "tonphone_pos_hq_v29";
-      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v29";
+      var STORE_KEY = "tonphone_pos_hq_v30";
+      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v30";
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160", "Itel 2161", "Itel 2165", "Tecno T101", "Tecno T301",
@@ -1351,24 +1350,24 @@
 
         var outsideHtml =
           '<div class="box-head">' +
-            '<b>Kule Anachokiona Mfanyakazi / Muuzaji (Mfumo wa Nje — ' + emp.name + ')</b>' +
+            '<b>Stock Mfanyakazi — ' + emp.name + '</b>' +
             '<span style="font-size:12px; color:#92400e; font-weight:bold;">Duka: ' + brLabel(emp.branch_id) + '</span>' +
           '</div>' +
-          '<div style="font-size:12px; color:#475569; margin-top:3px;">Muhtasari anaouona muuzaji kule kwake (bila kuona bei ya jumla ya HQ):</div>' +
+          '<div style="font-size:12px; color:#475569; margin-top:3px;">Muhtasari anaouona mfanyakazi kule kwake:</div>' +
           '<div class="grid4">' +
-            '<div class="stat"><small>Stoku Niliyopewa</small><b>' + totInit + '</b></div>' +
-            '<div class="stat"><small>Stoku Iliyopungua</small><b>' + totUsed + '</b></div>' +
-            '<div class="stat"><small>Stoku Iliyobaki</small><b>' + totRem + '</b></div>' +
+            '<div class="stat"><small>Stock Niliyopewa</small><b>' + totInit + '</b></div>' +
+            '<div class="stat"><small>Stock Iliyopungua</small><b>' + totUsed + '</b></div>' +
+            '<div class="stat"><small>Stock Iliyobaki</small><b>' + totRem + '</b></div>' +
             '<div class="stat comm-emp"><small>Commission Yangu (HQ)</small><b>TZS ' + money(st.totalStaffComm) + '</b></div>' +
           '</div>' +
-          '<div style="margin-top:10px; font-weight:bold; font-size:13px;">Stoku Yangu ya Kuuza (Gusa Bidhaa Kurekodi Mauzo Kama Muuzaji):</div>' +
+          '<div style="margin-top:10px; font-weight:bold; font-size:13px;">Stock Yangu ya Kuuza (Gusa Bidhaa Kurekodi Mauzo):</div>' +
           '<div class="pt-assigned-box" style="margin-top:6px;">' +
-            (stockRowsHtml || "Hakuna stoku aliyopewa muuzaji huyu bado.") +
+            (stockRowsHtml || "Hakuna stock aliyopewa mfanyakazi huyu bado.") +
           '</div>' +
           '<div class="row" style="margin-bottom:0;">' +
-            '<div><small><b>Idadi Anayouza Muuzaji</b></small><input id="ext_sell_qty" type="number" step="any" min="0.01" value="1" /></div>' +
-            '<div><small><b>Bei Aliyouza Muuzaji (TZS)</b></small><input id="ext_sell_price" type="number" step="any" min="0" placeholder="Tumia bei ya bidhaa au weka" /></div>' +
-            '<div><small><b>Nauli ya Muuzaji (TZS)</b></small><input id="ext_sell_nauli" type="number" step="any" min="0" value="0" /></div>' +
+            '<div><small><b>Idadi Anayouza Mfanyakazi</b></small><input id="ext_sell_qty" type="number" step="any" min="0.01" value="1" /></div>' +
+            '<div><small><b>Bei Aliyouza Mfanyakazi (TZS)</b></small><input id="ext_sell_price" type="number" step="any" min="0" placeholder="Tumia bei ya bidhaa au weka" /></div>' +
+            '<div><small><b>Nauli ya Mfanyakazi (TZS)</b></small><input id="ext_sell_nauli" type="number" step="any" min="0" value="0" /></div>' +
           '</div>';
 
         var wfBox = document.getElementById("wf_outside_seller_box");
@@ -1431,7 +1430,7 @@
         };
 
         ingestSaleAuto(saleRow, false);
-        msg("Muuzaji " + emp.name + " ameza " + prod.name + " x" + qty + " (Bei: TZS " + money(unitPrice) + ", Nauli: TZS " + money(nauli) + ") — stoku imepungua na kuhesabiwa!");
+        msg("Mfanyakazi " + emp.name + " ameuza " + prod.name + " x" + qty + " (Bei: TZS " + money(unitPrice) + ", Nauli: TZS " + money(nauli) + ") — stock imepungua na kuhesabiwa!");
       }
 
       function renderPortalApprovedComm() {
