@@ -159,7 +159,7 @@
     ol.stock-ol-200 {
       margin: 8px 0 0 0;
       padding-left: 34px;
-      max-height: 520px;
+      max-height: 460px;
       overflow-y: auto;
     }
     ol.stock-ol-200 li {
@@ -169,7 +169,7 @@
       padding: 8px 10px;
       margin-bottom: 6px;
       font-size: 13px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
     .slot-box {
       background: #ffffff;
@@ -177,6 +177,16 @@
       border-radius: 8px;
       padding: 9px;
       margin-bottom: 8px;
+    }
+    .receipt-box {
+      display: none;
+      background: #ffffff;
+      border: 2px dashed #0f172a;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 13px;
+      line-height: 1.5;
     }
     #staffPortalModal {
       display: none;
@@ -225,6 +235,18 @@
       color: #ffffff;
       border-color: #60a5fa;
     }
+    @media print {
+      body * { visibility: hidden; }
+      #pt_receipt_box, #pt_receipt_box * { visibility: visible; }
+      #pt_receipt_box {
+        display: block !important;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -253,13 +275,19 @@
         <div class="row">
           <input id="pt_code" type="text" placeholder="Search au scan SKU / Barcode / QR / Aina / Jina" />
           <button type="button" class="b-blue" data-act="ptFindProd">Tafuta Bidhaa</button>
+          <button type="button" class="b-teal" data-act="scanPortal">Scan QR / Bar</button>
         </div>
-        <div id="pt_prod_info" class="card" style="background:#fff;">Tafuta SKU / Barcode / QR ya bidhaa yako (inaonyesha aina, jina, stoku iliyobaki &amp; bei ya kuuza pekee).</div>
+        <div id="pt_prod_info" class="card" style="background:#fff;">Scan au tafuta SKU / Barcode / QR ya bidhaa yako (inaonyesha aina, jina, stoku iliyobaki &amp; bei ya kuuza rejareja pekee).</div>
         <div class="row">
           <input id="pt_qty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" />
           <input id="pt_nauli" type="number" step="any" min="0" value="0" placeholder="Nauli uliyotumia (TZS)" />
           <button type="button" class="b-green" data-act="ptSaveSale">Uza &amp; Tuma HQ</button>
         </div>
+
+        <div class="row" style="margin-top:6px;">
+          <button type="button" id="btn_toggle_receipt" class="b-light" style="display:none;" data-act="togglePortalReceipt">Toa / Chapisha Risiti</button>
+        </div>
+        <div id="pt_receipt_box" class="receipt-box"></div>
 
         <div class="card" style="background:#ffffff; margin-top:10px; margin-bottom:8px;">
           <b>Badilisha Password Yangu</b>
@@ -339,7 +367,7 @@
         </div>
         <div class="row">
           <input id="st_sku" type="text" placeholder="SKU / QR Code (mf. ZNX-20W-01)" />
-          <input id="st_name" type="text" placeholder="Jina la bidhaa (mf. Itel 2160)" />
+          <input id="st_name" type="text" placeholder="Jina la bidhaa (mf. Oking 2160)" />
         </div>
         <div class="row">
           <input id="st_code" type="text" placeholder="Barcode / QR value (hiari — hutumia SKU kama haina)" />
@@ -347,8 +375,8 @@
         </div>
         <div class="row">
           <input id="st_qty" type="number" step="any" placeholder="Idadi ya stoku" />
-          <input id="st_sell" type="number" step="any" placeholder="Kiasi cha kuuza (Bei ya kuuza)" />
-          <input id="st_cost" type="number" step="any" placeholder="Kiasi cha kununua (Siri ya HQ)" />
+          <input id="st_sell" type="number" step="any" placeholder="Kiasi cha kuuza rejareja" />
+          <input id="st_cost" type="number" step="any" placeholder="Kiasi cha kununua jumla (HQ)" />
         </div>
         <div class="row" style="margin-bottom:0;">
           <button type="button" class="b-blue" data-act="saveProd">Hifadhi Stoku Kwa Mfanyakazi / Duka</button>
@@ -402,14 +430,13 @@
             <div id="md_sales_list" style="margin-top:6px; font-size:13px;"></div>
           </div>
 
-          <div style="margin-top:14px; background:#ffffff; border:1px solid #93c5fd; border-radius:8px; padding:10px;">
+          <div id="md_stock_drawer" style="margin-top:14px; background:#ffffff; border:1px solid #93c5fd; border-radius:8px; padding:10px;">
             <div class="box-head">
-              <b>Orodha ya Bidhaa Dukani (No. 1 – No. 200 | Aina Zilizopo: <span id="md_sku_types_cnt">0</span>)</b>
+              <b>(No. 1 – No. 200 | Aina Zilizopo: <span id="md_sku_types_cnt">0</span>)</b>
               <button type="button" class="mini-btn" data-act="toggleBranchStockBox">Ficha / Onyesha</button>
             </div>
-            <div id="md_stock_drawer" style="margin-top:6px;">
-              <div id="md_stock_list"></div>
-            </div>
+            <div style="font-weight:bold; font-size:13px; margin-top:6px;">Aina:</div>
+            <div id="md_stock_list" style="margin-top:4px;"></div>
           </div>
         </div>
       </div>
@@ -494,11 +521,12 @@
 
           <div style="margin-top:14px; background:#ffffff; border:1px solid #93c5fd; border-radius:8px; padding:10px;">
             <div class="box-head">
-              <b>Orodha ya Bidhaa za Mfanyakazi (No. 1 – No. 200 | Aina Zilizopo: <span id="wf_sku_types_cnt">0</span>)</b>
+              <b>(No. 1 – No. 200 | Aina Zilizopo: <span id="wf_sku_types_cnt">0</span>)</b>
               <button type="button" class="mini-btn" data-act="toggleStaffStockBox">Ficha / Onyesha</button>
             </div>
-            <div id="wf_stock_drawer" style="margin-top:6px;">
-              <div id="wf_assigned_stock"></div>
+            <div id="wf_stock_drawer">
+              <div style="font-weight:bold; font-size:13px; margin-top:6px;">Aina:</div>
+              <div id="wf_assigned_stock" style="margin-top:4px;"></div>
             </div>
           </div>
         </div>
@@ -636,7 +664,6 @@
       var STORE_KEY = "tonphone_pos_hq_v21";
 
       var ORDERED_CATALOG_200 = [
-        "oking 2160",
         "Itel_2160",
         "Itel 2161",
         "Itel 2165",
@@ -682,6 +709,7 @@
       var importedWaEntries = [];
       var portalConfig = null;
       var portalPickedProd = null;
+      var lastPortalReceipt = null;
       var branchStockOpen = true;
       var staffStockOpen = true;
 
@@ -764,18 +792,10 @@
         return String(s || "").toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
       }
 
-      function getProductCategory(prodName) {
-        var n = normName(prodName);
-        if (n.indexOf("battery") !== -1 || n.indexOf("betri") !== -1 || n.indexOf("bl 5c") !== -1 || n.indexOf("5l") !== -1) {
-          return "Betri ya Simu";
-        }
-        return "Simu";
-      }
-
       function getCatalogRank(prodName) {
         var n = normName(prodName);
         if (!n) return 9999;
-        for (var i = 0; i < 30; i++) {
+        for (var i = 0; i < 29; i++) {
           var target = normName(ORDERED_CATALOG_200[i]);
           if (n === target || n.indexOf(target) !== -1 || target.indexOf(n) !== -1) {
             return i;
@@ -784,79 +804,91 @@
         return 500;
       }
 
-      function isSameDay(isoStr, nowDate) {
+      function isSameDay(isoStr, refDate) {
         if (!isoStr) return false;
         var dt = new Date(isoStr);
         if (isNaN(dt.getTime())) return false;
-        return dt.getFullYear() === nowDate.getFullYear() &&
-          dt.getMonth() === nowDate.getMonth() &&
-          dt.getDate() === nowDate.getDate();
+        return dt.getFullYear() === refDate.getFullYear() &&
+          dt.getMonth() === refDate.getMonth() &&
+          dt.getDate() === refDate.getDate();
       }
 
-      function isSameMonth(isoStr, nowDate) {
+      function isSameMonth(isoStr, refDate) {
         if (!isoStr) return false;
         var dt = new Date(isoStr);
         if (isNaN(dt.getTime())) return false;
-        return dt.getFullYear() === nowDate.getFullYear() &&
-          dt.getMonth() === nowDate.getMonth();
+        return dt.getFullYear() === refDate.getFullYear() &&
+          dt.getMonth() === refDate.getMonth();
       }
 
-      function getProductSalesBreakdown(prod, scopeSales) {
-        var soldQty = 0, todayAmt = 0, monthAmt = 0;
-        var nowDate = new Date();
+      function matchesProductSale(prod, sale) {
         var pSku = String(prod.sku || prod.barcod || "").toLowerCase();
         var pId = String(prod.id || "");
-        var pBr = String(prod.branch_id || "");
-        var pEmp = String(prod.employee_id || "");
         var pName = normName(prod.name);
+        var sSku = String(sale.sku || sale.barcod || "").toLowerCase();
+        var sPid = String(sale.product_id || "");
+        var sName = normName(sale.product_name);
+        return (pId && sPid && pId === sPid) ||
+          (pSku && sSku && pSku === sSku) ||
+          (pName && sName && pName === sName);
+      }
+
+      function getProductDetailedMetrics(prod, scopeSales) {
+        var now = new Date();
+        var soldQty = 0;
+        var todaySoldAmt = 0;
+        var monthSoldAmt = 0;
 
         for (var i = 0; i < scopeSales.length; i++) {
           var s = scopeSales[i];
           var sBr = String(s.branch_id || "");
           var sEmp = String(s.employee_id || "");
+          var pBr = String(prod.branch_id || "");
+          var pEmp = String(prod.employee_id || "");
           if (pBr && sBr && pBr !== sBr) continue;
           if (pEmp && sEmp && pEmp !== sEmp) continue;
-          var sSku = String(s.sku || s.barcod || "").toLowerCase();
-          var sPid = String(s.product_id || "");
-          var sName = normName(s.product_name);
-          if ((pId && sPid && pId === sPid) || (pSku && sSku && pSku === sSku) || (pName && sName && pName === sName)) {
+
+          if (matchesProductSale(prod, s)) {
             var q = Number(s.quantity || 0);
             var amt = Number(s.total_amount || 0);
             soldQty += q;
-            if (isSameDay(s.created_at, nowDate)) todayAmt += amt;
-            if (isSameMonth(s.created_at, nowDate)) monthAmt += amt;
+            if (isSameDay(s.created_at, now)) todaySoldAmt += amt;
+            if (isSameMonth(s.created_at, now)) monthSoldAmt += amt;
           }
         }
+
         var currentRem = Number(prod.stock || 0);
         var initialQty = (typeof prod.initial_stock === "number" && !isNaN(prod.initial_stock))
           ? Number(prod.initial_stock)
           : (currentRem + soldQty);
         var remainingQty = Math.max(0, initialQty - soldQty);
+        var totalCost = initialQty * Number(prod.wholesale_price || 0);
+        var retailPrice = Number(prod.selling_price || 0);
+
         return {
           initial: initialQty,
           reduced: soldQty,
           remaining: remainingQty,
-          todayAmt: todayAmt,
-          monthAmt: monthAmt
+          buyTotal: totalCost,
+          retailPrice: retailPrice,
+          soldToday: todaySoldAmt,
+          soldMonth: monthSoldAmt
         };
       }
 
-      function formatCatalogItem200(catLabel, itemName, initialVal, remVal, costVal, sellVal, todayVal, monthVal) {
-        return '<li>' +
-          'Aina: <b>' + catLabel + '</b><br>' +
-          '◇ ' + itemName + ' = <b>' + money(initialVal) + '</b><br>' +
-          '◇ idadi iliyobaki = <b>' + money(remVal) + '</b><br>' +
-          '◇ kiasi cha kununua = <b>' + money(costVal) + '</b><br>' +
-          '◇ kiasi chakuuza = <b>' + money(sellVal) + '</b><br>' +
-          '◇ kiasi nilizouza leo = <b>' + money(todayVal) + '</b><br>' +
-          '◇ kiasi nilichouza mwezi huu = <b>' + money(monthVal) + '</b>' +
-          '</li>';
+      function formatCatalogBlockHtml(labelName, m) {
+        return '◇ ' + labelName + ' = ' + m.initial + '<br>' +
+          '◇ idadi iliyobaki = ' + m.remaining + '<br>' +
+          '◇ kiasi cha kununua jumla = ' + money(m.buyTotal) + '<br>' +
+          '◇ kiasi cha kuuza rejareja = ' + money(m.retailPrice) + '<br>' +
+          '◇ kiasi cha bidhaa niliuza leo = ' + money(m.soldToday) + '<br>' +
+          '◇ kiasi nilichouza mwezi huu = ' + money(m.soldMonth);
       }
 
       function recalculateAllProductStocks() {
         for (var i = 0; i < state.prods.length; i++) {
           var p = state.prods[i];
-          var m = getProductSalesBreakdown(p, state.sales);
+          var m = getProductDetailedMetrics(p, state.sales);
           if (typeof p.initial_stock !== "number" || isNaN(p.initial_stock)) {
             p.initial_stock = m.initial;
           }
@@ -1019,7 +1051,7 @@
       function ptFindProd() {
         var c = (document.getElementById("pt_code").value || "").trim().toLowerCase();
         var info = document.getElementById("pt_prod_info");
-        if (!c) { portalPickedProd = null; info.textContent = "Weka SKU / Barcode / QR."; return; }
+        if (!c) { portalPickedProd = null; info.textContent = "Scan au weka SKU / Barcode / QR."; return; }
         for (var i = 0; i < state.prods.length; i++) {
           var p = state.prods[i];
           var matchCode = String(p.sku || "").toLowerCase().indexOf(c) !== -1 ||
@@ -1029,13 +1061,12 @@
           var brOk = !portalConfig || !portalConfig.brId || String(p.branch_id) === String(portalConfig.brId);
           if (matchCode && empOk && brOk) {
             portalPickedProd = p;
-            var m = getProductSalesBreakdown(p, state.sales);
+            var m = getProductDetailedMetrics(p, state.sales);
             info.innerHTML =
-              "Aina: <b>" + getProductCategory(p.name) + "</b> | " +
               "Jina: <b>" + p.name + "</b> | " +
               "SKU/QR: <b>" + (p.sku || p.barcod) + "</b> | " +
-              "Stoku Iliyobaki: <b>" + m.remaining + "</b> | " +
-              "Bei ya Kuuza: <b>TZS " + money(p.selling_price) + "</b>";
+              "Idadi Iliyobaki: <b>" + m.remaining + "</b> | " +
+              "Bei ya Kuuza Rejareja: <b>TZS " + money(p.selling_price) + "</b>";
             return;
           }
         }
@@ -1043,18 +1074,28 @@
         info.textContent = "Bidhaa haijapatikana kwa akaunti yako.";
       }
 
-      function ptSaveSale() {
-        if (!portalConfig) return;
-        if (!portalPickedProd) { msg("Tafuta bidhaa kwanza."); return; }
-        var q = parseFloat(document.getElementById("pt_qty").value) || 0;
+      // Mfanyakazi anaposcan bidhaa aliyouza: inajaza kiotomatiki, inapunguza stoku, na inajirekodi yenyewe
+      function handlePortalAutoScanSale(codeVal) {
+        var c = String(codeVal || "").trim().toLowerCase();
+        document.getElementById("pt_code").value = codeVal;
+        ptFindProd();
+
+        if (!portalPickedProd) {
+          msg("QR/Barcode imesomwa: " + codeVal + " — hakikisha bidhaa ipo kwenye stoku yako.");
+          return;
+        }
+
+        var q = parseFloat(document.getElementById("pt_qty").value) || 1;
         var nauli = parseFloat(document.getElementById("pt_nauli").value) || 0;
-        if (q <= 0) { msg("Weka idadi."); return; }
+        var empId = portalConfig ? portalConfig.empId : state.activeStaffId;
+        var brId = (portalConfig && portalConfig.brId) ? portalConfig.brId : (portalPickedProd.branch_id || HQ_B);
         var totalAmt = q * Number(portalPickedProd.selling_price || 0);
         var costAmt = q * Number(portalPickedProd.wholesale_price || 0);
 
         var row = {
-          employee_id: portalConfig.empId,
-          branch_id: portalConfig.brId || portalPickedProd.branch_id || HQ_B,
+          id: "sl-" + Date.now(),
+          employee_id: empId,
+          branch_id: brId,
           product_id: String(portalPickedProd.id || ""),
           sku: portalPickedProd.sku || portalPickedProd.barcod,
           barcod: String(portalPickedProd.barcod),
@@ -1067,17 +1108,88 @@
           created_at: new Date().toISOString()
         };
 
+        lastPortalReceipt = row;
+        document.getElementById("btn_toggle_receipt").style.display = "inline-block";
+        ingestSaleAuto(row, false);
+        ptFindProd();
+
+        if (sb) {
+          sb.from("sales").insert([row]).then(function(r) {
+            if (r.error) msg("Imerekodiwa & stoku imepungua (" + portalPickedProd.name + " x" + q + ")");
+            else msg("Imescanika, imejirekodi, na stoku imepungua kiotomatiki (" + portalPickedProd.name + " x" + q + ")!");
+          });
+        } else {
+          msg("Imescanika, imejirekodi, na stoku imepungua kiotomatiki (" + portalPickedProd.name + " x" + q + ")!");
+        }
+      }
+
+      function ptSaveSale() {
+        if (!portalPickedProd) { msg("Scan au tafuta bidhaa kwanza."); return; }
+        var q = parseFloat(document.getElementById("pt_qty").value) || 0;
+        var nauli = parseFloat(document.getElementById("pt_nauli").value) || 0;
+        if (q <= 0) { msg("Weka idadi."); return; }
+        var empId = portalConfig ? portalConfig.empId : state.activeStaffId;
+        var brId = (portalConfig && portalConfig.brId) ? portalConfig.brId : (portalPickedProd.branch_id || HQ_B);
+        var totalAmt = q * Number(portalPickedProd.selling_price || 0);
+        var costAmt = q * Number(portalPickedProd.wholesale_price || 0);
+
+        var row = {
+          id: "sl-" + Date.now(),
+          employee_id: empId,
+          branch_id: brId,
+          product_id: String(portalPickedProd.id || ""),
+          sku: portalPickedProd.sku || portalPickedProd.barcod,
+          barcod: String(portalPickedProd.barcod),
+          product_name: portalPickedProd.name,
+          quantity: q,
+          total_amount: totalAmt,
+          cost_amount: costAmt,
+          transport_fee: nauli,
+          payment_method: "cash",
+          created_at: new Date().toISOString()
+        };
+
+        lastPortalReceipt = row;
+        document.getElementById("btn_toggle_receipt").style.display = "inline-block";
         ingestSaleAuto(row, false);
         ptFindProd();
 
         if (sb) {
           sb.from("sales").insert([row]).then(function(r) {
             if (r.error) msg("Imehifadhiwa ndani; Supabase: " + r.error.message);
-            else msg("Taarifa imefika HQ na kamisheni (55% / 45%) imeongezeka kiotomatiki!");
+            else msg("Taarifa imefika HQ, stoku imepungua, na kamisheni imeongezeka kiotomatiki!");
           });
         } else {
-          msg("Taarifa imefika na kamisheni (55% / 45%) imeongezeka kiotomatiki!");
+          msg("Taarifa imefika, stoku imepungua, na kamisheni imeongezeka kiotomatiki!");
         }
+      }
+
+      function togglePortalReceipt() {
+        var box = document.getElementById("pt_receipt_box");
+        if (!lastPortalReceipt) {
+          msg("Hakuna risiti ya mauzo ya hivi karibuni.");
+          return;
+        }
+        if (box.style.display === "block") {
+          box.style.display = "none";
+          return;
+        }
+        var r = lastPortalReceipt;
+        var dtStr = new Date(r.created_at || Date.now()).toLocaleString();
+        box.innerHTML =
+          "<div style='text-align:center;'><b>TON-PHONE &amp; ACCESSORIES</b><br>RISITI YA MAUZO</div><hr>" +
+          "Na. Risiti: <b>" + (r.id || "-") + "</b><br>" +
+          "Tarehe / Muda: <b>" + dtStr + "</b><br>" +
+          "Muuzaji / Wakala: <b>" + staffNameById(r.employee_id) + "</b><br>" +
+          "Duka / Tawi: <b>" + brLabel(r.branch_id) + "</b><br>" +
+          "Bidhaa: <b>" + (r.product_name || "-") + "</b> (" + (r.sku || r.barcod || "-") + ")<br>" +
+          "Idadi: <b>" + r.quantity + "</b><br>" +
+          "Jumla ya Kuuza: <b>TZS " + money(r.total_amount) + "</b><br>" +
+          "Nauli: <b>TZS " + money(r.transport_fee || 0) + "</b><hr>" +
+          "<div style='text-align:center; margin-top:6px;'>" +
+          "<button type='button' class='mini-btn' onclick='window.print()'>Chapisha / Hifadhi PDF</button>" +
+          "</div>";
+        box.style.display = "block";
       }
 
       function deleteActiveBranch() {
@@ -1352,40 +1464,28 @@
         var liHtml = "";
         for (var i = 0; i < sortedItems.length; i++) {
           var item = sortedItems[i];
-          var m = getProductSalesBreakdown(item, st.rows);
+          var m = getProductDetailedMetrics(item, st.rows);
           totInitStock += m.initial;
           totUsedStock += m.reduced;
           totRemStock += m.remaining;
-
-          liHtml += formatCatalogItem200(
-            getProductCategory(item.name),
-            item.name,
-            m.initial,
-            m.remaining,
-            item.wholesale_price,
-            item.selling_price,
-            m.todayAmt,
-            m.monthAmt
-          );
+          liHtml += '<li>' + formatCatalogBlockHtml(item.name, m) + '</li>';
         }
 
         var startSlot = sortedItems.length + 1;
         for (var slotNum = startSlot; slotNum <= 200; slotNum++) {
           var presetLabel = ORDERED_CATALOG_200[slotNum - 1] || ("Bidhaa #" + slotNum);
-          liHtml += formatCatalogItem200(
-            getProductCategory(presetLabel),
-            presetLabel,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          );
+          liHtml += '<li>' + formatCatalogBlockHtml(presetLabel, {
+            initial: 0,
+            remaining: 0,
+            buyTotal: 0,
+            retailPrice: 0,
+            soldToday: 0,
+            soldMonth: 0
+          }) + '</li>';
         }
 
         document.getElementById("md_d_title").textContent = b.name;
-        document.getElementById("md_d_sub").textContent = "Mkoa / Eneo: " + b.region + " | Aina Zilizopo: " + sortedItems.length;
+        document.getElementById("md_d_sub").textContent = "Mkoa / Eneo: " + b.region + " | Aina za Bidhaa Zilizopo Dukani: " + sortedItems.length + " (Orodha No. 1–200)";
 
         document.getElementById("md_init_stock").textContent = String(totInitStock);
         document.getElementById("md_used_stock").textContent = String(totUsedStock);
@@ -1436,40 +1536,28 @@
 
         for (var a = 0; a < assigned.length; a++) {
           var ap = assigned[a];
-          var m = getProductSalesBreakdown(ap, st.rows);
+          var m = getProductDetailedMetrics(ap, st.rows);
           totEmpInit += m.initial;
           totEmpUsed += m.reduced;
           totEmpRem += m.remaining;
-
-          liHtml += formatCatalogItem200(
-            getProductCategory(ap.name),
-            ap.name,
-            m.initial,
-            m.remaining,
-            ap.wholesale_price,
-            ap.selling_price,
-            m.todayAmt,
-            m.monthAmt
-          );
+          liHtml += '<li>' + formatCatalogBlockHtml(ap.name, m) + '</li>';
         }
 
         var startSlot = assigned.length + 1;
         for (var slotNum = startSlot; slotNum <= 200; slotNum++) {
           var presetLabel = ORDERED_CATALOG_200[slotNum - 1] || ("Bidhaa #" + slotNum);
-          liHtml += formatCatalogItem200(
-            getProductCategory(presetLabel),
-            presetLabel,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-          );
+          liHtml += '<li>' + formatCatalogBlockHtml(presetLabel, {
+            initial: 0,
+            remaining: 0,
+            buyTotal: 0,
+            retailPrice: 0,
+            soldToday: 0,
+            soldMonth: 0
+          }) + '</li>';
         }
 
         document.getElementById("wf_i_title").textContent = emp.name + " — Duka: " + brLabel(emp.branch_id);
-        document.getElementById("wf_i_sub").textContent = "Simu: " + (emp.phone || "-") + " | Aina Zilizopo: " + assigned.length + " | Vitu Alivyouza: " + st.totalQty;
+        document.getElementById("wf_i_sub").textContent = "Simu: " + (emp.phone || "-") + " | Vitu Alivyouza (Jumla ya Idadi): " + st.totalQty;
 
         document.getElementById("wf_init_stock").textContent = String(totEmpInit);
         document.getElementById("wf_used_stock").textContent = String(totEmpUsed);
@@ -1491,8 +1579,7 @@
         for (var i = 0; i < st.rows.length; i++) {
           var r = st.rows[i];
           var rowGross = Number(r.total_amount || 0) - Number(r.cost_amount || 0);
-          soldHtml += "<div>• Aina: <b>" + getProductCategory(r.product_name) +
-            "</b> | Jina: <b>" + (r.product_name || "Bidhaa") +
+          soldHtml += "<div>• Jina: <b>" + (r.product_name || "Bidhaa") +
             "</b> | Idadi: <b>" + r.quantity +
             "</b> | Kiasi Alichouza: <b>" + money(r.total_amount) +
             "</b> | Faida: <b>" + money(rowGross) +
@@ -1628,9 +1715,17 @@
         qr.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 230, height: 130 } }, function(code) {
           var c = (code || "").trim();
           stopCam();
-          if (scanMode === "mauzo") { document.getElementById("m_code").value = c; findProd(); }
-          else { document.getElementById("st_code").value = c; if (!document.getElementById("st_sku").value) document.getElementById("st_sku").value = c; }
-          msg("QR/Barcode imesomwa: " + c);
+          if (scanMode === "mauzo") {
+            document.getElementById("m_code").value = c;
+            findProd();
+            msg("QR/Barcode imesomwa: " + c);
+          } else if (scanMode === "portal") {
+            handlePortalAutoScanSale(c);
+          } else {
+            document.getElementById("st_code").value = c;
+            if (!document.getElementById("st_sku").value) document.getElementById("st_sku").value = c;
+            msg("QR/Barcode imesomwa: " + c);
+          }
         }, function(){}).catch(function(e) { msg("Kamera: " + e); });
       }
 
@@ -1695,6 +1790,7 @@
         var costAmt = q * Number(pickedProd.wholesale_price || 0);
 
         var saleRow = {
+          id: "sl-" + Date.now(),
           employee_id: empId,
           branch_id: brId,
           product_id: String(pickedProd.id || ""),
@@ -1733,7 +1829,7 @@
         var cost = parseFloat(document.getElementById("st_cost").value) || 0;
 
         if (!sku || !name || isNaN(qty) || isNaN(sell)) {
-          msg("Jaza SKU/QR, jina la bidhaa, stoku, na kiasi cha kuuza.");
+          msg("Jaza SKU/QR, jina la bidhaa, stoku, na kiasi cha kuuza rejareja.");
           return;
         }
 
@@ -1801,15 +1897,14 @@
         var html = "";
         for (var i = 0; i < state.prods.length; i++) {
           var p = state.prods[i];
-          var m = getProductSalesBreakdown(p, state.sales);
-          html += '<div class="list-box">Aina: <b>' + getProductCategory(p.name) +
-            "</b> | Jina: <b>" + p.name + "</b> — SKU/QR: <b>" + (p.sku || p.barcod) +
+          var m = getProductDetailedMetrics(p, state.sales);
+          html += '<div class="list-box"><b>' + p.name + "</b> — SKU/QR: <b>" + (p.sku || p.barcod) +
             "</b> | Mfanyakazi: <b>" + staffNameById(p.employee_id) +
-            "</b> | Duka: <b>" + brLabel(p.branch_id) + "</b> | Iliyoingia: <b>" + m.initial +
-            "</b> | Iliyopungua: <b>" + m.reduced +
-            "</b> | Iliyobaki: <b>" + m.remaining +
-            "</b> | Kiasi cha Kuuza: <b>" + money(p.selling_price) +
-            "</b> | Kiasi cha Kununua (HQ): <b>" + money(p.wholesale_price) + "</b></div>";
+            "</b> | Duka: <b>" + brLabel(p.branch_id) + "</b><br>" +
+            "◇ " + p.name + " = <b>" + m.initial + "</b> | " +
+            "◇ idadi iliyobaki = <b>" + m.remaining + "</b> | " +
+            "◇ kiasi cha kununua jumla = <b>" + money(m.buyTotal) + "</b> | " +
+            "◇ kiasi cha kuuza rejareja = <b>" + money(m.retailPrice) + "</b></div>";
         }
         document.getElementById("st_list").innerHTML = html || "Hakuna stoku bado.";
       }
@@ -1838,7 +1933,9 @@
         else if (act === "unlockStaffPortal") unlockStaffPortal();
         else if (act === "ptChangePass") ptChangePass();
         else if (act === "ptFindProd") ptFindProd();
+        else if (act === "scanPortal") startCam("portal");
         else if (act === "ptSaveSale") ptSaveSale();
+        else if (act === "togglePortalReceipt") togglePortalReceipt();
         else if (act === "closePortal") document.getElementById("staffPortalModal").style.display = "none";
         else if (act === "deleteActiveBranch") deleteActiveBranch();
         else if (act === "deleteActiveStaff") deleteActiveStaff();
