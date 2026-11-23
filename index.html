@@ -252,13 +252,6 @@
 
     <!-- 1. HQ -->
     <div id="pg_hq" class="page on">
-      <div class="card">
-        <b>Makao Makuu (HQ) — Milton Elitwaza</b>
-        <div style="margin-top:6px; font-size:13px;">
-          Msimamizi Mkuu: <b>Milton Elitwaza</b> | Laini ya Vodacom: <b>0768829648</b> | Mauzo Yaliyopokelewa: <b id="hq_live_count">0</b>
-        </div>
-      </div>
-
       <div class="two-col">
         <div class="card" style="margin-bottom:0;">
           <b>Ongeza Wafanyakazi (Pembeni)</b>
@@ -339,7 +332,7 @@
     <div id="pg_maduka" class="page">
       <div class="card">
         <div class="box-head">
-          <b>Maduka Yote (Gusa Duka Kuona Stoku Yote, Idadi Iliyouzwa &amp; Faida)</b>
+          <b>Maduka Yote (Gusa Duka Kuona Stoku Kwanza, Kisha Mauzo &amp; Faida Chini)</b>
           <button type="button" class="del-btn" data-act="deleteActiveBranch">Futa Duka Lililochaguliwa</button>
         </div>
         <div id="md_list" style="margin-top:8px;"></div>
@@ -348,18 +341,12 @@
           <b id="md_d_title">Duka Lililochaguliwa</b>
           <div id="md_d_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
 
-          <div class="grid4">
-            <div class="stat"><small>Mauzo ya Duka</small><b id="md_sales">0</b></div>
-            <div class="stat"><small>Idadi Aliyouza (Pcs)</small><b id="md_sold_qty">0</b></div>
-            <div class="stat"><small>Faida Iliyoingia</small><b id="md_gross_profit">0</b></div>
-            <div class="stat"><small>Faida Halisi (Baada ya Nauli)</small><b id="md_profit">0</b></div>
-          </div>
-
+          <!-- IDADI YA STOKU YA DUKA IANZIE JUU -->
           <div class="grid4">
             <div class="stat"><small>Stoku Iliyowekwa</small><b id="md_init_stock">0</b></div>
             <div class="stat"><small>Stoku Iliyopungua</small><b id="md_used_stock">0</b></div>
             <div class="stat"><small>Stoku Iliyobaki</small><b id="md_rem_stock">0</b></div>
-            <div class="stat"><small>Mtaji / Nauli</small><b id="md_cost_nauli">0</b></div>
+            <div class="stat"><small>Idadi Aliyouza (Pcs)</small><b id="md_sold_qty">0</b></div>
           </div>
 
           <div style="margin-top:10px;">
@@ -367,8 +354,16 @@
             <div id="md_stock_list" style="margin-top:6px; font-size:13px;"></div>
           </div>
 
+          <!-- MAUZO NA FAIDA YAWE CHINI -->
+          <div class="grid4" style="margin-top:12px;">
+            <div class="stat"><small>Mauzo ya Duka</small><b id="md_sales">0</b></div>
+            <div class="stat"><small>Faida Iliyoingia</small><b id="md_gross_profit">0</b></div>
+            <div class="stat"><small>Faida Halisi (Baada ya Nauli)</small><b id="md_profit">0</b></div>
+            <div class="stat"><small>Mtaji / Nauli</small><b id="md_cost_nauli">0</b></div>
+          </div>
+
           <div style="margin-top:10px;">
-            <b>Mauzo Yaliyotumwa Kwenye Duka Hili</b>
+            <b>Mauzo &amp; Faida Yaliyotumwa Kwenye Duka Hili</b>
             <div id="md_sales_list" style="margin-top:6px; font-size:13px;"></div>
           </div>
         </div>
@@ -424,7 +419,7 @@
 
       <div class="card">
         <div class="box-head">
-          <b>Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Stoku Aliyoingiziwa, Iliyopungua, Mauzo &amp; Faida)</b>
+          <b>Orodha ya Wafanyakazi (Gusa Mfanyakazi Kuona Stoku Aliyoingiziwa &amp; Zilizopungua)</b>
           <button type="button" class="del-btn" data-act="deleteActiveStaff">Futa Mfanyakazi Aliyechaguliwa</button>
         </div>
         <div id="wf_list" style="margin-top:8px;"></div>
@@ -434,17 +429,17 @@
           <div id="wf_i_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
 
           <div class="grid4">
-            <div class="stat"><small>Kiasi Alichouza</small><b id="wf_sales">0</b></div>
-            <div class="stat"><small>Faida Iliyoingia</small><b id="wf_gross_profit">0</b></div>
-            <div class="stat"><small>Nauli Aliyotuma</small><b id="wf_nauli">0</b></div>
-            <div class="stat"><small>Kamisheni Yake (55%)</small><b id="wf_comm">0</b></div>
-          </div>
-
-          <div class="grid4">
             <div class="stat"><small>Stoku Aliyoingiziwa</small><b id="wf_init_stock">0</b></div>
             <div class="stat"><small>Stoku Iliyopungua</small><b id="wf_used_stock">0</b></div>
             <div class="stat"><small>Stoku Iliyobaki</small><b id="wf_rem_stock">0</b></div>
-            <div class="stat"><small>Mmiliki (45%)</small><b id="wf_owner_comm">0</b></div>
+            <div class="stat"><small>Kiasi Alichouza</small><b id="wf_sales">0</b></div>
+          </div>
+
+          <div class="grid4">
+            <div class="stat"><small>Faida Iliyoingia</small><b id="wf_gross_profit">0</b></div>
+            <div class="stat"><small>Nauli Aliyotuma</small><b id="wf_nauli">0</b></div>
+            <div class="stat"><small>Faida Halisi</small><b id="wf_net_profit">0</b></div>
+            <div class="stat"><small>Vitu Alivyouza</small><b id="wf_items_cnt">0</b></div>
           </div>
 
           <div style="margin-top:10px;">
@@ -572,7 +567,7 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v14";
+      var STORE_KEY = "tonphone_pos_hq_v15";
 
       var sb = null;
       try {
@@ -661,7 +656,6 @@
         }
       }
 
-      // Kokotoa idadi iliyoingizwa awali, iliyopungua (kuuzwa), na iliyobaki kwa bidhaa
       function getProductStockMetrics(prod, scopeSales) {
         var soldQty = 0;
         var pSku = String(prod.sku || prod.barcod || "").toLowerCase();
@@ -811,7 +805,6 @@
         msg("Password yako imebadilishwa kikamilifu.");
       }
 
-      // Lango la Mfanyakazi / Wakala: linaonyesha bei ya kuuza TU (bila bei ya jumla/mtaji)
       function ptFindProd() {
         var c = (document.getElementById("pt_code").value || "").trim().toLowerCase();
         var info = document.getElementById("pt_prod_info");
@@ -1098,7 +1091,6 @@
         return base;
       }
 
-      // Ndani ya kipengele cha Duka: stoku yote iliyowekwa, idadi iliyopungua/kuuzwa, na faida iliyoingia
       function renderBranchInner() {
         var b = brObj(state.activeBranchId);
         if (!b) return;
@@ -1124,17 +1116,17 @@
 
         document.getElementById("md_d_title").textContent = b.name;
         document.getElementById("md_d_sub").textContent = "Mkoa / Eneo: " + b.region + " | Aina za Bidhaa (SKU): " + st.stockItems.length;
-        document.getElementById("md_sales").textContent = money(st.sales);
-        document.getElementById("md_sold_qty").textContent = String(st.totalQty);
-        document.getElementById("md_gross_profit").textContent = money(st.grossProfit);
-        document.getElementById("md_profit").textContent = money(st.profit);
 
         document.getElementById("md_init_stock").textContent = String(totInitStock);
         document.getElementById("md_used_stock").textContent = String(totUsedStock);
         document.getElementById("md_rem_stock").textContent = String(totRemStock);
-        document.getElementById("md_cost_nauli").textContent = money(st.cost) + " / " + money(st.nauli);
-
+        document.getElementById("md_sold_qty").textContent = String(st.totalQty);
         document.getElementById("md_stock_list").innerHTML = sHtml || "Hakuna stoku zilizotagiwa kwenye duka hili bado.";
+
+        document.getElementById("md_sales").textContent = money(st.sales);
+        document.getElementById("md_gross_profit").textContent = money(st.grossProfit);
+        document.getElementById("md_profit").textContent = money(st.profit);
+        document.getElementById("md_cost_nauli").textContent = money(st.cost) + " / " + money(st.nauli);
 
         var rHtml = "";
         for (var j = 0; j < st.rows.length; j++) {
@@ -1149,7 +1141,6 @@
         document.getElementById("md_sales_list").innerHTML = rHtml || "Hakuna mauzo yaliyotumwa kwenye duka hili bado.";
       }
 
-      // Ndani ya jina la Mfanyakazi: stoku aliyoingiziwa, iliyopungua, iliyobaki, mauzo na faida
       function renderStaffInner() {
         var emp = staffObj(state.activeStaffId);
         if (!emp) return;
@@ -1176,15 +1167,16 @@
 
         document.getElementById("wf_i_title").textContent = emp.name + " — Duka: " + brLabel(emp.branch_id);
         document.getElementById("wf_i_sub").textContent = "Simu: " + (emp.phone || "-") + " | Vitu Alivyouza (Jumla ya Idadi): " + st.totalQty;
-        document.getElementById("wf_sales").textContent = money(st.sales);
-        document.getElementById("wf_gross_profit").textContent = money(st.grossProfit);
-        document.getElementById("wf_nauli").textContent = money(st.nauli);
-        document.getElementById("wf_comm").textContent = money(st.staffComm);
 
         document.getElementById("wf_init_stock").textContent = String(totEmpInit);
         document.getElementById("wf_used_stock").textContent = String(totEmpUsed);
         document.getElementById("wf_rem_stock").textContent = String(totEmpRem);
-        document.getElementById("wf_owner_comm").textContent = money(st.ownerComm);
+        document.getElementById("wf_sales").textContent = money(st.sales);
+
+        document.getElementById("wf_gross_profit").textContent = money(st.grossProfit);
+        document.getElementById("wf_nauli").textContent = money(st.nauli);
+        document.getElementById("wf_net_profit").textContent = money(st.profit);
+        document.getElementById("wf_items_cnt").textContent = String(st.totalQty);
 
         document.getElementById("wf_assigned_stock").innerHTML = aHtml || "Hakuna stoku ya bidhaa iliyoingizwa kwa mfanyakazi huyu bado.";
 
@@ -1214,9 +1206,6 @@
       }
 
       function renderAll() {
-        var hqCnt = document.getElementById("hq_live_count");
-        if (hqCnt) hqCnt.textContent = String(state.sales.length);
-
         var bOpt = "", bHtml = "";
         for (var i = 0; i < state.branches.length; i++) {
           var b = state.branches[i];
@@ -1483,7 +1472,6 @@
         msg("Stoku (SKU/QR: " + sku + ") imehifadhiwa kwa " + staffNameById(empId) + " (" + brLabel(brId) + ")!");
       }
 
-      // HQ Pekee: inaonyesha bei ya jumla / mtaji
       function loadProds() {
         var html = "";
         for (var i = 0; i < state.prods.length; i++) {
