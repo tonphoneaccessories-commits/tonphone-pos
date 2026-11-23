@@ -146,16 +146,18 @@
     }
     .stat small { display: block; color: #334155; font-weight: bold; font-size: 11px; }
     .stat b { font-size: 15px; color: #1e3a8a; }
-    ol.stock-ol {
+    ol.stock-ol-200 {
       margin: 8px 0 0 0;
-      padding-left: 20px;
+      padding-left: 34px;
+      max-height: 460px;
+      overflow-y: auto;
     }
-    ol.stock-ol li {
+    ol.stock-ol-200 li {
       background: #f8fafc;
       border: 1px solid #cbd5e1;
       border-radius: 7px;
-      padding: 8px 10px;
-      margin-bottom: 6px;
+      padding: 7px 10px;
+      margin-bottom: 5px;
       font-size: 13px;
     }
     .slot-box {
@@ -326,7 +328,7 @@
         </div>
         <div class="row">
           <input id="st_sku" type="text" placeholder="SKU / QR Code (mf. ZNX-20W-01)" />
-          <input id="st_name" type="text" placeholder="Jina la bidhaa (mf. Zonix Fast Charger 20W)" />
+          <input id="st_name" type="text" placeholder="Jina la bidhaa (mf. Itel 2160)" />
         </div>
         <div class="row">
           <input id="st_code" type="text" placeholder="Barcode / QR value (hiari — hutumia SKU kama haina)" />
@@ -349,7 +351,7 @@
     <div id="pg_maduka" class="page">
       <div class="card">
         <div class="box-head">
-          <b>Maduka Yote (Gusa Duka Kuona Stoku, Mauzo, Faida &amp; Orodha ya Bidhaa Chini)</b>
+          <b>Maduka Yote (Gusa Duka Kuona Stoku, Mauzo, Faida &amp; Orodha No. 1–200 Chini)</b>
           <button type="button" class="del-btn" data-act="deleteActiveBranch">Futa Duka Lililochaguliwa</button>
         </div>
         <div id="md_list" style="margin-top:8px;"></div>
@@ -358,7 +360,6 @@
           <b id="md_d_title">Duka Lililochaguliwa</b>
           <div id="md_d_sub" style="font-size:12px; color:#334155; margin-top:4px;"></div>
 
-          <!-- STOKU YA DUKA (INAPUNGUA KIOTOMATI KWA KILA MAUZO) -->
           <div class="grid4">
             <div class="stat clickable" data-act="toggleBranchStockBox">
               <small>Stoku Iliyowekwa</small>
@@ -378,7 +379,6 @@
             </div>
           </div>
 
-          <!-- MAUZO NA FAIDA -->
           <div class="grid4" style="margin-top:10px;">
             <div class="stat"><small>Mauzo ya Duka</small><b id="md_sales">0</b></div>
             <div class="stat"><small>Faida Iliyoingia</small><b id="md_gross_profit">0</b></div>
@@ -391,10 +391,10 @@
             <div id="md_sales_list" style="margin-top:6px; font-size:13px;"></div>
           </div>
 
-          <!-- AINA ZA BIDHAA ZIMESUKUMWA CHINI MWISHO KWA ORODHA -->
+          <!-- ORODHA YA BIDHAA ZOTE NO. 1 MPAKA NO. 200 CHINI MWISHO -->
           <div id="md_stock_drawer" style="margin-top:14px; background:#ffffff; border:1px solid #93c5fd; border-radius:8px; padding:10px;">
             <div class="box-head">
-              <b>Orodha ya Aina za Bidhaa Zilizopo Dukani (<span id="md_sku_types_cnt">0</span>)</b>
+              <b>Orodha ya Bidhaa Dukani (No. 1 – No. 200 | Aina Zilizopo: <span id="md_sku_types_cnt">0</span>)</b>
               <button type="button" class="mini-btn" data-act="toggleBranchStockBox">Ficha / Onyesha</button>
             </div>
             <div id="md_stock_list" style="margin-top:6px;"></div>
@@ -600,7 +600,43 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v17";
+      var STORE_KEY = "tonphone_pos_hq_v18";
+
+      // Mpangilio maalum wa simu na betri kulingana na maelekezo yako
+      var ORDERED_CATALOG_200 = [
+        "Itel_2160",
+        "Itel 2161",
+        "Itel 2165",
+        "Tecno T101",
+        "Tecno T301",
+        "Tecno T102",
+        "Tecno T528",
+        "Kigtel K101",
+        "Kigtel K301",
+        "Kigtel K2160",
+        "Oking Ok2160",
+        "Oking Ok2165",
+        "Oking Ok101",
+        "Oking Ok102",
+        "Oking Ok2167",
+        "Ctel C2160",
+        "Ctel C101",
+        "Ctel C102",
+        "Ctel C2165",
+        "Ctel C2167",
+        "Calus T101",
+        "Calus T2160",
+        "Calus T301",
+        "Calus T2165",
+        "Calus T528",
+        "Calus T2656",
+        "Battery Itel bl 5c",
+        "Battery Itel 5l orgnal 100%",
+        "Battery Oraimo 5l c"
+      ];
+      for (var cIdx = ORDERED_CATALOG_200.length + 1; cIdx <= 200; cIdx++) {
+        ORDERED_CATALOG_200.push("Bidhaa Nyingine #" + cIdx);
+      }
 
       var sb = null;
       try {
@@ -690,19 +726,36 @@
         }
       }
 
-      // Idadi iliyoingia, iliyopungua, na iliyobaki (inajipunguza kiotomatiki kadri mauzo yanavyoingia)
+      function normName(s) {
+        return String(s || "").toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
+      }
+
+      function getCatalogRank(prodName) {
+        var n = normName(prodName);
+        if (!n) return 9999;
+        for (var i = 0; i < 29; i++) {
+          var target = normName(ORDERED_CATALOG_200[i]);
+          if (n === target || n.indexOf(target) !== -1 || target.indexOf(n) !== -1) {
+            return i;
+          }
+        }
+        return 500;
+      }
+
       function getProductStockMetrics(prod, scopeSales) {
         var soldQty = 0;
         var pSku = String(prod.sku || prod.barcod || "").toLowerCase();
         var pId = String(prod.id || "");
         var pBr = String(prod.branch_id || "");
+        var pName = normName(prod.name);
         for (var i = 0; i < scopeSales.length; i++) {
           var s = scopeSales[i];
           var sBr = String(s.branch_id || "");
           if (pBr && sBr && pBr !== sBr) continue;
           var sSku = String(s.sku || s.barcod || "").toLowerCase();
           var sPid = String(s.product_id || "");
-          if ((pId && sPid && pId === sPid) || (pSku && sSku && pSku === sSku)) {
+          var sName = normName(s.product_name);
+          if ((pId && sPid && pId === sPid) || (pSku && sSku && pSku === sSku) || (pName && sName && pName === sName)) {
             soldQty += Number(s.quantity || 0);
           }
         }
@@ -718,7 +771,6 @@
         };
       }
 
-      // Husawazisha stoku zote za bidhaa kulingana na mauzo yaliyopo
       function recalculateAllProductStocks() {
         for (var i = 0; i < state.prods.length; i++) {
           var p = state.prods[i];
@@ -1152,10 +1204,18 @@
         recalculateAllProductStocks();
         var st = calcBranchStats(b.id);
         var totInitStock = 0, totUsedStock = 0, totRemStock = 0;
-        var liHtml = "";
 
-        for (var i = 0; i < st.stockItems.length; i++) {
-          var item = st.stockItems[i];
+        // Panga bidhaa za duka kulingana na orodha uliyoitaja
+        var sortedItems = st.stockItems.slice().sort(function(a, c) {
+          var ra = getCatalogRank(a.name);
+          var rc = getCatalogRank(c.name);
+          if (ra !== rc) return ra - rc;
+          return String(a.name || "").localeCompare(String(c.name || ""));
+        });
+
+        var liHtml = "";
+        for (var i = 0; i < sortedItems.length; i++) {
+          var item = sortedItems[i];
           var m = getProductStockMetrics(item, st.rows);
           totInitStock += m.initial;
           totUsedStock += m.reduced;
@@ -1165,24 +1225,32 @@
             '<b>' + item.name + '</b> — SKU/QR: <b>' + (item.sku || item.barcod) + '</b><br>' +
             'Stoku Iliyoingia: <b>' + m.initial +
             '</b> | Iliyopungua (Iliyouzwa): <b>' + m.reduced +
-            '</b> | <b>Iliyobaki Kiotomatiki: ' + m.remaining + '</b><br>' +
+            '</b> | <b>Idadi Iliyobaki Kiotomatiki: ' + m.remaining + '</b><br>' +
             'Bei ya Kuuza: <b>TZS ' + money(item.selling_price) +
             '</b> | Mtaji (HQ): <b>TZS ' + money(item.wholesale_price) +
             '</b> | Mhusika: <b>' + staffNameById(item.employee_id) + '</b>' +
             '</li>';
         }
 
+        // Jaza nafasi zilizobaki mpaka No. 200 kwa namba kushuka chini
+        var startSlot = sortedItems.length + 1;
+        for (var slotNum = startSlot; slotNum <= 200; slotNum++) {
+          var presetLabel = ORDERED_CATALOG_200[slotNum - 1] || ("Bidhaa #" + slotNum);
+          liHtml += '<li>' +
+            '<b>' + presetLabel + '</b> — <i>Hakuna stoku bado</i> | ' +
+            '<b>Idadi Iliyobaki: 0</b>' +
+            '</li>';
+        }
+
         document.getElementById("md_d_title").textContent = b.name;
-        document.getElementById("md_d_sub").textContent = "Mkoa / Eneo: " + b.region + " | Aina za Bidhaa Zilizopo: " + st.stockItems.length;
+        document.getElementById("md_d_sub").textContent = "Mkoa / Eneo: " + b.region + " | Aina za Bidhaa Zilizopo Dukani: " + sortedItems.length + " (Orodha No. 1–200)";
 
         document.getElementById("md_init_stock").textContent = String(totInitStock);
         document.getElementById("md_used_stock").textContent = String(totUsedStock);
         document.getElementById("md_rem_stock").textContent = String(totRemStock);
         document.getElementById("md_sold_qty").textContent = String(st.totalQty);
-        document.getElementById("md_sku_types_cnt").textContent = String(st.stockItems.length);
-        document.getElementById("md_stock_list").innerHTML = liHtml
-          ? ('<ol class="stock-ol">' + liHtml + '</ol>')
-          : "Hakuna aina ya bidhaa iliyowekwa kwenye duka hili bado.";
+        document.getElementById("md_sku_types_cnt").textContent = String(sortedItems.length);
+        document.getElementById("md_stock_list").innerHTML = '<ol class="stock-ol-200">' + liHtml + '</ol>';
 
         var drawer = document.getElementById("md_stock_drawer");
         if (drawer) drawer.style.display = branchStockOpen ? "block" : "none";
