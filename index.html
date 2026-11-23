@@ -69,6 +69,15 @@
       padding: 12px;
       margin-bottom: 10px;
     }
+    .lipa-badge {
+      background: #ffffff;
+      border: 1px solid #6ee7b7;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
     .two-col {
       display: grid;
       grid-template-columns: 1fr;
@@ -138,23 +147,6 @@
       border-radius: 8px;
       padding: 9px;
       margin-bottom: 8px;
-    }
-    .link-box {
-      background: #eff6ff;
-      border: 1px dashed #3b82f6;
-      border-radius: 8px;
-      padding: 9px;
-      font-size: 12px;
-      word-break: break-all;
-      margin-top: 6px;
-    }
-    #payCheckoutCard {
-      display: none;
-      background: #f0fdf4;
-      border: 2px solid #16a34a;
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 12px;
     }
     #staffPortalModal {
       display: none;
@@ -250,15 +242,6 @@
         </div>
 
         <button type="button" class="b-light" data-act="closePortal">Funga Lango</button>
-      </div>
-    </div>
-
-    <div id="payCheckoutCard">
-      <h3 style="margin:0 0 6px 0; color:#14532d;">Malipo ya TON-PHONE &amp; ACCESSORIES</h3>
-      <div id="payCheckoutDetails" style="font-size:14px; line-height:1.5;"></div>
-      <div class="row" style="margin-top:10px; margin-bottom:0;">
-        <button type="button" class="b-green" data-act="copyCheckoutPhone">Nakili Namba ya Vodacom (0768829648)</button>
-        <button type="button" class="b-light" data-act="closeCheckout">Rudi Kwenye Mfumo</button>
       </div>
     </div>
 
@@ -510,12 +493,16 @@
     <div id="pg_mawasiliano" class="page">
       <div class="vault-card">
         <div class="box-head">
-          <b>Akaunti Rasmi ya Kuhifadhi Hela (Kibubu / M-Pesa Wallet)</b>
-          <button type="button" class="mini-btn" data-act="copyVaultAcc">Nakili Namba ya Akaunti</button>
+          <b>Akaunti Maalum ya Kidigitali (Kibubu / Lipa Namba ya Mitandao Yote &amp; Benki)</b>
+          <button type="button" class="mini-btn" data-act="copyLipaCode">Nakili Kodi ya Lipa Namba</button>
         </div>
-        <div style="font-size:13px; margin-top:6px;">
-          Namba ya Akaunti: <b id="vault_acc_no">TON-MPESA-0768829648</b> | Mmiliki: <b>Milton Elitwaza</b> | Laini: <b>0768829648</b>
+
+        <div class="lipa-badge">
+          Namba ya Akaunti: <b id="vault_acc_no">TON-WALLET-768829648</b><br>
+          Kodi Fupi ya Lipa Namba (Tarakimu 7): <b id="vault_lipa_code">7688296</b> | Mmiliki: <b>Milton Elitwaza</b><br>
+          Mteja analipa kupitia <b>Mitandao Yote ya Simu</b> (Vodacom, Airtel, Tigo/Yas, Halotel) au <b>Benki</b> kwa kodi <b>7688296</b> na hela inakuja humu.
         </div>
+
         <div class="grid4">
           <div class="stat"><small>Salio Lililohifadhiwa</small><b id="vault_bal">0</b></div>
           <div class="stat"><small>Jumla Iliyoingia</small><b id="vault_in">0</b></div>
@@ -529,15 +516,15 @@
             <input id="vault_amt" type="number" step="any" min="0" placeholder="mf. 50000" />
           </div>
           <div>
-            <small><b>Maelezo / Namba ya Simu au Wakala</b></small>
-            <input id="vault_note" type="text" placeholder="mf. Malipo ya link / Toa kwa wakala Mwanza" />
+            <small><b>Mtandao / Benki / Maelezo</b></small>
+            <input id="vault_note" type="text" placeholder="mf. M-Pesa / Airtel / Benki / Toa kwenda simu au benki" />
           </div>
         </div>
 
         <div class="row" style="margin-bottom:6px;">
-          <button type="button" class="b-green" data-act="vaultDeposit">Hifadhi Hela Kwenye Akaunti (+)</button>
-          <button type="button" class="b-blue" data-act="vaultWithdrawToPhone">Toa / Tuma Kwenye Simu (0768829648)</button>
-          <button type="button" class="b-teal" data-act="vaultWithdrawAgent">Toa Kwa Wakala (-)</button>
+          <button type="button" class="b-green" data-act="vaultDeposit">Pokea / Hifadhi Kwenye Akaunti (+)</button>
+          <button type="button" class="b-blue" data-act="vaultWithdrawPhone">Tuma Mtandao wa Simu (-)</button>
+          <button type="button" class="b-teal" data-act="vaultWithdrawBank">Tuma Kwenda Benki (-)</button>
         </div>
 
         <div id="vault_tx_list" style="margin-top:8px; font-size:12px; color:#1e293b;">
@@ -558,72 +545,7 @@
         <select id="wa_contact_sel">
           <option value="">-- Chagua Mteja / Ujumbe Uliovutwa --</option>
         </select>
-      </div>
-
-      <div class="card">
-        <b>Link ya Kijana / Mfanyakazi Kuunganika na HQ (Kwa Password)</b>
-        <div style="font-size:12px; color:#334155; margin-top:4px;">
-          Kijana akifungua link hii, atadaiwa <b>password</b> kwanza ili kuingia na kusawazisha na HQ (na anaweza kubadilisha password yake ndani ya lango lake).
-        </div>
-        <div class="row" style="margin-top:8px;">
-          <div><small><b>Mfanyakazi / Kijana</b></small><select id="portal_emp_sel"></select></div>
-          <div><small><b>Password ya Kuingia Kwake</b></small><input id="portal_pass_set" type="text" placeholder="mf. ton123" /></div>
-        </div>
-        <div class="row">
-          <button type="button" class="b-blue" data-act="genStaffLink">Tengeneza Link ya Kijana (Password)</button>
-          <button type="button" class="b-light" data-act="copyStaffLink">Nakili Link ya Kijana</button>
-        </div>
-        <div id="staff_link_box" class="link-box">
-          Link ya Kijana (Inahitaji Password): Bonyeza "Tengeneza Link ya Kijana (Password)".
-        </div>
-      </div>
-
-      <div class="card">
-        <b>Mawasiliano na Mteja — WhatsApp Moja kwa Moja, SMS &amp; Malipo (Vodacom: 0768829648)</b>
-        <div style="font-size:12px; color:#334155; margin-top:4px;">
-          Mpokeaji Malipo: <b>Milton Elitwaza</b> | Laini ya Vodacom: <b>0768829648</b>
-        </div>
-
-        <div class="row" style="margin-top:10px;">
-          <div>
-            <small><b>Namba ya Mteja (WhatsApp / Simu)</b></small>
-            <input id="msg_phone" type="tel" placeholder="mf. 0768829648 au 255768829648" />
-          </div>
-          <div>
-            <small><b>Kiasi cha Malipo (TZS)</b></small>
-            <input id="msg_amt" type="number" step="any" min="0" placeholder="mf. 25000" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div>
-            <small><b>Kumbukumbu / Bidhaa</b></small>
-            <input id="msg_ref" type="text" placeholder="mf. Charger 20W — TON-PHONE" />
-          </div>
-          <div>
-            <small><b>URL ya Malipo ya Nje (Hiari)</b></small>
-            <input id="msg_pay_url" type="url" placeholder="Acha wazi kutumia ukurasa wa tovuti hii" />
-          </div>
-        </div>
-
-        <div class="row">
-          <button type="button" class="b-blue" data-act="genPayLink">Tengeneza Link ya Malipo</button>
-          <button type="button" class="b-light" data-act="copyPayLink">Nakili Link</button>
-        </div>
-
-        <div id="pay_link_box" class="link-box">
-          Link ya Malipo (Vodacom 0768829648 — Milton Elitwaza): Bonyeza "Tengeneza Link ya Malipo".
-        </div>
-
-        <div style="margin-top:10px;">
-          <small><b>Ujumbe wa Kutuma</b></small>
-          <textarea id="msg_body" placeholder="Habari mteja, karibu TON-PHONE & ACCESSORIES. Lipa kupitia Vodacom 0768829648 (Milton Elitwaza)..."></textarea>
-        </div>
-
-        <div class="row" style="margin-top:8px; margin-bottom:0;">
-          <button type="button" class="b-green" data-act="sendWhatsApp">Tuma WhatsApp Moja kwa Moja</button>
-          <button type="button" class="b-teal" data-act="sendSms">Tuma SMS ya Kawaida</button>
-        </div>
+        <div id="wa_selected_preview" style="font-size:12px; color:#0f172a; margin-top:6px;"></div>
       </div>
     </div>
   </div>
@@ -646,9 +568,9 @@
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
-      var OWNER_NAME = "Milton Elitwaza";
-      var VAULT_ACC_NO = "TON-MPESA-0768829648";
-      var STORE_KEY = "tonphone_pos_hq_v11";
+      var LIPA_CODE = "7688296";
+      var VAULT_ACC_NO = "TON-WALLET-768829648";
+      var STORE_KEY = "tonphone_pos_hq_v12";
 
       var sb = null;
       try {
@@ -658,8 +580,6 @@
       } catch (e) {}
 
       var order = ["hq", "mauzo", "stock", "maduka", "wafanyakazi", "commission", "ripoti", "mawasiliano"];
-      var generatedPayLink = "";
-      var generatedStaffLink = "";
       var importedWaEntries = [];
       var portalConfig = null;
       var portalPickedProd = null;
@@ -727,6 +647,18 @@
         el.textContent = t;
       }
 
+      function copyTextHelper(txt, okMsg) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(txt).then(function() {
+            msg(okMsg);
+          }).catch(function() {
+            msg("Nakili: " + txt);
+          });
+        } else {
+          msg("Nakili: " + txt);
+        }
+      }
+
       function renderVault() {
         if (!Array.isArray(state.vaultTxs)) state.vaultTxs = [];
         var totIn = 0, totOut = 0;
@@ -738,6 +670,7 @@
         }
         var bal = totIn - totOut;
         document.getElementById("vault_acc_no").textContent = VAULT_ACC_NO;
+        document.getElementById("vault_lipa_code").textContent = LIPA_CODE;
         document.getElementById("vault_bal").textContent = "TZS " + money(bal);
         document.getElementById("vault_in").textContent = "TZS " + money(totIn);
         document.getElementById("vault_out").textContent = "TZS " + money(totOut);
@@ -748,7 +681,7 @@
           var item = state.vaultTxs[j];
           var sign = item.type === "in" ? "+" : "-";
           html += "<div>• <b>" + sign + " TZS " + money(item.amount) + "</b> — " +
-            (item.label || (item.type === "in" ? "Hifadhi / Link" : "Kutoa")) +
+            (item.label || (item.type === "in" ? "Malipo ya Lipa Namba" : "Kutoa")) +
             " (" + (item.note || "-") + ")</div>";
         }
         document.getElementById("vault_tx_list").innerHTML = html || "Hakuna miamala ya akaunti bado.";
@@ -775,14 +708,14 @@
           type: type,
           amount: amt,
           label: label,
-          note: note || (type === "in" ? "Imewekwa kwenye akaunti" : "Imetolewa kwenye akaunti"),
+          note: note || (type === "in" ? "Lipa Namba " + LIPA_CODE : "Imetumwa"),
           created_at: new Date().toISOString()
         });
         document.getElementById("vault_amt").value = "";
         document.getElementById("vault_note").value = "";
         saveLocalState();
         renderVault();
-        msg(label + ": TZS " + money(amt) + " imerekodiwa kwenye akaunti " + VAULT_ACC_NO + ".");
+        msg(label + ": TZS " + money(amt) + " imekamilika kwenye akaunti " + VAULT_ACC_NO + ".");
       }
 
       function buildStaffPortalUrl(empId, brId, pass) {
@@ -798,35 +731,6 @@
       function checkUrlParams() {
         try {
           var params = new URLSearchParams(window.location.search || "");
-          if (params.get("pay") === "1") {
-            var vLine = params.get("vodacom") || VODACOM_LINE;
-            var oName = params.get("name") || OWNER_NAME;
-            var amt = parseFloat(params.get("amount") || "0") || 0;
-            var ref = params.get("ref") || "TON-PHONE";
-            var card = document.getElementById("payCheckoutCard");
-            var det = document.getElementById("payCheckoutDetails");
-            if (card && det) {
-              det.innerHTML =
-                "Mpokeaji: <b>" + oName + "</b><br>" +
-                "Akaunti ya Kuhifadhi: <b>" + VAULT_ACC_NO + "</b><br>" +
-                "Laini ya Vodacom: <b>" + vLine + "</b><br>" +
-                "Kiasi: <b>TZS " + money(amt) + "</b><br>" +
-                "Kumbukumbu: <b>" + ref + "</b>";
-              card.style.display = "block";
-            }
-            if (amt > 0) {
-              state.vaultTxs.unshift({
-                id: "vtx-link-" + Date.now(),
-                type: "in",
-                amount: amt,
-                label: "Malipo ya Link",
-                note: ref + " (" + vLine + ")",
-                created_at: new Date().toISOString()
-              });
-              saveLocalState();
-              renderVault();
-            }
-          }
           if (params.get("staff_portal") === "1") {
             var empId = params.get("emp") || "";
             var brId = params.get("br") || HQ_B;
@@ -935,27 +839,6 @@
         } else {
           msg("Mauzo yamehifadhiwa!");
         }
-      }
-
-      function genStaffLink() {
-        var empId = document.getElementById("portal_emp_sel").value || state.activeStaffId;
-        var pass = (document.getElementById("portal_pass_set").value || "").trim() ||
-          (state.staffPasswords && state.staffPasswords[empId]) || "";
-        if (!pass) { msg("Weka password ya mfanyakazi/kijana kwanza."); return; }
-        state.staffPasswords[empId] = pass;
-        saveLocalState();
-        var emp = staffObj(empId);
-        var brId = emp ? emp.branch_id : state.activeBranchId;
-        generatedStaffLink = buildStaffPortalUrl(empId, brId, pass);
-        document.getElementById("staff_link_box").innerHTML =
-          "<b>Link ya " + (emp ? emp.name : "Mfanyakazi") + " (Password: " + pass + "):</b><br>" + generatedStaffLink;
-        msg("Link ya mfanyakazi yenye password imetengenezwa!");
-      }
-
-      function copyStaffLink() {
-        if (!generatedStaffLink) genStaffLink();
-        if (!generatedStaffLink) return;
-        copyTextHelper(generatedStaffLink, "Link ya kijana imenakiliwa!");
       }
 
       function deleteActiveBranch() {
@@ -1305,10 +1188,8 @@
         document.getElementById("m_emp").innerHTML = sOpt;
         document.getElementById("st_emp_tag").innerHTML = stEmpOpt;
         document.getElementById("cm_emp_sel").innerHTML = sOpt;
-        document.getElementById("portal_emp_sel").innerHTML = sOpt;
         document.getElementById("m_emp").value = state.activeStaffId;
         document.getElementById("cm_emp_sel").value = state.activeStaffId;
-        document.getElementById("portal_emp_sel").value = state.activeStaffId;
         document.getElementById("wf_list").innerHTML = sHtml;
 
         renderBranchInner();
@@ -1561,79 +1442,6 @@
           "</b> | 45% Mmiliki: <b>" + money(st.ownerComm) + "</b>";
       }
 
-      function normalizePhone(raw) {
-        var digits = String(raw || "").replace(/\D+/g, "");
-        if (!digits) return "";
-        if (digits.indexOf("0") === 0 && digits.length === 10) {
-          return "255" + digits.slice(1);
-        }
-        return digits;
-      }
-
-      function buildPayLink() {
-        var customUrl = (document.getElementById("msg_pay_url").value || "").trim();
-        var amt = parseFloat(document.getElementById("msg_amt").value) || 0;
-        var ref = (document.getElementById("msg_ref").value || "TON-PHONE").trim();
-        var baseUrl = customUrl || (window.location.origin + window.location.pathname);
-        if (!baseUrl || baseUrl.indexOf("http") !== 0) {
-          baseUrl = "https://tonphoneaccessories.github.io/tonphone-pos/";
-        }
-        var sep = baseUrl.indexOf("?") === -1 ? "?" : "&";
-        generatedPayLink = baseUrl + sep + "pay=1&vodacom=" + encodeURIComponent(VODACOM_LINE) +
-          "&name=" + encodeURIComponent(OWNER_NAME) +
-          "&amount=" + encodeURIComponent(String(amt)) +
-          "&ref=" + encodeURIComponent(ref);
-
-        var box = document.getElementById("pay_link_box");
-        if (box) {
-          box.innerHTML = "<b>Link ya Malipo (Vodacom " + VODACOM_LINE + " — " + OWNER_NAME + "):</b><br>" + generatedPayLink;
-        }
-        var bodyEl = document.getElementById("msg_body");
-        if (bodyEl && !bodyEl.value.trim()) {
-          bodyEl.value = "Habari mteja, karibu TON-PHONE & ACCESSORIES. Kiasi: TZS " + money(amt) +
-            " (" + ref + "). Lipa kupitia Vodacom " + VODACOM_LINE + " (" + OWNER_NAME + ") au fungua link: " + generatedPayLink;
-        } else if (bodyEl && bodyEl.value.indexOf(generatedPayLink) === -1) {
-          bodyEl.value = bodyEl.value.trim() + "\nLink ya Malipo (Vodacom " + VODACOM_LINE + "): " + generatedPayLink;
-        }
-        msg("Link ya malipo imetengenezwa na inafunguka vizuri kwenye kivinjari.");
-      }
-
-      function copyTextHelper(txt, okMsg) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(txt).then(function() {
-            msg(okMsg);
-          }).catch(function() {
-            msg("Nakili: " + txt);
-          });
-        } else {
-          msg("Nakili: " + txt);
-        }
-      }
-
-      function copyPayLink() {
-        if (!generatedPayLink) buildPayLink();
-        copyTextHelper(generatedPayLink, "Link ya malipo imenakiliwa!");
-      }
-
-      function sendWhatsApp() {
-        var intlPhone = normalizePhone(document.getElementById("msg_phone").value);
-        if (!intlPhone) { msg("Ingiza namba ya mteja ya WhatsApp."); return; }
-        var text = (document.getElementById("msg_body").value || "").trim();
-        if (!text) { buildPayLink(); text = (document.getElementById("msg_body").value || "").trim(); }
-        var waUrl = "https://wa.me/" + intlPhone + "?text=" + encodeURIComponent(text);
-        window.open(waUrl, "_blank");
-        msg("Inafungua WhatsApp moja kwa moja kwa +" + intlPhone + "...");
-      }
-
-      function sendSms() {
-        var rawPhone = (document.getElementById("msg_phone").value || "").trim().replace(/\s+/g, "");
-        if (!rawPhone) { msg("Ingiza namba ya mteja ya kutuma SMS."); return; }
-        var text = (document.getElementById("msg_body").value || "").trim();
-        var smsUrl = "sms:" + encodeURIComponent(rawPhone) + (text ? ("?body=" + encodeURIComponent(text)) : "");
-        window.location.href = smsUrl;
-        msg("Inafungua SMS kwa " + rawPhone + "...");
-      }
-
       function runAction(el) {
         var pg = el.getAttribute("data-pg");
         if (pg) { goPage(pg); return; }
@@ -1642,12 +1450,10 @@
         if (!act) return;
 
         if (act === "syncNow") syncFromSupabase(false);
-        else if (act === "closeCheckout") document.getElementById("payCheckoutCard").style.display = "none";
-        else if (act === "copyCheckoutPhone") copyTextHelper(VODACOM_LINE, "Namba ya Vodacom " + VODACOM_LINE + " imenakiliwa!");
-        else if (act === "copyVaultAcc") copyTextHelper(VAULT_ACC_NO, "Namba ya akaunti " + VAULT_ACC_NO + " imenakiliwa!");
-        else if (act === "vaultDeposit") addVaultTx("in", "Hifadhi Kwenye Akaunti");
-        else if (act === "vaultWithdrawToPhone") addVaultTx("out", "Toa / Tuma Kwenye Simu (" + VODACOM_LINE + ")");
-        else if (act === "vaultWithdrawAgent") addVaultTx("out", "Toa Kwa Wakala");
+        else if (act === "copyLipaCode") copyTextHelper(LIPA_CODE, "Kodi ya Lipa Namba " + LIPA_CODE + " imenakiliwa!");
+        else if (act === "vaultDeposit") addVaultTx("in", "Malipo ya Lipa Namba (" + LIPA_CODE + ")");
+        else if (act === "vaultWithdrawPhone") addVaultTx("out", "Imetumwa Mtandao wa Simu");
+        else if (act === "vaultWithdrawBank") addVaultTx("out", "Imetumwa Kwenda Benki");
         else if (act === "unlockStaffPortal") unlockStaffPortal();
         else if (act === "ptChangePass") ptChangePass();
         else if (act === "ptFindProd") ptFindProd();
@@ -1656,8 +1462,6 @@
         else if (act === "deleteActiveBranch") deleteActiveBranch();
         else if (act === "deleteActiveStaff") deleteActiveStaff();
         else if (act === "importWaFile") importWaFile();
-        else if (act === "genStaffLink") genStaffLink();
-        else if (act === "copyStaffLink") copyStaffLink();
         else if (act === "stopScan") stopCam();
         else if (act === "scanMauzo") startCam("mauzo");
         else if (act === "scanStock") startCam("stock");
@@ -1667,10 +1471,6 @@
         else if (act === "loadProds") loadProds();
         else if (act === "runReport") runReport();
         else if (act === "saveFiveStaff") saveFiveStaff();
-        else if (act === "genPayLink") buildPayLink();
-        else if (act === "copyPayLink") copyPayLink();
-        else if (act === "sendWhatsApp") sendWhatsApp();
-        else if (act === "sendSms") sendSms();
         else if (act === "addBr") {
           var bn = (document.getElementById("hq_br_name").value || "").trim();
           var br = (document.getElementById("hq_br_reg").value || "").trim();
@@ -1752,8 +1552,8 @@
           var idx = parseInt(ev.target.value, 10);
           var item = (!isNaN(idx) && importedWaEntries[idx]) ? importedWaEntries[idx] : null;
           if (item) {
-            if (item.phone) document.getElementById("msg_phone").value = item.phone;
-            document.getElementById("msg_body").value = "Habari " + item.sender + ", karibu tena TON-PHONE & ACCESSORIES.";
+            document.getElementById("wa_selected_preview").innerHTML =
+              "Mteja: <b>" + item.sender + "</b> | Simu: <b>" + (item.phone || "-") + "</b> | Ujumbe: " + item.body;
             msg("Umejiunga na mteja: " + item.sender);
           }
         }
