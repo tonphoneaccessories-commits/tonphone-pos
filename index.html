@@ -16,7 +16,7 @@
       color: #0f172a;
     }
     .wrap {
-      max-width: 860px;
+      max-width: 980px;
       margin: 0 auto;
       background: #ffffff;
       border-radius: 12px;
@@ -61,6 +61,38 @@
       border-radius: 9px;
       padding: 11px;
       margin-bottom: 10px;
+    }
+    .comm-split {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media (min-width: 760px) {
+      .comm-split { grid-template-columns: 1.05fr 1.25fr; }
+    }
+    .side-feed-box {
+      background: #f1f5f9;
+      border: 2px solid #94a3b8;
+      border-radius: 9px;
+      padding: 10px;
+      max-height: 460px;
+      overflow-y: auto;
+    }
+    .staff-feed-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-left: 4px solid #1d4ed8;
+      border-radius: 8px;
+      padding: 9px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .staff-feed-card.active-user {
+      border-color: #15803d;
+      border-left-color: #15803d;
+      background: #f0fdf4;
     }
     .bonus-card {
       background: #fefce8;
@@ -627,89 +659,99 @@
       </div>
     </div>
 
-    <!-- 6. COMMISSION (HQ INAJAZA FAIDA & KUTUMA KAMISHENI KWENYE MFUMO WA MFANYAKAZI) -->
+    <!-- 6. COMMISSION (PEMBENI KUNA ALICHOJAZA KILA MFANYAKAZI KWA JINA LA MTUMIAJI + HQ KUJAZA FAIDA & KUTUMA) -->
     <div id="pg_commission" class="page">
       <div class="card">
         <div class="box-head">
-          <b>Commission — HQ Kujaza Faida &amp; Kutuma Kamisheni Kwenye Mfumo wa Mfanyakazi</b>
+          <b>Commission — Angalia Pembeni Alichojaza Mtumiaji, Jaza Faida &amp; Tuma</b>
           <button type="button" class="b-green" style="width:auto;" data-act="approveAllPendingComm">Pitisha Commission Zote Zilizopo Hewani</button>
         </div>
-        <div class="row" style="margin-top:8px;">
-          <div><small><b>Mfanyakazi / Wakala</b></small><select id="cm_emp_sel"></select></div>
-        </div>
-        <div id="cm_detail" style="margin-top:8px; font-size:13px;"></div>
 
-        <!-- SEHEMU YA HQ KUJAZA FAIDA NA KUICLICK ITUME KAMISHENI KWENYE MFUMO WA MFANYAKAZI -->
-        <div class="card" style="background:#eff6ff; border:2px solid #2563eb; margin-top:10px;">
-          <b>Jaza Faida &amp; Tuma Kamisheni Kwenye Mfumo wa Mfanyakazi (Mtumaji: HQ)</b>
-          <div style="font-size:12px; color:#1e3a8a; margin-top:3px;">
-            Jaza kiasi cha <b>Faida (TZS)</b> ulichokokotoa kwa mauzo yake; ukiclick kitufe, kamisheni (55%) inaongezeka kwenye mfumo wake (mtumaji: HQ) bila yeye kuona faida.
+        <div class="comm-split">
+          <!-- UPANDE WA PEMBENI: ALICHOJAZA KILA MFANYAKAZI KWA JINA LA MTUMIAJI -->
+          <div class="side-feed-box">
+            <b>Pembeni: Alichojaza Kila Mfanyakazi (Kutokana na Jina la Mtumiaji)</b>
+            <div style="font-size:11px; color:#475569; margin:3px 0 8px 0;">
+              Mfanyakazi akijaza/akirekodi kwenye faili lake la kazi, inaonekana hapa kwa jina lake. Gusa mtumiaji kuchagua na kujaza faida/bonus umtumie.
+            </div>
+            <div id="cm_side_staff_feed">Hakuna taarifa zilizojazwa na wafanyakazi bado.</div>
           </div>
-          <div class="row" style="margin-top:8px; margin-bottom:0;">
-            <div>
-              <small><b>Faida Iliyopatikana (TZS)</b></small>
-              <input id="cm_hq_profit_input" type="number" step="any" min="0" placeholder="mf. 40000" />
-            </div>
-            <div>
-              <small><b>Maelezo / Mauzo Husika</b></small>
-              <input id="cm_hq_profit_note" type="text" placeholder="mf. Faida ya bidhaa alizouza" />
-            </div>
-            <div style="display:flex; align-items:flex-end;">
-              <button type="button" class="b-blue" data-act="sendHqProfitCommission">Tuma Kamisheni Kwenye Mfumo wa Mfanyakazi</button>
-            </div>
-          </div>
-        </div>
 
-        <div class="grid4">
-          <div class="stat"><small>Faida Iliyojazwa / Kuja</small><b id="cm_gross">0</b></div>
-          <div class="stat"><small>Nauli Iliyotumwa</small><b id="cm_nauli">0</b></div>
-          <div class="stat"><small>Faida Inayobaki</small><b id="cm_profit">0</b></div>
-          <div class="stat"><small>Bonus Iliyotolewa</small><b id="cm_bonus_tot">0</b></div>
-        </div>
-
-        <div style="margin-top:12px;">
-          <div class="stat comm-emp">
-            <small>Jumla ya Kamisheni ya Mfanyakazi (55% + Bonus — Mtumaji: HQ)</small>
-            <b id="cm_emp_55">0</b>
-          </div>
-        </div>
-
-        <div style="margin-top:10px;">
-          <div class="stat comm-owner">
-            <small>45% Ya Mmiliki / HQ</small>
-            <b id="cm_owner_45">0</b>
-          </div>
-        </div>
-
-        <!-- SEHEMU YA KUJAZA KUMUONGEZEA KAMISHENI KAMA BONUS -->
-        <div class="bonus-card">
-          <b>Ongeza Commission Kama Bonus (HQ Pekee — Mtumaji: HQ)</b>
-          <div style="font-size:12px; color:#713f12; margin-top:3px;">
-            Jaza kiasi cha bonus unachotaka kumuongezea mfanyakazi aliyechaguliwa; kitaingia moja kwa moja kwenye kamisheni yake na kuonekana kule kwake.
-          </div>
-          <div class="row" style="margin-top:8px; margin-bottom:0;">
-            <div>
-              <small><b>Kiasi cha Bonus (TZS)</b></small>
-              <input id="cm_bonus_amt" type="number" step="any" min="0" placeholder="mf. 15000" />
+          <!-- UPANDE WA HQ: JAZA FAIDA / BONUS & TUMA KWENYE MFUMO WA MFANYAKAZI -->
+          <div>
+            <div class="row" style="margin-top:0;">
+              <div><small><b>Jina la Mtumiaji / Mfanyakazi Aliyechaguliwa</b></small><select id="cm_emp_sel"></select></div>
             </div>
-            <div>
-              <small><b>Sababu / Maelezo ya Bonus</b></small>
-              <input id="cm_bonus_note" type="text" placeholder="mf. Bonus ya mauzo / motisha" />
+            <div id="cm_detail" style="margin-top:6px; font-size:13px;"></div>
+
+            <div class="card" style="background:#eff6ff; border:2px solid #2563eb; margin-top:10px;">
+              <b>Jaza Faida &amp; Tuma Kamisheni Kwenye Mfumo wa Mfanyakazi (Mtumaji: HQ)</b>
+              <div style="font-size:12px; color:#1e3a8a; margin-top:3px;">
+                Jaza <b>Faida (TZS)</b> kutokana na alichojaza mtumiaji; ukiclick kitufe, kamisheni (55%) inatumwa kwenye mfumo wake (mtumaji: HQ) bila yeye kuona faida.
+              </div>
+              <div class="row" style="margin-top:8px; margin-bottom:0;">
+                <div>
+                  <small><b>Faida Iliyopatikana (TZS)</b></small>
+                  <input id="cm_hq_profit_input" type="number" step="any" min="0" placeholder="mf. 40000" />
+                </div>
+                <div>
+                  <small><b>Maelezo / Mauzo Husika</b></small>
+                  <input id="cm_hq_profit_note" type="text" placeholder="mf. Faida ya bidhaa alizouza" />
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                  <button type="button" class="b-blue" data-act="sendHqProfitCommission">Tuma Kamisheni Kwenye Mfumo wa Mfanyakazi</button>
+                </div>
+              </div>
             </div>
-            <div style="display:flex; align-items:flex-end;">
-              <button type="button" class="b-amber" data-act="addStaffBonus">Tuma Bonus ya Commission</button>
+
+            <div class="grid4">
+              <div class="stat"><small>Faida Iliyojazwa / Kuja</small><b id="cm_gross">0</b></div>
+              <div class="stat"><small>Nauli Iliyotumwa</small><b id="cm_nauli">0</b></div>
+              <div class="stat"><small>Faida Inayobaki</small><b id="cm_profit">0</b></div>
+              <div class="stat"><small>Bonus Iliyotolewa</small><b id="cm_bonus_tot">0</b></div>
+            </div>
+
+            <div style="margin-top:10px;">
+              <div class="stat comm-emp">
+                <small>Jumla ya Kamisheni ya Mfanyakazi (55% + Bonus — Mtumaji: HQ)</small>
+                <b id="cm_emp_55">0</b>
+              </div>
+            </div>
+
+            <div style="margin-top:8px;">
+              <div class="stat comm-owner">
+                <small>45% Ya Mmiliki / HQ</small>
+                <b id="cm_owner_45">0</b>
+              </div>
+            </div>
+
+            <div class="bonus-card">
+              <b>Ongeza Commission Kama Bonus (HQ Pekee — Mtumaji: HQ)</b>
+              <div class="row" style="margin-top:8px; margin-bottom:0;">
+                <div>
+                  <small><b>Kiasi cha Bonus (TZS)</b></small>
+                  <input id="cm_bonus_amt" type="number" step="any" min="0" placeholder="mf. 15000" />
+                </div>
+                <div>
+                  <small><b>Sababu / Maelezo ya Bonus</b></small>
+                  <input id="cm_bonus_note" type="text" placeholder="mf. Bonus ya mauzo / motisha" />
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                  <button type="button" class="b-amber" data-act="addStaffBonus">Tuma Bonus ya Commission</button>
+                </div>
+              </div>
+              <div id="cm_bonus_list" style="margin-top:8px;"></div>
             </div>
           </div>
-          <div id="cm_bonus_list" style="margin-top:8px;"></div>
         </div>
 
         <div style="margin-top:14px;">
-          <b>Taarifa Zilizopo Hewani (Gusa "Ongeza Commission Sasa" Ili Iongezeke na Aone Kule Kwake)</b>
+          <b>Taarifa Zilizopo Hewani Kwa Mtumiaji Huyu (Gusa "Ongeza Commission Sasa" Ili Iongezeke na Aone Kule Kwake)</b>
           <div id="cm_pending_list" style="margin-top:6px; font-size:13px;"></div>
         </div>
 
         <div style="margin-top:14px;">
-          <b>Taarifa Zilizoidhinishwa na Kuongeza Commission</b>
+          <b>Taarifa Zilizoidhinishwa na Kutumwa Kwenye Mfumo wa Mfanyakazi (Mtumaji: HQ)</b>
           <div id="cm_feed_list" style="margin-top:6px; font-size:13px;"></div>
         </div>
       </div>
@@ -806,8 +848,8 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v27";
-      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v27";
+      var STORE_KEY = "tonphone_pos_hq_v28";
+      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v28";
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160",
@@ -1223,7 +1265,7 @@
           }
         }
         recalculateAllProductStocks();
-        saveLocalState(staffNameById(saleRow.employee_id) + " amerekodi mauzo (" + (saleRow.product_name || "Bidhaa") + ", Bei: TZS " + money(saleRow.unit_sold_price || saleRow.total_amount) + ") — ipo hewani kwa HQ.");
+        saveLocalState(staffNameById(saleRow.employee_id) + " amejaza mauzo (" + (saleRow.product_name || "Bidhaa") + ", Bei: TZS " + money(saleRow.unit_sold_price || saleRow.total_amount) + ") — yameonekana pembeni HQ.");
         renderAll();
         runReport();
         if (isStaffOnlyView && portalConfig) {
@@ -1231,7 +1273,7 @@
           renderPortalApprovedComm();
         }
         if (isRemote && !isStaffOnlyView) {
-          msg("Taarifa ya " + staffNameById(state.activeStaffId) + " imefika hewani! Jaza faida na tuma kamisheni kwenye Commission.");
+          msg("Mtumiaji " + staffNameById(state.activeStaffId) + " amejaza taarifa pembeni! Jaza faida na tuma kamisheni.");
         }
       }
 
@@ -1606,7 +1648,7 @@
 
         lastPortalReceipt = targetSale;
         document.getElementById("btn_toggle_receipt").style.display = "inline-block";
-        saveLocalState(staffNameById(targetSale.employee_id) + " amehifadhi bei aliyouza (TZS " + money(targetSale.unit_sold_price || targetSale.total_amount) + ") & nauli (TZS " + money(targetSale.transport_fee || 0) + ").");
+        saveLocalState(staffNameById(targetSale.employee_id) + " amejaza bei aliyouza (TZS " + money(targetSale.unit_sold_price || targetSale.total_amount) + ") & nauli (TZS " + money(targetSale.transport_fee || 0) + ") — yamefika pembeni HQ.");
         renderAll();
         runReport();
 
@@ -1619,7 +1661,7 @@
         }
 
         document.getElementById("pt_nauli").value = "";
-        msg("Bei uliyouza (TZS " + money(targetSale.unit_sold_price || targetSale.total_amount) + ") na nauli zimehifadhiwa!");
+        msg("Bei uliyouza (TZS " + money(targetSale.unit_sold_price || targetSale.total_amount) + ") na nauli zimehifadhiwa na kutumwa pembeni HQ!");
       }
 
       function togglePortalReceipt() {
@@ -2116,14 +2158,44 @@
         document.getElementById("wf_sold_stock").innerHTML = soldHtml || "Hakuna vitu vilivyouzwa na mfanyakazi huyu bado.";
       }
 
+      function renderSideStaffFeed() {
+        var sideBox = document.getElementById("cm_side_staff_feed");
+        if (!sideBox) return;
+        var activeId = String(state.activeStaffId || "");
+        var html = "";
+
+        for (var i = 0; i < state.sales.length; i++) {
+          var r = state.sales[i];
+          var empId = String(r.employee_id || "");
+          var uName = staffNameById(empId);
+          var isSel = (empId === activeId);
+          var statusLbl = isSaleApproved(r) ? "Imetumwa na HQ" : "Inasubiri Ujaze Faida / Utume";
+          html += '<div class="staff-feed-card ' + (isSel ? "active-user" : "") + '">' +
+            '<div class="box-head">' +
+            '<span>Mtumiaji: <b>' + uName + '</b></span>' +
+            '<span style="font-size:11px;color:#1d4ed8;">' + statusLbl + '</span>' +
+            '</div>' +
+            '<div style="margin-top:4px;">Bidhaa: <b>' + (r.product_name || "Bidhaa") + '</b> | Idadi: <b>' + r.quantity + '</b></div>' +
+            '<div>Bei Aliyouza: <b>TZS ' + money(r.unit_sold_price || r.total_amount) + '</b> | Jumla: <b>TZS ' + money(r.total_amount) + '</b> | Nauli: <b>TZS ' + money(r.transport_fee || 0) + '</b></div>' +
+            '<div style="margin-top:6px;">' +
+            '<button type="button" class="mini-btn" data-act="selectStaffForCommission" data-empid="' + empId + '">Chagua ' + uName + ' &amp; Jaza Faida</button>' +
+            '</div>' +
+            '</div>';
+        }
+
+        sideBox.innerHTML = html || "Hakuna taarifa zilizojazwa na wafanyakazi kwenye faili zao bado.";
+      }
+
       function renderCommission() {
         if (isStaffOnlyView) return;
         var emp = staffObj(state.activeStaffId);
         if (!emp) return;
         var st = calcStaffStats(emp.id);
 
+        renderSideStaffFeed();
+
         document.getElementById("cm_detail").innerHTML =
-          "Mfanyakazi: <b>" + emp.name + "</b> | Duka: <b>" + brLabel(emp.branch_id) +
+          "Mtumiaji / Mfanyakazi: <b>" + emp.name + "</b> | Duka: <b>" + brLabel(emp.branch_id) +
           "</b> | Hewani: <b>" + st.pendingCount + "</b> | Zilizoidhinishwa: <b>" + (st.count - st.pendingCount) + "</b>";
         document.getElementById("cm_gross").textContent = money(st.grossProfit);
         document.getElementById("cm_nauli").textContent = money(st.nauli);
@@ -2155,7 +2227,8 @@
 
           if (!isSaleApproved(r)) {
             pHtml += '<div class="air-row">' +
-              '<div>• <b>' + (r.product_name || "Bidhaa") + '</b> (Idadi: <b>' + r.quantity +
+              '<div>• Mtumiaji: <b>' + emp.name + '</b> | Bidhaa: <b>' + (r.product_name || "Bidhaa") +
+              '</b> (Idadi: <b>' + r.quantity +
               '</b>, Bei Aliyouza: <b>' + money(r.unit_sold_price || r.total_amount) +
               '</b>, Jumla: <b>' + money(r.total_amount) +
               '</b>, Nauli: <b>' + money(r.transport_fee || 0) +
@@ -2163,7 +2236,8 @@
               '<button type="button" class="b-green" style="width:auto;padding:8px 12px;" data-act="approveSaleComm" data-sid="' + sidAttr + '">Ongeza Commission Sasa</button>' +
               '</div>';
           } else {
-            aHtml += '<div class="approved-row">• <b>' + (r.product_name || "Bidhaa") + '</b> (Idadi: <b>' + r.quantity +
+            aHtml += '<div class="approved-row">• Mtumiaji: <b>' + emp.name + '</b> | Bidhaa: <b>' + (r.product_name || "Bidhaa") +
+              '</b> (Idadi: <b>' + r.quantity +
               '</b>, Bei Aliyouza: <b>' + money(r.unit_sold_price || r.total_amount) +
               '</b>, Jumla: <b>' + money(r.total_amount) +
               '</b>, Nauli: <b>' + money(r.transport_fee || 0) +
@@ -2175,7 +2249,7 @@
         var hqProfs = getHqProfitTotals(emp.id);
         for (var hIdx = 0; hIdx < hqProfs.list.length; hIdx++) {
           var hp = hqProfs.list[hIdx];
-          aHtml += '<div class="approved-row">• Faida Iliyojazwa na HQ: <b>TZS ' + money(hp.profit_amount) +
+          aHtml += '<div class="approved-row">• Mtumiaji: <b>' + emp.name + '</b> | Faida Iliyojazwa na HQ: <b>TZS ' + money(hp.profit_amount) +
             '</b> (' + (hp.note || "Kamisheni") + ') → +55% Mfanyakazi: <b>TZS ' + money(hp.staff_comm_55) +
             '</b> | +45% HQ: <b>TZS ' + money(hp.owner_share_45) + '</b> [Mtumaji: <b>HQ</b>]</div>';
         }
@@ -2521,6 +2595,15 @@
         else if (act === "scanPortal") startCam("portal");
         else if (act === "ptFinishNauli") ptFinishNauli();
         else if (act === "togglePortalReceipt") togglePortalReceipt();
+        else if (act === "selectStaffForCommission") {
+          var empTarget = el.getAttribute("data-empid");
+          if (empTarget) {
+            state.activeStaffId = empTarget;
+            saveLocalState();
+            renderAll();
+            msg("Umechagua mtumiaji: " + staffNameById(empTarget) + ". Jaza faida au bonus na umtumie.");
+          }
+        }
         else if (act === "approveSaleComm") approveSingleSaleCommission(el.getAttribute("data-sid"));
         else if (act === "approveAllPendingComm") approveAllPendingComm();
         else if (act === "sendHqProfitCommission") sendHqProfitCommission();
