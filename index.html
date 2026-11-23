@@ -144,6 +144,16 @@
       border-color: #2563eb;
       background: #dbeafe;
     }
+    .stat.comm-emp {
+      background: #ecfdf5;
+      border: 2px solid #059669;
+    }
+    .stat.comm-emp b { color: #065f46; font-size: 16px; }
+    .stat.comm-owner {
+      background: #eff6ff;
+      border: 2px solid #1d4ed8;
+    }
+    .stat.comm-owner b { color: #1e3a8a; font-size: 16px; }
     .stat small { display: block; color: #334155; font-weight: bold; font-size: 11px; }
     .stat b { font-size: 15px; color: #1e3a8a; }
     ol.stock-ol-200 {
@@ -479,7 +489,6 @@
             <div id="wf_sold_stock" style="margin-top:6px; font-size:13px;"></div>
           </div>
 
-          <!-- CHINI MWISHO: IDADI YA BIDHAA KUTOKANA NA AINA 1 HADI 200 KWA ORODHA KWENDA CHINI -->
           <div style="margin-top:14px; background:#ffffff; border:1px solid #93c5fd; border-radius:8px; padding:10px;">
             <b>Orodha ya Bidhaa za Mfanyakazi (No. 1 – No. 200 Kwenda Chini | Aina, Jina, Kiasi cha Kununua &amp; Kiasi cha Kuuza)</b>
             <div id="wf_assigned_stock" style="margin-top:6px;"></div>
@@ -491,20 +500,38 @@
     <!-- 6. COMMISSION -->
     <div id="pg_commission" class="page">
       <div class="card">
-        <b>Commission — Kamisheni ya Mfanyakazi (Automatic 55% / 45% Baada ya Nauli)</b>
+        <b>Commission — Kamisheni ya Mfanyakazi (Inajaza &amp; Kuongezeka Kiotomatiki)</b>
         <div class="row" style="margin-top:8px;">
-          <div><small><b>Chagua Mfanyakazi / Wakala</b></small><select id="cm_emp_sel"></select></div>
+          <div><small><b>Mfanyakazi / Wakala (Anachaguliwa Kiotomatiki Anapotuma Taarifa)</b></small><select id="cm_emp_sel"></select></div>
         </div>
         <div id="cm_detail" style="margin-top:8px; font-size:13px;"></div>
+
         <div class="grid4">
           <div class="stat"><small>Faida Iliyokuja</small><b id="cm_gross">0</b></div>
           <div class="stat"><small>Nauli Iliyotumwa</small><b id="cm_nauli">0</b></div>
           <div class="stat"><small>Faida Inayobaki</small><b id="cm_profit">0</b></div>
-          <div class="stat"><small>55% Mfanyakazi / 45% Mmiliki</small><b id="cm_split">0 / 0</b></div>
+          <div class="stat"><small>Kiasi Alichouza / Mtaji</small><b id="cm_sales_cost">0 / 0</b></div>
         </div>
-        <div style="margin-top:8px; font-size:13px;">
-          <b>Kiasi Alichouza:</b> <span id="cm_sales">0</span> |
-          <b>Mtaji Uliotengwa (HQ):</b> <span id="cm_cost">0</span>
+
+        <!-- 55% YA MFANYAKAZI -->
+        <div style="margin-top:12px;">
+          <div class="stat comm-emp">
+            <small>55% Kamisheni ya Mfanyakazi (Inajiongeza Kiotomatiki)</small>
+            <b id="cm_emp_55">0</b>
+          </div>
+        </div>
+
+        <!-- 45% YA MMILIKI IMETENGANISHWA CHINI -->
+        <div style="margin-top:10px;">
+          <div class="stat comm-owner">
+            <small>45% Ya Mmiliki / HQ (Imetenganishwa Chini — Inajiongeza Kiotomatiki)</small>
+            <b id="cm_owner_45">0</b>
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <b>Taarifa Zilizofika Kiotomatiki na Kuongeza Kamisheni</b>
+          <div id="cm_feed_list" style="margin-top:6px; font-size:13px;"></div>
         </div>
       </div>
     </div>
@@ -600,7 +627,7 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v19";
+      var STORE_KEY = "tonphone_pos_hq_v20";
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160",
@@ -792,6 +819,34 @@
         }
       }
 
+      // Hupokea mauzo mapya na kusasisha kamisheni ya mfanyakazi na mmiliki kiotomatiki
+      function ingestSaleAuto(saleRow, isRemote) {
+        var exists = state.sales.some(function(x) {
+          if (saleRow.id && x.id && String(saleRow.id) === String(x.id)) return true;
+          return x.created_at && saleRow.created_at &&
+            x.created_at === saleRow.created_at &&
+            String(x.employee_id) === String(saleRow.employee_id) &&
+            Number(x.total_amount || 0) === Number(saleRow.total_amount || 0);
+        });
+        if (!exists) {
+          state.sales.unshift(saleRow);
+        }
+        if (saleRow.employee_id) {
+          state.activeStaffId = String(saleRow.employee_id);
+        }
+        if (saleRow.branch_id) {
+          state.activeBranchId = String(saleRow.branch_id);
+        }
+        recalculateAllProductStocks();
+        saveLocalState();
+        renderAll();
+        runReport();
+        if (isRemote) {
+          var st = calcStaffStats(state.activeStaffId);
+          msg("Taarifa ya " + staffNameById(state.activeStaffId) + " imefika kiotomatiki! Kamisheni 55%: " + money(st.staffComm) + " | 45% Mmiliki: " + money(st.ownerComm));
+        }
+      }
+
       function renderVault() {
         if (!Array.isArray(state.vaultTxs)) state.vaultTxs = [];
         var totIn = 0, totOut = 0;
@@ -917,7 +972,6 @@
         msg("Password yako imebadilishwa kikamilifu.");
       }
 
-      // Mfanyakazi anaona Aina, Jina, Stoku Iliyobaki, na Bei ya Kuuza pekee (bila bei ya kununua/mtaji)
       function ptFindProd() {
         var c = (document.getElementById("pt_code").value || "").trim().toLowerCase();
         var info = document.getElementById("pt_prod_info");
@@ -968,18 +1022,17 @@
           payment_method: "cash",
           created_at: new Date().toISOString()
         };
-        state.sales.unshift(row);
-        recalculateAllProductStocks();
-        saveLocalState();
-        renderAll();
+
+        ingestSaleAuto(row, false);
         ptFindProd();
+
         if (sb) {
           sb.from("sales").insert([row]).then(function(r) {
             if (r.error) msg("Imehifadhiwa ndani; Supabase: " + r.error.message);
-            else msg("Mauzo na nauli vimetumwa HQ na stoku ya mfanyakazi imejipunguza kiotomatiki!");
+            else msg("Taarifa imefika HQ na kamisheni (55% / 45%) imeongezeka kiotomatiki!");
           });
         } else {
-          msg("Mauzo yamehifadhiwa na stoku ya mfanyakazi imejipunguza kiotomatiki!");
+          msg("Taarifa imefika na kamisheni (55% / 45%) imeongezeka kiotomatiki!");
         }
       }
 
@@ -1054,6 +1107,20 @@
         reader.readAsText(file);
       }
 
+      // Usikilizaji wa moja kwa moja (Realtime) kutoka Supabase ili taarifa za mfanyakazi zikifika zijaze na kuongeza kamisheni kiotomatiki
+      function bindRealtimeSales() {
+        if (!sb || typeof sb.channel !== "function") return;
+        try {
+          sb.channel("sales-auto-commission")
+            .on("postgres_changes", { event: "INSERT", schema: "public", table: "sales" }, function(payload) {
+              if (payload && payload.new) {
+                ingestSaleAuto(payload.new, true);
+              }
+            })
+            .subscribe();
+        } catch (e) {}
+      }
+
       function syncFromSupabase(silent) {
         if (!sb) {
           if (!silent) msg("Supabase haijaunganishwa; inaonyesha data ya kifaa hiki.");
@@ -1112,7 +1179,11 @@
 
         sb.from("sales").select("*").order("id", { ascending: false }).then(function(r) {
           if (!r.error && Array.isArray(r.data)) {
+            var prevLen = state.sales.length;
             state.sales = r.data;
+            if (r.data.length > 0 && r.data[0].employee_id && r.data.length !== prevLen) {
+              state.activeStaffId = String(r.data[0].employee_id);
+            }
             recalculateAllProductStocks();
             saveLocalState();
             renderAll();
@@ -1288,7 +1359,6 @@
         document.getElementById("md_sales_list").innerHTML = rHtml || "Hakuna mauzo yaliyotumwa kwenye duka hili bado.";
       }
 
-      // Sehemu ya Wafanyakazi: orodha No. 1 hadi 200 chini mwisho, stoku inajipunguza kiotomatiki, na aina/jina/kiasi cha kununua/kuuza
       function renderStaffInner() {
         var emp = staffObj(state.activeStaffId);
         if (!emp) return;
@@ -1363,18 +1433,39 @@
         document.getElementById("wf_sold_stock").innerHTML = soldHtml || "Hakuna vitu vilivyouzwa na mfanyakazi huyu bado.";
       }
 
+      // Sehemu ya Commission: 55% ya mfanyakazi, chini yake 45% ya mmiliki, na taarifa zinajaza/kuongeza kamisheni kiotomatiki
       function renderCommission() {
         var emp = staffObj(state.activeStaffId);
         if (!emp) return;
         var st = calcStaffStats(emp.id);
+
         document.getElementById("cm_detail").innerHTML =
-          "Mfanyakazi: <b>" + emp.name + "</b> | Duka: <b>" + brLabel(emp.branch_id) + "</b> | Mauzo: <b>" + st.count + "</b>";
+          "Mfanyakazi: <b>" + emp.name + "</b> | Duka: <b>" + brLabel(emp.branch_id) +
+          "</b> | Taarifa Zilizofika: <b>" + st.count + "</b> (Zinajaza &amp; kuongeza kamisheni kiotomatiki)";
         document.getElementById("cm_gross").textContent = money(st.grossProfit);
         document.getElementById("cm_nauli").textContent = money(st.nauli);
         document.getElementById("cm_profit").textContent = money(st.profit);
-        document.getElementById("cm_split").textContent = money(st.staffComm) + " / " + money(st.ownerComm);
-        document.getElementById("cm_sales").textContent = money(st.sales);
-        document.getElementById("cm_cost").textContent = money(st.cost);
+        document.getElementById("cm_sales_cost").textContent = money(st.sales) + " / " + money(st.cost);
+
+        // 55% ya mfanyakazi na 45% ya mmiliki zimetenganishwa wazi
+        document.getElementById("cm_emp_55").textContent = "TZS " + money(st.staffComm);
+        document.getElementById("cm_owner_45").textContent = "TZS " + money(st.ownerComm);
+
+        var fHtml = "";
+        for (var i = 0; i < st.rows.length; i++) {
+          var r = st.rows[i];
+          var rGross = Number(r.total_amount || 0) - Number(r.cost_amount || 0);
+          var rNet = rGross - Number(r.transport_fee || 0);
+          var rEmp55 = rNet * 0.55;
+          var rOwn45 = rNet * 0.45;
+          fHtml += "<div>• <b>" + (r.product_name || "Bidhaa") + "</b> (Idadi: <b>" + r.quantity +
+            "</b>, Mauzo: <b>" + money(r.total_amount) +
+            "</b>, Nauli: <b>" + money(r.transport_fee || 0) +
+            "</b>) → +55% Mfanyakazi: <b>" + money(rEmp55) +
+            "</b> | +45% Mmiliki: <b>" + money(rOwn45) + "</b></div>";
+        }
+        document.getElementById("cm_feed_list").innerHTML =
+          fHtml || "Hakuna taarifa zilizofika kwa mfanyakazi huyu bado. Zikifika, kamisheni itajaza na kuongezeka kiotomatiki.";
       }
 
       function renderAll() {
@@ -1552,21 +1643,16 @@
           created_at: new Date().toISOString()
         };
 
-        state.sales.unshift(saleRow);
-        recalculateAllProductStocks();
-        state.activeStaffId = empId;
-        state.activeBranchId = brId;
-        saveLocalState();
-        renderAll();
+        ingestSaleAuto(saleRow, false);
         estSale();
 
         if (sb) {
           sb.from("sales").insert([saleRow]).then(function(r) {
             if (r.error) msg("Imehifadhiwa ndani; Supabase: " + r.error.message);
-            else msg("Mauzo yamehifadhiwa na stoku imejipunguza kiotomatiki!");
+            else msg("Mauzo yamehifadhiwa na kamisheni (55% / 45%) imeongezeka kiotomatiki!");
           });
         } else {
-          msg("Mauzo yamehifadhiwa na stoku imejipunguza kiotomatiki!");
+          msg("Mauzo yamehifadhiwa na kamisheni (55% / 45%) imeongezeka kiotomatiki!");
         }
       }
 
@@ -1795,8 +1881,9 @@
       recalculateAllProductStocks();
       renderAll();
       checkUrlParams();
+      bindRealtimeSales();
       syncFromSupabase(true);
     })();
   </script>
 </body>
-            </html>
+</html>
