@@ -318,6 +318,14 @@
       padding: 9px;
       margin-bottom: 8px;
     }
+    .sold-slot-row {
+      background: #ffffff;
+      border: 1px solid #bfdbfe;
+      border-radius: 7px;
+      padding: 8px;
+      margin-bottom: 7px;
+    }
+    .sold-slot-row:last-child { margin-bottom: 0; }
     .receipt-box {
       display: none;
       background: #ffffff;
@@ -430,13 +438,55 @@
           </div>
         </div>
 
-        <!-- 2. SEHEMU YA KUJAZA BEI YA BIDHAA ALIYOUZA (INAFUATA CHINI YA COMMISSION) -->
+        <!-- 2. SEHEMU YA KUJAZA BEI YA BIDHAA ALIYOUZA (SEHEMU 1 - 6) -->
         <div class="card" style="background:#eff6ff; border:1px solid #93c5fd;">
-          <b>2. Bei ya Bidhaa Aliyouza (TZS)</b>
-          <div class="row" style="margin-top:6px; margin-bottom:0;">
-            <div>
-              <small><b>Bei Aliyouza (TZS — Jaza / Badilisha)</b></small>
-              <input id="pt_sold_price" type="number" step="any" min="0" value="" placeholder="Andika bei uliyouzia bidhaa" />
+          <b>2. Bei ya Bidhaa Aliyouza (TZS — Sehemu 1 mpk 6)</b>
+
+          <div class="sold-slot-row" style="margin-top:8px;">
+            <small><b>1. Jina la bidhaa aliyouza &amp; Kiasi alichouza (TZS)</b></small>
+            <div class="row" style="margin-top:4px; margin-bottom:0;">
+              <input id="pt_sold_item_1" type="text" placeholder="1. Andika jina la bidhaa aliyouza" />
+              <input id="pt_sold_price_1" type="number" step="any" min="0" value="" placeholder="1. Bei aliyouza (TZS — Jaza / Badilisha)" />
+            </div>
+          </div>
+
+          <div class="sold-slot-row">
+            <small><b>2. Jina la bidhaa aliyouza &amp; Kiasi alichouza (TZS)</b></small>
+            <div class="row" style="margin-top:4px; margin-bottom:0;">
+              <input id="pt_sold_item_2" type="text" placeholder="2. Andika jina la bidhaa aliyouza" />
+              <input id="pt_sold_price_2" type="number" step="any" min="0" value="" placeholder="2. Bei aliyouza (TZS — Jaza / Badilisha)" />
+            </div>
+          </div>
+
+          <div class="sold-slot-row">
+            <small><b>3. Jina la bidhaa aliyouza &amp; Kiasi alichouza (TZS)</b></small>
+            <div class="row" style="margin-top:4px; margin-bottom:0;">
+              <input id="pt_sold_item_3" type="text" placeholder="3. Andika jina la bidhaa aliyouza" />
+              <input id="pt_sold_price_3" type="number" step="any" min="0" value="" placeholder="3. Bei aliyouza (TZS — Jaza / Badilisha)" />
+            </div>
+          </div>
+
+          <div class="sold-slot-row">
+            <small><b>4. Jina la bidhaa aliyouza &amp; Kiasi alichouza (TZS)</b></small>
+            <div class="row" style="margin-top:4px; margin-bottom:0;">
+              <input id="pt_sold_item_4" type="text" placeholder="4. Andika jina la bidhaa aliyouza" />
+              <input id="pt_sold_price_4" type="number" step="any" min="0" value="" placeholder="4. Bei aliyouza (TZS — Jaza / Badilisha)" />
+            </div>
+          </div>
+
+          <div class="sold-slot-row">
+            <small><b>5. Jina la bidhaa aliyouza &amp; Kiasi alichouza (TZS)</b></small>
+            <div class="row" style="margin-top:4px; margin-bottom:0;">
+              <input id="pt_sold_item_5" type="text" placeholder="5. Andika jina la bidhaa aliyouza" />
+              <input id="pt_sold_price_5" type="number" step="any" min="0" value="" placeholder="5. Bei aliyouza (TZS — Jaza / Badilisha)" />
+            </div>
+          </div>
+
+          <div class="sold-slot-row">
+            <small><b>6. Jina la bidhaa aliyouza &amp; Kiasi alichouza (TZS)</b></small>
+            <div class="row" style="margin-top:4px; margin-bottom:0;">
+              <input id="pt_sold_item_6" type="text" placeholder="6. Andika jina la bidhaa aliyouza" />
+              <input id="pt_sold_price_6" type="number" step="any" min="0" value="" placeholder="6. Bei aliyouza (TZS — Jaza / Badilisha)" />
             </div>
           </div>
         </div>
@@ -475,7 +525,7 @@
               <input id="pt_qty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" />
             </div>
           </div>
-          <div id="pt_prod_info" class="card" style="background:#fff;">Chagua bidhaa kiotomatiki au scan QR/Barcode — inajirekodi yenyewe kiotomatiki; jaza bei uliyouza na nauli.</div>
+          <div id="pt_prod_info" class="card" style="background:#fff;">Chagua bidhaa kiotomatiki au scan QR/Barcode — inajirekodi yenyewe kiotomatiki; jaza jina la bidhaa na bei uliyouza (1–6) pamoja na nauli.</div>
           <div class="row" style="margin-bottom:0;">
             <button type="button" class="b-green" data-act="ptFinishNauli">Rekodi &amp; Kamilisha Nauli / Bei</button>
             <button type="button" id="btn_toggle_receipt" class="b-light" style="display:none;" data-act="togglePortalReceipt">Toa / Chapisha Risiti</button>
@@ -1426,7 +1476,7 @@
         if (!prod) return;
 
         var qEl = document.getElementById("ext_sell_qty") || document.getElementById("pt_qty");
-        var pEl = document.getElementById("ext_sell_price") || document.getElementById("pt_sold_price");
+        var pEl = document.getElementById("ext_sell_price") || document.getElementById("pt_sold_price_1");
         var nEl = document.getElementById("ext_sell_nauli") || document.getElementById("pt_nauli");
 
         var qty = parseFloat(qEl ? qEl.value : "1");
@@ -1738,6 +1788,25 @@
         listBox.innerHTML = cardHtml || "Hakuna bidhaa bado.";
       }
 
+      function collectPortalSoldSlots() {
+        var slots = [];
+        for (var idx = 1; idx <= 6; idx++) {
+          var itemEl = document.getElementById("pt_sold_item_" + idx);
+          var priceEl = document.getElementById("pt_sold_price_" + idx);
+          var itemName = itemEl ? itemEl.value.trim() : "";
+          var rawPrice = priceEl ? priceEl.value.trim() : "";
+          var priceNum = rawPrice !== "" ? parseFloat(rawPrice) : NaN;
+          if (itemName || (!isNaN(priceNum) && priceNum >= 0)) {
+            slots.push({
+              slot: idx,
+              name: itemName || ("Bidhaa #" + idx),
+              price: !isNaN(priceNum) && priceNum >= 0 ? priceNum : 0
+            });
+          }
+        }
+        return slots;
+      }
+
       function recordPortalSaleAuto(prodObj) {
         if (!prodObj) return;
         portalPickedProd = prodObj;
@@ -1747,7 +1816,11 @@
         if (typeInp) typeInp.value = prodObj.name;
         document.getElementById("pt_code").value = prodObj.sku || prodObj.barcod || prodObj.name;
 
-        var priceInputEl = document.getElementById("pt_sold_price");
+        var firstItemEl = document.getElementById("pt_sold_item_1");
+        if (firstItemEl && !firstItemEl.value.trim()) {
+          firstItemEl.value = prodObj.name;
+        }
+        var priceInputEl = document.getElementById("pt_sold_price_1");
         var typedPrice = parseFloat(priceInputEl ? priceInputEl.value : "");
         var unitSoldPrice = (!isNaN(typedPrice) && typedPrice > 0) ? typedPrice : Number(prodObj.selling_price || 0);
         if (priceInputEl && (isNaN(typedPrice) || typedPrice <= 0)) {
@@ -1820,7 +1893,9 @@
         var items = getPortalAvailableProducts();
         for (var i = 0; i < items.length; i++) {
           if (String(items[i].id) === String(pid)) {
-            var priceEl = document.getElementById("pt_sold_price");
+            var item1 = document.getElementById("pt_sold_item_1");
+            if (item1) item1.value = items[i].name;
+            var priceEl = document.getElementById("pt_sold_price_1");
             if (priceEl && Number(items[i].selling_price || 0) > 0) {
               priceEl.value = String(items[i].selling_price);
             }
@@ -1937,8 +2012,67 @@
 
       function ptFinishNauli() {
         var nauli = parseFloat(document.getElementById("pt_nauli").value);
-        var soldPriceVal = parseFloat(document.getElementById("pt_sold_price").value);
+        if (isNaN(nauli) || nauli < 0) nauli = 0;
         var qtyVal = parseFloat(document.getElementById("pt_qty").value);
+        if (isNaN(qtyVal) || qtyVal <= 0) qtyVal = 1;
+
+        var slots = collectPortalSoldSlots();
+        var empId = portalConfig ? portalConfig.empId : state.activeStaffId;
+        var brId = (portalConfig && portalConfig.brId) ? portalConfig.brId : HQ_B;
+
+        if (slots.length > 0) {
+          var summaryParts = [];
+          for (var sIdx = 0; sIdx < slots.length; sIdx++) {
+            var slItem = slots[sIdx];
+            var slotNauli = (sIdx === 0) ? nauli : 0;
+            var totalAmt = slItem.price;
+            var newSaleRow = {
+              id: "sl-" + Date.now() + "-" + slItem.slot,
+              employee_id: empId,
+              branch_id: brId,
+              product_id: portalPickedProd ? String(portalPickedProd.id || "") : "",
+              sku: "SLOT-" + slItem.slot,
+              barcod: "SLOT-" + slItem.slot,
+              product_name: slItem.name,
+              quantity: qtyVal,
+              unit_sold_price: slItem.price,
+              total_amount: totalAmt,
+              cost_amount: 0,
+              transport_fee: slotNauli,
+              payment_method: "cash",
+              commission_approved: false,
+              created_at: new Date().toISOString()
+            };
+            state.sales.unshift(newSaleRow);
+            if (sIdx === 0) lastPortalReceipt = newSaleRow;
+            summaryParts.push(slItem.slot + ". " + slItem.name + " (TZS " + money(slItem.price) + ")");
+
+            if (sb) {
+              sb.from("sales").insert([{
+                id: newSaleRow.id,
+                employee_id: newSaleRow.employee_id,
+                branch_id: newSaleRow.branch_id,
+                barcod: newSaleRow.barcod,
+                product_name: newSaleRow.product_name,
+                quantity: newSaleRow.quantity,
+                total_amount: newSaleRow.total_amount,
+                cost_amount: newSaleRow.cost_amount,
+                transport_fee: newSaleRow.transport_fee,
+                payment_method: newSaleRow.payment_method,
+                created_at: newSaleRow.created_at
+              }]).then(function(){});
+            }
+          }
+
+          document.getElementById("btn_toggle_receipt").style.display = "inline-block";
+          recalculateAllProductStocks();
+          saveLocalState(staffNameById(empId) + " amejaza bidhaa & bei (" + summaryParts.join(", ") + ") & nauli TZS " + money(nauli) + " — yamefika pembeni HQ.");
+          renderAll();
+          runReport();
+          document.getElementById("pt_nauli").value = "";
+          msg("Bidhaa na bei (" + slots.length + " zimejazwa) pamoja na nauli TZS " + money(nauli) + " zimerekodiwa na kutumwa pembeni HQ!");
+          return;
+        }
 
         var targetSale = null;
         if (lastPortalReceipt) {
@@ -1958,24 +2092,15 @@
           }
         }
         if (!targetSale) {
-          msg("Hakuna mauzo yaliyojirekodi bado. Chagua au scan bidhaa kwanza.");
+          msg("Jaza angalau bidhaa moja na bei yake (1–6) au chagua/scan bidhaa kwanza.");
           return;
         }
 
-        if (!isNaN(qtyVal) && qtyVal > 0) {
-          targetSale.quantity = qtyVal;
-        }
-        if (!isNaN(soldPriceVal) && soldPriceVal >= 0) {
-          targetSale.unit_sold_price = soldPriceVal;
-          targetSale.total_amount = Number(targetSale.quantity || 1) * soldPriceVal;
-        }
-        if (!isNaN(nauli) && nauli >= 0) {
-          targetSale.transport_fee = nauli;
-        }
-
+        targetSale.quantity = qtyVal;
+        targetSale.transport_fee = nauli;
         lastPortalReceipt = targetSale;
         document.getElementById("btn_toggle_receipt").style.display = "inline-block";
-        saveLocalState(staffNameById(targetSale.employee_id) + " amejaza bei aliyouza (TZS " + money(targetSale.unit_sold_price || targetSale.total_amount) + ") & nauli (TZS " + money(targetSale.transport_fee || 0) + ") — yamefika pembeni HQ.");
+        saveLocalState(staffNameById(targetSale.employee_id) + " amejaza nauli (TZS " + money(nauli) + ") — yamefika pembeni HQ.");
         renderAll();
         runReport();
 
@@ -1988,7 +2113,7 @@
         }
 
         document.getElementById("pt_nauli").value = "";
-        msg("Bei uliyouza (TZS " + money(targetSale.unit_sold_price || targetSale.total_amount) + ") na nauli zimehifadhiwa na kutumwa pembeni HQ!");
+        msg("Nauli ya TZS " + money(nauli) + " imehifadhiwa na kutumwa pembeni HQ!");
       }
 
       function togglePortalReceipt() {
