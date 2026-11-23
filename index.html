@@ -235,6 +235,11 @@
       color: #0f172a;
       font-family: Arial, sans-serif;
     }
+    input[readonly], select:disabled {
+      background: #f1f5f9;
+      color: #334155;
+      cursor: not-allowed;
+    }
     textarea { min-height: 76px; resize: vertical; }
     button { font-weight: bold; cursor: pointer; touch-action: manipulation; }
     .b-blue { background: #1d4ed8; color: #ffffff; border: none; }
@@ -536,7 +541,7 @@
       <h2 id="mainAppTitle">Msimamizi HQ</h2>
     </div>
 
-    <!-- DUKA LA MWANZA MJINI (NYAMAGANA) — MAUZO -->
+    <!-- DUKA LA MWANZA MJINI (NYAMAGANA) — MAUZO (MFUMO WA NJE ULIOSAWAZISHWA NA HQ) -->
     <div id="shopScanPortalModal">
       <div class="box-head">
         <div>
@@ -555,16 +560,15 @@
             <select id="sh_br_sel"></select>
           </div>
           <div>
-            <small><b>Bei Elekezi Kutoka Makao Makuu (HQ)</b></small>
-            <select id="sh_price_mode">
-              <option value="retail">Bei Elekezi ya Rejareja (HQ)</option>
-              <option value="wholesale">Bei Elekezi ya Jumla (HQ)</option>
+            <small><b>Bei Elekezi ya Rejareja (Imefungwa HQ)</b></small>
+            <select id="sh_price_mode" disabled>
+              <option value="retail" selected>Bei Elekezi ya Rejareja (HQ &amp; Duka)</option>
             </select>
           </div>
           <div>
-            <small><b>Malipo</b></small>
-            <select id="sh_pay_mode">
-              <option value="cash">Cash</option>
+            <small><b>Malipo (Imefungwa HQ)</b></small>
+            <select id="sh_pay_mode" disabled>
+              <option value="cash" selected>Cash (Imefungwa na HQ)</option>
               <option value="lipa_namba">Lipa Namba / Vodacom (0768829648)</option>
             </select>
           </div>
@@ -576,13 +580,13 @@
           <button type="button" class="b-teal" data-act="scanShopExternal">Scan QR / Bar</button>
         </div>
         <div id="sh_auto_pick_status" style="font-size:12px; font-weight:bold; color:#0369a1; margin-top:6px;">
-          Mfumo wa ndani (HQ) na duka vinasomana kiotomatiki kwa muda wa Kiswahili — kila bidhaa inajirekodi na kujijumlisha kwenye kikapu kimoja na bei elekezi ya HQ.
+          Mfumo wa ndani (HQ) na duka vinasomana kiotomatiki kwa muda wa Kiswahili — bei ya rejareja imefungwa ili mtu wa duka asibadilishe chochote, na kila kinachofanyika kinaonekana HQ.
         </div>
       </div>
 
-      <!-- KIKAPU KIMOJA KINACHOKUSANYA BIDHAA ZOTE NA BEI ELEKEZI TOKA HQ -->
+      <!-- KIKAPU KIMOJA KINACHOKUSANYA BIDHAA ZOTE NA BEI ELEKEZI YA REJAREJA TOKA HQ -->
       <div class="card" style="background:#ffffff; border:2px solid #0284c7;">
-        <b>Kikapu Kimoja cha Bidhaa Zilizoskaniwa (Bei Elekezi ya HQ &amp; Stock Inajipunguza Kiotomatiki)</b>
+        <b>Kikapu Kimoja cha Bidhaa Zilizoskaniwa (Bei Elekezi ya Rejareja HQ — Stock Inajipunguza Kiotomatiki)</b>
         <div id="sh_scan_cart_list" style="margin-top:8px;">Kikapu kiko wazi. Scan bidhaa kuanza kujumlisha.</div>
         <div id="sh_scan_total_bar" style="font-weight:bold; font-size:15px; color:#0f172a; margin-top:8px; padding-top:8px; border-top:1px solid #e2e8f0;">
           Jumla ya Bidhaa: 0 | Jumla ya Hela Anayotakiwa Kulipa Mteja: TZS 0
@@ -594,9 +598,9 @@
         <div id="sh_efd_receipt_box" class="receipt-box"></div>
       </div>
 
-      <!-- HISTORIA YA RISITI CHINI — KURUDIA KUCHAPISHA MARA MOJA TU -->
+      <!-- HISTORIA YA RISITI CHINI KABISA — MFUMO WA NJE (KURUDIA KUCHAPISHA MARA MOJA TU) -->
       <div class="card" style="background:#f8fafc; border:2px solid #0369a1;">
-        <b>Historia ya Risiti za EFD (Kurudia Kuchapisha Mara 1 Tu Mwisho)</b>
+        <b>Historia ya Risiti za EFD (Chini Kabisa — Kurudia Kuchapisha Mara 1 Tu Mwisho)</b>
         <div id="sh_efd_archive_list" style="margin-top:8px;">Hakuna risiti iliyochapishwa bado.</div>
       </div>
     </div>
@@ -753,10 +757,10 @@
       </div>
     </div>
 
-    <!-- 2. MAUZO (BEI ELEKEZI ILIYOPANGWA KWA MADUKA) -->
+    <!-- 2. MAUZO YA MADUKA (MFUMO WA NDANI — BEI ELEKEZI: YA JUMLA/KUNUNULIA YA HQ PEKEE & YA REJAREJA YA HQ + DUKA) -->
     <div id="pg_mauzo" class="page">
       <div class="card">
-        <b>Scan Bidhaa / QR Code &amp; Uza (Bei Elekezi Iliyopangwa)</b>
+        <b>Ingiza Mauzo ya Maduka — Bei Elekezi (HQ Pekee: Bei ya Jumla / Kununulia | HQ &amp; Duka: Bei ya Rejareja)</b>
         <div class="row" style="margin-top:8px;">
           <div><small><b>Duka</b></small><select id="m_br"></select></div>
           <div><small><b>Anayeuza / Wakala</b></small><select id="m_emp"></select></div>
@@ -766,15 +770,18 @@
           <button type="button" class="b-blue" data-act="findProd">Search / Tafuta</button>
           <button type="button" class="b-teal" data-act="scanMauzo">Scan QR / Bar</button>
         </div>
-        <div id="m_prod_box" class="card" style="background:#fff;">Search au scan SKU / Barcode / QR — jina na bei elekezi vitajitokeza hapa.</div>
+        <div id="m_prod_box" class="card" style="background:#fff;">Search au scan SKU / Barcode / QR — jina, bei ya jumla/kununulia (HQ pekee), na bei ya rejareja (HQ &amp; duka) vitajitokeza hapa.</div>
         <div class="row">
           <div><small><b>Idadi</b></small><input id="m_qty" type="number" step="any" min="0.01" value="1" /></div>
           <div>
-            <small><b>Chagua Bei Elekezi Iliyopangwa</b></small>
+            <small><b>Bei Elekezi Inayotumika (HQ &amp; Duka: Rejareja)</b></small>
             <select id="m_price_tier">
-              <option value="retail">Bei Elekezi ya Rejareja</option>
-              <option value="wholesale">Bei Elekezi ya Jumla</option>
+              <option value="retail" selected>Bei Elekezi ya Rejareja (HQ &amp; Duka)</option>
             </select>
+          </div>
+          <div>
+            <small><b>Bei ya Jumla / Kununulia (HQ Pekee)</b></small>
+            <input id="m_hq_wholesale_display" type="text" readonly value="TZS 0 (HQ Pekee)" />
           </div>
           <div>
             <small><b>Malipo</b></small>
@@ -784,8 +791,17 @@
             </select>
           </div>
         </div>
-        <div id="m_est" style="font-weight:bold; margin-bottom:8px;">Bei Elekezi Inayotumika: TZS 0 | Jumla ya Kuuza: TZS 0</div>
+        <div id="m_est" style="font-weight:bold; margin-bottom:8px;">Bei Elekezi ya Rejareja (HQ &amp; Duka): TZS 0 | Jumla ya Kuuza: TZS 0 | Bei ya Jumla/Kununulia (HQ Pekee): TZS 0</div>
         <button type="button" class="b-blue" data-act="saveSale">Uza / Hifadhi</button>
+      </div>
+
+      <!-- HISTORIA YA RISITI CHINI KABISA — MFUMO WA NDANI (HQ) -->
+      <div class="hq-history-box">
+        <div class="box-head">
+          <b>Historia ya Risiti za EFD (Chini Kabisa — Mfumo wa Ndani HQ)</b>
+          <span style="font-size:11px; color:#1e3a8a; font-weight:bold;">Inasomana Kiotomatiki na Duka</span>
+        </div>
+        <div id="hq_efd_receipts_bottom" style="margin-top:8px;">Hakuna risiti ya EFD iliyochapishwa bado.</div>
       </div>
     </div>
 
@@ -807,8 +823,8 @@
         </div>
         <div class="row">
           <input id="st_qty" type="number" step="any" placeholder="Idadi ya stoku" />
-          <input id="st_sell" type="number" step="any" placeholder="Bei elekezi ya kuuza rejareja" />
-          <input id="st_cost" type="number" step="any" placeholder="Bei ya kununua / jumla (HQ)" />
+          <input id="st_sell" type="number" step="any" placeholder="Bei elekezi ya kuuza rejareja (HQ &amp; Duka)" />
+          <input id="st_cost" type="number" step="any" placeholder="Bei ya jumla / kununulia (HQ pekee)" />
         </div>
         <div class="row" style="margin-bottom:0;">
           <button type="button" class="b-blue" data-act="saveProd">Hifadhi Stoku Kwa Mfanyakazi / Duka</button>
@@ -1156,8 +1172,8 @@
       var HQ_B = "eec9702a-d5fa-4fdf-9466-7d8e0e4def0d";
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
-      var STORE_KEY = "tonphone_pos_hq_v39";
-      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v39";
+      var STORE_KEY = "tonphone_pos_hq_v40";
+      var SYNC_CHANNEL_NAME = "tonphone_hq_staff_sync_v40";
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160", "Itel 2161", "Itel 2165", "Tecno T101", "Tecno T301",
@@ -1394,6 +1410,7 @@
         } else {
           renderSideStaffFeed();
           renderHqStaffHistory(staffObj(state.activeStaffId));
+          renderHqEfdReceiptsBottom();
         }
         lastSyncSnapshot = computeStateFingerprint();
         if (showBanner && noteText) {
@@ -1415,6 +1432,7 @@
             }
             renderSideStaffFeed();
             renderHqStaffHistory(staffObj(state.activeStaffId));
+            renderHqEfdReceiptsBottom();
             lastSyncSnapshot = computeStateFingerprint();
             msg("Mfumo wa ndani (HQ) na duka vimesomana kiotomatiki (" + formatSwahiliTimeOfDay(new Date()) + ")!");
           }
@@ -1439,6 +1457,7 @@
               }
               renderSideStaffFeed();
               renderHqStaffHistory(staffObj(state.activeStaffId));
+              renderHqEfdReceiptsBottom();
               lastSyncSnapshot = computeStateFingerprint();
               msg(fullNote);
             }
@@ -1915,6 +1934,7 @@
         } else {
           renderSideStaffFeed();
           renderHqStaffHistory(staffObj(state.activeStaffId));
+          renderHqEfdReceiptsBottom();
         }
         if (isStaffOnlyView && portalConfig) {
           renderPortalApprovedComm();
@@ -1964,11 +1984,13 @@
         openHqNoPassPortal();
       }
 
+      // Bei elekezi inayotumika dukani ni ya REJAREJA pekee (HQ & Duka). Bei ya jumla/kununulia ni ya HQ pekee.
       function getHqGuidePrice(prod, tier) {
         var retail = Number(prod.selling_price || 0);
-        var wholesale = Number(prod.wholesale_price || 0);
-        if (tier === "wholesale" && wholesale > 0) return wholesale;
-        return retail > 0 ? retail : wholesale;
+        if (tier === "wholesale_hq_only") {
+          return Number(prod.wholesale_price || 0);
+        }
+        return retail;
       }
 
       function shAddScannedItem(explicitCode) {
@@ -1981,7 +2003,6 @@
         var brId = lockedShopBranchId ||
           (document.getElementById("sh_br_sel") && document.getElementById("sh_br_sel").value) ||
           state.activeBranchId || "br-mwanza-nyamagana";
-        var tier = (document.getElementById("sh_price_mode") && document.getElementById("sh_price_mode").value) || "retail";
         var qLc = codeVal.toLowerCase();
 
         var matchedProd = null;
@@ -2013,7 +2034,7 @@
           return;
         }
 
-        var hqGuidePrice = getHqGuidePrice(matchedProd, tier);
+        var retailGuidePrice = getHqGuidePrice(matchedProd, "retail");
         var existingCartIdx = -1;
         for (var c = 0; c < shopScanCart.length; c++) {
           if (String(shopScanCart[c].prodId) === String(matchedProd.id)) {
@@ -2024,25 +2045,32 @@
 
         if (existingCartIdx !== -1) {
           shopScanCart[existingCartIdx].qty += 1;
-          shopScanCart[existingCartIdx].unitPrice = hqGuidePrice;
-          shopScanCart[existingCartIdx].lineTotal = shopScanCart[existingCartIdx].qty * hqGuidePrice;
+          shopScanCart[existingCartIdx].unitPrice = retailGuidePrice;
+          shopScanCart[existingCartIdx].lineTotal = shopScanCart[existingCartIdx].qty * retailGuidePrice;
         } else {
           shopScanCart.push({
             prodId: String(matchedProd.id),
             name: matchedProd.name,
             sku: matchedProd.sku || matchedProd.barcod || codeVal,
             qty: 1,
-            unitPrice: hqGuidePrice,
-            lineTotal: hqGuidePrice,
+            unitPrice: retailGuidePrice,
+            lineTotal: retailGuidePrice,
             costUnit: Number(matchedProd.wholesale_price || 0)
           });
         }
 
         if (inp) inp.value = "";
+        var swTime = formatSwahiliTimeOfDay(new Date());
+        appendPermanentRecord("Duka la Mwanza Mjini (Nyamagana) — Mauzo", "Kuscan Bidhaa Dukani (" + matchedProd.name + ")", state.activeStaffId || DIR_E, brId, {
+          product_name: matchedProd.name,
+          retail_price: retailGuidePrice
+        });
+        saveLocalState("Duka (" + brLabel(brId) + ") limescan " + matchedProd.name + " (" + swTime + ") — inaonekana HQ!");
+
         var stEl = document.getElementById("sh_auto_pick_status");
         if (stEl) {
-          stEl.textContent = "Imejirekodi & kujijumlisha (" + formatSwahiliTimeOfDay(new Date()) + "): " + matchedProd.name +
-            " | Bei Elekezi (HQ): TZS " + money(hqGuidePrice);
+          stEl.textContent = "Imeskaniwa & kujijumlisha (" + swTime + "): " + matchedProd.name +
+            " | Bei Elekezi ya Rejareja (HQ & Duka): TZS " + money(retailGuidePrice) + " (Imefungwa — HQ imeona)";
         }
         renderShopScanPortal();
       }
@@ -2056,7 +2084,7 @@
         var dtObj = er.issued_at ? new Date(er.issued_at) : new Date();
         var linesHtml = (er.items || []).map(function(it, idx) {
           return "<div>" + (idx + 1) + ". <b>" + it.name + "</b> — Idadi: <b>" + it.qty +
-            "</b> × Bei Elekezi (HQ): <b>TZS " + money(it.unitPrice) +
+            "</b> × Bei Elekezi ya Rejareja: <b>TZS " + money(it.unitPrice) +
             "</b> = <b>TZS " + money(it.lineTotal) + "</b></div>";
         }).join("");
 
@@ -2081,6 +2109,36 @@
           (actionBtnHtml ? ("<div style='margin-top:8px;'>" + actionBtnHtml + "</div>") : "");
       }
 
+      function renderHqEfdReceiptsBottom() {
+        var box = document.getElementById("hq_efd_receipts_bottom");
+        if (!box) return;
+        var allArch = Array.isArray(state.efdReceiptsArchive) ? state.efdReceiptsArchive : [];
+        if (!allArch.length) {
+          box.innerHTML = "Hakuna risiti ya EFD iliyochapishwa bado.";
+          return;
+        }
+        var html = "";
+        for (var i = 0; i < allArch.length; i++) {
+          var er = allArch[i];
+          var dtObj = er.issued_at ? new Date(er.issued_at) : new Date();
+          var itemsTxt = (er.items || []).map(function(it) {
+            return it.name + " x" + it.qty + " (@" + money(it.unitPrice) + " = " + money(it.lineTotal) + ")";
+          }).join(" | ");
+          var repCount = Number(er.reprint_count || 0);
+          html += '<div class="history-entry-card">' +
+            '<div class="box-head">' +
+              '<span><b>Risiti EFD Na: ' + er.efd_no + '</b> • Duka: <b>' + brLabel(er.branch_id) + '</b></span>' +
+              '<span style="font-size:11px; color:#475569;">' + dtObj.toLocaleDateString() + ' • ' + formatSwahiliTimeOfDay(dtObj) + '</span>' +
+            '</div>' +
+            '<div style="margin-top:4px;">Bidhaa (Stock Imepungua Kiotomatiki): <b>' + (itemsTxt || "-") + '</b></div>' +
+            '<div style="margin-top:4px;">Jumla ya Kuuza (Rejareja): <b>TZS ' + money(er.total_amount) +
+            '</b> | Malipo: <b>' + er.payment_method +
+            '</b> | Marudio ya Kuchapisha: <b>' + repCount + '/1</b></div>' +
+            '</div>';
+        }
+        box.innerHTML = html;
+      }
+
       function renderShopScanPortal() {
         var activeBrId = lockedShopBranchId || state.activeBranchId || "br-mwanza-nyamagana";
         var brSel = document.getElementById("sh_br_sel");
@@ -2094,7 +2152,18 @@
           }
           brSel.innerHTML = opts;
           brSel.value = activeBrId;
-          if (lockedShopBranchId) brSel.disabled = true;
+          brSel.disabled = true;
+        }
+
+        var pmSel = document.getElementById("sh_price_mode");
+        if (pmSel) {
+          pmSel.value = "retail";
+          pmSel.disabled = true;
+        }
+        var paySel = document.getElementById("sh_pay_mode");
+        if (paySel) {
+          paySel.value = "cash";
+          paySel.disabled = true;
         }
 
         var bannerEl = document.getElementById("sh_active_branch_banner");
@@ -2121,7 +2190,7 @@
             totAmt += Number(item.lineTotal || 0);
             cHtml += '<div class="scan-cart-row">' +
               '<div><b>' + (k + 1) + '. ' + item.name + '</b> <small style="color:#475569;">(' + item.sku + ')</small></div>' +
-              '<div>Idadi: <b>' + item.qty + '</b> × Bei Elekezi (HQ): <b>TZS ' + money(item.unitPrice) +
+              '<div>Idadi (Imefungwa): <b>' + item.qty + '</b> × Bei ya Rejareja (Imefungwa): <b>TZS ' + money(item.unitPrice) +
               '</b> = <b>TZS ' + money(item.lineTotal) + '</b></div>' +
               '</div>';
           }
@@ -2186,7 +2255,7 @@
               efd_no: efdNo,
               reprint_count: 1
             });
-            saveLocalState("Risiti ya EFD (" + efdNo + ") imerudiwa kuchapishwa mara 1 (mwisho).");
+            saveLocalState("Risiti ya EFD (" + efdNo + ") imerudiwa kuchapishwa mara 1 (mwisho) — HQ imeona.");
 
             var recBox = document.getElementById("sh_efd_receipt_box");
             if (recBox) {
@@ -2209,7 +2278,7 @@
         var brId = lockedShopBranchId ||
           (document.getElementById("sh_br_sel") && document.getElementById("sh_br_sel").value) ||
           state.activeBranchId || "br-mwanza-nyamagana";
-        var payMode = (document.getElementById("sh_pay_mode") && document.getElementById("sh_pay_mode").value) || "cash";
+        var payMode = "cash";
         var nowStamp = Date.now();
         var nowDate = new Date(nowStamp);
         var nowIso = nowDate.toISOString();
@@ -2282,7 +2351,7 @@
 
         renderShopScanPortal();
         window.print();
-        msg("Risiti moja ya EFD (" + efdNo + ") yenye bidhaa zote (Jumla: TZS " + money(totSales) + ") imechapishwa na kusomana kiotomatiki na mfumo wa ndani (" + swTimeTxt + ")!");
+        msg("Risiti moja ya EFD (" + efdNo + ") yenye bidhaa zote (Jumla: TZS " + money(totSales) + ") imechapishwa, stock imepungua kiotomatiki, na historia imesomana na HQ (" + swTimeTxt + ")!");
       }
 
       function populateHqSilentOverrideFields() {
@@ -2382,7 +2451,7 @@
           totRem += m.remaining;
           stockRowsHtml += '<div class="pt-assigned-row" data-act="outsideQuickSellProd" data-pid="' + String(p.id) + '">' +
             '<div><b>' + (i + 1) + '. ' + p.name + '</b> <span style="font-size:11px;color:#475569;">(' + (p.sku || p.barcod) + ')</span></div>' +
-            '<div style="font-size:12px;">Iliyowekwa: <b>' + m.initial + '</b> | Stock Iliyouzwa: <b>' + m.reduced + '</b> | Baki: <b>' + m.remaining + '</b> | Bei Elekezi: <b>TZS ' + money(p.selling_price) + '</b></div>' +
+            '<div style="font-size:12px;">Iliyowekwa: <b>' + m.initial + '</b> | Stock Iliyouzwa: <b>' + m.reduced + '</b> | Baki: <b>' + m.remaining + '</b> | Bei ya Rejareja: <b>TZS ' + money(p.selling_price) + '</b></div>' +
             '</div>';
         }
 
@@ -2468,7 +2537,7 @@
         };
 
         ingestSaleAuto(saleRow, false);
-        msg("Mauzo ya " + prod.name + " x" + qty + " (Bei Elekezi) yameongezwa na stock imepungua kiotomatiki!");
+        msg("Mauzo ya " + prod.name + " x" + qty + " (Bei ya Rejareja) yameongezwa na stock imepungua kiotomatiki!");
       }
 
       function renderPortalApprovedComm() {
@@ -3093,6 +3162,7 @@
             } else {
               renderSideStaffFeed();
               renderHqStaffHistory(staffObj(state.activeStaffId));
+              renderHqEfdReceiptsBottom();
             }
             renderPortalApprovedComm();
           }
@@ -3313,7 +3383,7 @@
           var rowGross = getItemProfit(r);
           var rDt = r.created_at ? new Date(r.created_at) : new Date();
           rHtml += "<div>• SKU: <b>" + (r.sku || r.barcod || "-") + "</b> (" + (r.product_name || "Bidhaa") +
-            ") — Idadi: <b>" + r.quantity + "</b> | Bei Elekezi: <b>" + money(r.unit_sold_price || r.total_amount) +
+            ") — Idadi: <b>" + r.quantity + "</b> | Bei ya Rejareja: <b>" + money(r.unit_sold_price || r.total_amount) +
             "</b> | Mauzo: <b>" + money(r.total_amount) +
             "</b> | Faida: <b>" + money(rowGross) + "</b> | Matumizi/Nauli: <b>" + money(r.transport_fee || 0) +
             "</b> | Akaunti: " + (who ? who.name : "-") +
@@ -3634,9 +3704,11 @@
         document.getElementById("cm_emp_sel").value = state.activeStaffId;
         document.getElementById("wf_list").innerHTML = sHtml;
 
+        estSale();
         renderBranchInner();
         renderStaffInner();
         renderCommission();
+        renderHqEfdReceiptsBottom();
       }
 
       function saveFiveStaff() {
@@ -3701,7 +3773,7 @@
             msg("QR/Barcode imesomwa: " + c);
           } else if (scanMode === "shop_portal") {
             shAddScannedItem(c);
-            msg("Bidhaa imeskaniwa na kujijumlisha kwenye kikapu: " + c);
+            msg("Bidhaa imeskaniwa, stock imepungua & kujijumlisha kwenye kikapu: " + c);
           } else {
             document.getElementById("st_code").value = c;
             if (!document.getElementById("st_sku").value) document.getElementById("st_sku").value = c;
@@ -3712,10 +3784,19 @@
 
       function estSale() {
         var q = parseFloat(document.getElementById("m_qty").value) || 0;
-        var tier = (document.getElementById("m_price_tier") && document.getElementById("m_price_tier").value) || "retail";
-        var guideUnit = pickedProd ? getHqGuidePrice(pickedProd, tier) : 0;
-        document.getElementById("m_est").textContent =
-          "Bei Elekezi Inayotumika: TZS " + money(guideUnit) + " | Jumla ya Kuuza: TZS " + money(q * guideUnit);
+        var retailUnit = pickedProd ? getHqGuidePrice(pickedProd, "retail") : 0;
+        var wholesaleUnit = pickedProd ? getHqGuidePrice(pickedProd, "wholesale_hq_only") : 0;
+        var wsDisp = document.getElementById("m_hq_wholesale_display");
+        if (wsDisp) {
+          wsDisp.value = "TZS " + money(wholesaleUnit) + " (HQ Pekee)";
+        }
+        var estEl = document.getElementById("m_est");
+        if (estEl) {
+          estEl.textContent =
+            "Bei Elekezi ya Rejareja (HQ & Duka): TZS " + money(retailUnit) +
+            " | Jumla ya Kuuza: TZS " + money(q * retailUnit) +
+            " | Bei ya Jumla/Kununulia (HQ Pekee): TZS " + money(wholesaleUnit) + " (Jumla ya Kununua: TZS " + money(q * wholesaleUnit) + ")";
+        }
       }
 
       function findProd() {
@@ -3735,8 +3816,8 @@
           if ((skuMatch || barMatch || nameMatch) && empOk && brOk) {
             pickedProd = p;
             box.innerHTML = "<b>" + p.name + "</b> | SKU/QR: <b>" + (p.sku || p.barcod) +
-              "</b> | Bei Elekezi Rejareja: <b>TZS " + money(p.selling_price) +
-              "</b> | Bei Elekezi Jumla: <b>TZS " + money(p.wholesale_price) + "</b>";
+              "</b> | Bei Elekezi ya Rejareja (HQ &amp; Duka): <b>TZS " + money(p.selling_price) +
+              "</b> | Bei ya Jumla/Kununulia (HQ Pekee): <b>TZS " + money(p.wholesale_price) + "</b>";
             estSale();
             return;
           }
@@ -3758,7 +3839,8 @@
               selling_price: r.data.selling_price,
               wholesale_price: r.data.wholesale_price || 0
             };
-            box.innerHTML = "<b>" + pickedProd.name + "</b> | Bei Elekezi Rejareja: <b>TZS " + money(pickedProd.selling_price) + "</b>";
+            box.innerHTML = "<b>" + pickedProd.name + "</b> | Bei Elekezi ya Rejareja (HQ &amp; Duka): <b>TZS " + money(pickedProd.selling_price) +
+              "</b> | Bei ya Jumla/Kununulia (HQ Pekee): <b>TZS " + money(pickedProd.wholesale_price) + "</b>";
           }
           estSale();
         });
@@ -3770,8 +3852,7 @@
         if (q <= 0) { msg("Weka idadi."); return; }
         var empId = document.getElementById("m_emp").value || state.activeStaffId;
         var brId = document.getElementById("m_br").value || pickedProd.branch_id || HQ_B;
-        var tier = (document.getElementById("m_price_tier") && document.getElementById("m_price_tier").value) || "retail";
-        var unitSell = getHqGuidePrice(pickedProd, tier);
+        var unitSell = getHqGuidePrice(pickedProd, "retail");
         var totalAmt = q * unitSell;
         var costAmt = q * Number(pickedProd.wholesale_price || 0);
         var nowStamp = Date.now();
@@ -3827,7 +3908,7 @@
         var cost = parseFloat(document.getElementById("st_cost").value) || 0;
 
         if (!sku || !name || isNaN(qty) || isNaN(sell)) {
-          msg("Jaza SKU/QR, jina la bidhaa, stoku, na bei elekezi ya kuuza.");
+          msg("Jaza SKU/QR, jina la bidhaa, stoku, na bei elekezi ya kuuza rejareja.");
           return;
         }
 
@@ -3933,8 +4014,8 @@
             "◇ " + p.name + " = <b>" + m.initial + "</b> | " +
             "◇ stock iliyouzwa = <b>" + m.reduced + "</b> | " +
             "◇ idadi iliyobaki = <b>" + m.remaining + "</b> | " +
-            "◇ bei ya kununua = <b>" + money(m.buyTotal) + "</b> | " +
-            "◇ bei elekezi rejareja = <b>" + money(m.retailPrice) + "</b></div>";
+            "◇ bei ya jumla/kununua (HQ pekee) = <b>" + money(m.buyTotal) + "</b> | " +
+            "◇ bei ya rejareja (HQ &amp; duka) = <b>" + money(m.retailPrice) + "</b></div>";
         }
         document.getElementById("st_list").innerHTML = html || "Hakuna stoku bado.";
       }
@@ -3943,7 +4024,7 @@
         if (isStaffOnlyView || isShopScanPortalView) return;
         var st = summarizeRows(state.sales, 0, null);
         document.getElementById("rp_box").innerHTML =
-          "<b>Muhtasari wa Jumla:</b> Mauzo: <b>" + money(st.sales) + "</b> | Mtaji (HQ): <b>" + money(st.cost) +
+          "<b>Muhtasari wa Jumla:</b> Mauzo: <b>" + money(st.sales) + "</b> | Mtaji / Kununulia (HQ): <b>" + money(st.cost) +
           "</b> | Faida: <b>" + money(st.grossProfit) + "</b> | Nauli / Matumizi: <b>" + money(st.nauli) +
           "</b> | Faida Halisi: <b>" + money(st.profit) + "</b>";
 
@@ -4124,7 +4205,7 @@
         if (ev.target.id === "m_price_tier") {
           estSale();
         } else if (ev.target.id === "sh_price_mode") {
-          var modeVal = ev.target.value || "retail";
+          var modeVal = "retail";
           for (var c = 0; c < shopScanCart.length; c++) {
             var pMatch = state.prods.find(function(pr) { return String(pr.id) === String(shopScanCart[c].prodId); });
             if (pMatch) {
