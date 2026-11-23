@@ -62,6 +62,13 @@
       padding: 11px;
       margin-bottom: 10px;
     }
+    .vault-card {
+      background: #ecfdf5;
+      border: 2px solid #10b981;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
     .two-col {
       display: grid;
       grid-template-columns: 1fr;
@@ -501,6 +508,43 @@
 
     <!-- 8. MAWASILIANO -->
     <div id="pg_mawasiliano" class="page">
+      <div class="vault-card">
+        <div class="box-head">
+          <b>Akaunti Rasmi ya Kuhifadhi Hela (Kibubu / M-Pesa Wallet)</b>
+          <button type="button" class="mini-btn" data-act="copyVaultAcc">Nakili Namba ya Akaunti</button>
+        </div>
+        <div style="font-size:13px; margin-top:6px;">
+          Namba ya Akaunti: <b id="vault_acc_no">TON-MPESA-0768829648</b> | Mmiliki: <b>Milton Elitwaza</b> | Laini: <b>0768829648</b>
+        </div>
+        <div class="grid4">
+          <div class="stat"><small>Salio Lililohifadhiwa</small><b id="vault_bal">0</b></div>
+          <div class="stat"><small>Jumla Iliyoingia</small><b id="vault_in">0</b></div>
+          <div class="stat"><small>Jumla Iliyotolewa</small><b id="vault_out">0</b></div>
+          <div class="stat"><small>Miamala ya Akaunti</small><b id="vault_cnt">0</b></div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+          <div>
+            <small><b>Kiasi (TZS)</b></small>
+            <input id="vault_amt" type="number" step="any" min="0" placeholder="mf. 50000" />
+          </div>
+          <div>
+            <small><b>Maelezo / Namba ya Simu au Wakala</b></small>
+            <input id="vault_note" type="text" placeholder="mf. Malipo ya link / Toa kwa wakala Mwanza" />
+          </div>
+        </div>
+
+        <div class="row" style="margin-bottom:6px;">
+          <button type="button" class="b-green" data-act="vaultDeposit">Hifadhi Hela Kwenye Akaunti (+)</button>
+          <button type="button" class="b-blue" data-act="vaultWithdrawToPhone">Toa / Tuma Kwenye Simu (0768829648)</button>
+          <button type="button" class="b-teal" data-act="vaultWithdrawAgent">Toa Kwa Wakala (-)</button>
+        </div>
+
+        <div id="vault_tx_list" style="margin-top:8px; font-size:12px; color:#1e293b;">
+          Hakuna miamala ya akaunti bado.
+        </div>
+      </div>
+
       <div class="card">
         <b>Vuta File la WhatsApp &amp; Jiunge Upya na Mteja</b>
         <div style="font-size:12px; color:#334155; margin-top:4px;">
@@ -603,7 +647,8 @@
       var DIR_E = "3e549b90-ad40-4c81-84cd-4a78869fddda";
       var VODACOM_LINE = "0768829648";
       var OWNER_NAME = "Milton Elitwaza";
-      var STORE_KEY = "tonphone_pos_hq_v10";
+      var VAULT_ACC_NO = "TON-MPESA-0768829648";
+      var STORE_KEY = "tonphone_pos_hq_v11";
 
       var sb = null;
       try {
@@ -638,6 +683,7 @@
           ],
           prods: [],
           sales: [],
+          vaultTxs: [],
           staffPasswords: {},
           activeStaffId: DIR_E,
           activeBranchId: "br-mwanza-nyamagana"
@@ -665,6 +711,7 @@
           if (parsed && Array.isArray(parsed.staff) && parsed.staff.length) state.staff = parsed.staff;
           if (parsed && Array.isArray(parsed.prods)) state.prods = parsed.prods;
           if (parsed && Array.isArray(parsed.sales)) state.sales = parsed.sales;
+          if (parsed && Array.isArray(parsed.vaultTxs)) state.vaultTxs = parsed.vaultTxs;
           if (parsed && parsed.staffPasswords && typeof parsed.staffPasswords === "object") state.staffPasswords = parsed.staffPasswords;
           if (parsed && parsed.activeStaffId) state.activeStaffId = parsed.activeStaffId;
           if (parsed && parsed.activeBranchId) state.activeBranchId = parsed.activeBranchId;
@@ -678,6 +725,64 @@
         if (!el) return;
         el.style.display = "block";
         el.textContent = t;
+      }
+
+      function renderVault() {
+        if (!Array.isArray(state.vaultTxs)) state.vaultTxs = [];
+        var totIn = 0, totOut = 0;
+        for (var i = 0; i < state.vaultTxs.length; i++) {
+          var tx = state.vaultTxs[i];
+          var amt = Number(tx.amount || 0);
+          if (tx.type === "in") totIn += amt;
+          else totOut += amt;
+        }
+        var bal = totIn - totOut;
+        document.getElementById("vault_acc_no").textContent = VAULT_ACC_NO;
+        document.getElementById("vault_bal").textContent = "TZS " + money(bal);
+        document.getElementById("vault_in").textContent = "TZS " + money(totIn);
+        document.getElementById("vault_out").textContent = "TZS " + money(totOut);
+        document.getElementById("vault_cnt").textContent = String(state.vaultTxs.length);
+
+        var html = "";
+        for (var j = 0; j < state.vaultTxs.length; j++) {
+          var item = state.vaultTxs[j];
+          var sign = item.type === "in" ? "+" : "-";
+          html += "<div>• <b>" + sign + " TZS " + money(item.amount) + "</b> — " +
+            (item.label || (item.type === "in" ? "Hifadhi / Link" : "Kutoa")) +
+            " (" + (item.note || "-") + ")</div>";
+        }
+        document.getElementById("vault_tx_list").innerHTML = html || "Hakuna miamala ya akaunti bado.";
+      }
+
+      function addVaultTx(type, label) {
+        var amt = parseFloat(document.getElementById("vault_amt").value) || 0;
+        var note = (document.getElementById("vault_note").value || "").trim();
+        if (amt <= 0) { msg("Weka kiasi cha hela kwanza."); return; }
+
+        var totIn = 0, totOut = 0;
+        for (var i = 0; i < state.vaultTxs.length; i++) {
+          if (state.vaultTxs[i].type === "in") totIn += Number(state.vaultTxs[i].amount || 0);
+          else totOut += Number(state.vaultTxs[i].amount || 0);
+        }
+        var bal = totIn - totOut;
+        if (type === "out" && amt > bal) {
+          msg("Salio la akaunti halitoshi kutoa TZS " + money(amt) + " (Salio: TZS " + money(bal) + ").");
+          return;
+        }
+
+        state.vaultTxs.unshift({
+          id: "vtx-" + Date.now(),
+          type: type,
+          amount: amt,
+          label: label,
+          note: note || (type === "in" ? "Imewekwa kwenye akaunti" : "Imetolewa kwenye akaunti"),
+          created_at: new Date().toISOString()
+        });
+        document.getElementById("vault_amt").value = "";
+        document.getElementById("vault_note").value = "";
+        saveLocalState();
+        renderVault();
+        msg(label + ": TZS " + money(amt) + " imerekodiwa kwenye akaunti " + VAULT_ACC_NO + ".");
       }
 
       function buildStaffPortalUrl(empId, brId, pass) {
@@ -696,17 +801,30 @@
           if (params.get("pay") === "1") {
             var vLine = params.get("vodacom") || VODACOM_LINE;
             var oName = params.get("name") || OWNER_NAME;
-            var amt = params.get("amount") || "0";
+            var amt = parseFloat(params.get("amount") || "0") || 0;
             var ref = params.get("ref") || "TON-PHONE";
             var card = document.getElementById("payCheckoutCard");
             var det = document.getElementById("payCheckoutDetails");
             if (card && det) {
               det.innerHTML =
                 "Mpokeaji: <b>" + oName + "</b><br>" +
+                "Akaunti ya Kuhifadhi: <b>" + VAULT_ACC_NO + "</b><br>" +
                 "Laini ya Vodacom: <b>" + vLine + "</b><br>" +
                 "Kiasi: <b>TZS " + money(amt) + "</b><br>" +
                 "Kumbukumbu: <b>" + ref + "</b>";
               card.style.display = "block";
+            }
+            if (amt > 0) {
+              state.vaultTxs.unshift({
+                id: "vtx-link-" + Date.now(),
+                type: "in",
+                amount: amt,
+                label: "Malipo ya Link",
+                note: ref + " (" + vLine + ")",
+                created_at: new Date().toISOString()
+              });
+              saveLocalState();
+              renderVault();
             }
           }
           if (params.get("staff_portal") === "1") {
@@ -1196,6 +1314,7 @@
         renderBranchInner();
         renderStaffInner();
         renderCommission();
+        renderVault();
       }
 
       function saveFiveStaff() {
@@ -1525,6 +1644,10 @@
         if (act === "syncNow") syncFromSupabase(false);
         else if (act === "closeCheckout") document.getElementById("payCheckoutCard").style.display = "none";
         else if (act === "copyCheckoutPhone") copyTextHelper(VODACOM_LINE, "Namba ya Vodacom " + VODACOM_LINE + " imenakiliwa!");
+        else if (act === "copyVaultAcc") copyTextHelper(VAULT_ACC_NO, "Namba ya akaunti " + VAULT_ACC_NO + " imenakiliwa!");
+        else if (act === "vaultDeposit") addVaultTx("in", "Hifadhi Kwenye Akaunti");
+        else if (act === "vaultWithdrawToPhone") addVaultTx("out", "Toa / Tuma Kwenye Simu (" + VODACOM_LINE + ")");
+        else if (act === "vaultWithdrawAgent") addVaultTx("out", "Toa Kwa Wakala");
         else if (act === "unlockStaffPortal") unlockStaffPortal();
         else if (act === "ptChangePass") ptChangePass();
         else if (act === "ptFindProd") ptFindProd();
