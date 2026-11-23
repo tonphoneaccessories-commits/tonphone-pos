@@ -420,66 +420,101 @@
           Umeingia kama: <b id="portalActiveEmpName">-</b> (<span id="portalActiveBrName">-</span>)
         </div>
 
-        <div class="stat comm-emp" style="margin-bottom:10px;">
-          <small>Commission Yangu Iliyoidhinishwa (Mtumaji: HQ)</small>
-          <b id="pt_approved_comm">TZS 0</b>
-          <div id="pt_bonus_breakdown" style="font-size:12px; color:#065f46; margin-top:4px;"></div>
-        </div>
-
-        <div class="pt-assigned-box">
-          <div class="box-head" style="margin-bottom:6px;">
-            <b>Stoku Niliyoingiziwa na HQ (Duka &amp; Idadi)</b>
-            <span id="pt_assigned_summary" style="font-size:12px; font-weight:bold; color:#065f46;"></span>
+        <!-- 1. SEHEMU YA KUJAZA / KUONA COMMISSION (INAANZA) -->
+        <div class="card" style="background:#ecfdf5; border:2px solid #059669;">
+          <b>1. Sehemu ya Commission (Mfanyakazi / HQ)</b>
+          <div class="stat comm-emp" style="margin-top:8px;">
+            <small>Commission Yangu Iliyoidhinishwa (Mtumaji: HQ)</small>
+            <b id="pt_approved_comm">TZS 0</b>
+            <div id="pt_bonus_breakdown" style="font-size:12px; color:#065f46; margin-top:4px;"></div>
           </div>
-          <div id="pt_assigned_stock_list">Hakuna stoku uliyoingiziwa bado.</div>
+          <div class="row" style="margin-top:8px; margin-bottom:0;">
+            <div>
+              <small><b>Kiasi cha Commission / Makisio (TZS — Hiari)</b></small>
+              <input id="pt_comm_input" type="number" step="any" min="0" placeholder="Andika commission (mf. 15000)" />
+            </div>
+            <div>
+              <small><b>Maelezo ya Commission (Hiari)</b></small>
+              <input id="pt_comm_note" type="text" placeholder="mf. Commission ya mauzo ya siku" />
+            </div>
+          </div>
         </div>
 
+        <!-- 2. SEHEMU YA KUJAZA BEI YA BIDHAA ALIYOUZA (INAFUATA CHINI YA COMMISSION) -->
+        <div class="card" style="background:#eff6ff; border:1px solid #93c5fd;">
+          <b>2. Bei ya Bidhaa Aliyouza (TZS)</b>
+          <div class="row" style="margin-top:6px; margin-bottom:0;">
+            <div>
+              <small><b>Bei Aliyouza (TZS — Jaza / Badilisha)</b></small>
+              <input id="pt_sold_price" type="number" step="any" min="0" value="" placeholder="Andika bei uliyouzia bidhaa" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. SEHEMU YA KUJAZA NAULI (INAFUATA CHINI YA BEI ALIYOUZA) -->
+        <div class="card" style="background:#fefce8; border:1px solid #eab308;">
+          <b>3. Sehemu ya Nauli (TZS)</b>
+          <div class="row" style="margin-top:6px; margin-bottom:0;">
+            <div>
+              <small><b>Nauli Uliyotumia (TZS)</b></small>
+              <input id="pt_nauli" type="number" step="any" min="0" value="" placeholder="Andika nauli uliyotumia (TZS)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. KUCHAGUA BIDHAA KIOTOMATIKI (INAFUATA CHINI YA NAULI) -->
         <div class="type-picker-box">
-          <small><b>Chagua Bidhaa kwa Kuandika (Andika Jina / SKU / Barcode)</b></small>
-          <input id="pt_type_search" type="text" autocomplete="off" placeholder="Andika mfano: Itel, Tecno, Oking, Battery..." />
+          <b>4. Kuchagua Bidhaa Kiotomatiki (Andika au Scan QR / Barcode)</b>
+          <div class="row" style="margin-top:6px;">
+            <input id="pt_type_search" type="text" autocomplete="off" placeholder="Chagua bidhaa kiotomatiki — andika mfano: Itel, Tecno, Oking..." />
+          </div>
           <div id="pt_type_suggestions" class="type-suggestions"></div>
-        </div>
-
-        <div class="row">
-          <div>
-            <small><b>Chagua Bidhaa Anayouza (Inajirekodi Otomatiki)</b></small>
-            <select id="pt_prod_select">
-              <option value="">-- Chagua Bidhaa Kwenye Orodha --</option>
-            </select>
-          </div>
-          <div>
-            <small><b>Idadi</b></small>
-            <input id="pt_qty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" />
-          </div>
-          <div>
-            <small><b>Bei Aliyouza (TZS — Jaza / Badilisha)</b></small>
-            <input id="pt_sold_price" type="number" step="any" min="0" value="" placeholder="Andika bei uliyouzia" />
+          <div class="row" style="margin-top:8px; margin-bottom:0;">
+            <input id="pt_code" type="text" placeholder="Search au scan SKU / Barcode / QR / Jina" />
+            <button type="button" class="b-blue" data-act="ptFindProd">Tafuta Kiotomatiki</button>
+            <button type="button" class="b-teal" data-act="scanPortal">Scan QR / Bar</button>
           </div>
         </div>
 
-        <div class="row">
-          <input id="pt_code" type="text" placeholder="Search au scan SKU / Barcode / QR / Jina" />
-          <button type="button" class="b-blue" data-act="ptFindProd">Tafuta &amp; Rekodi</button>
-          <button type="button" class="b-teal" data-act="scanPortal">Scan QR / Bar</button>
+        <!-- 5. REKODI (INAFUATA CHINI YA KUCHAGUA BIDHAA KIOTOMATIKI) -->
+        <div class="card" style="background:#f8fafc; border:2px solid #15803d;">
+          <b>5. Rekodi ya Mauzo</b>
+          <div class="row" style="margin-top:8px;">
+            <div>
+              <small><b>Idadi Iliyouzwa</b></small>
+              <input id="pt_qty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" />
+            </div>
+          </div>
+          <div id="pt_prod_info" class="card" style="background:#fff;">Chagua bidhaa kiotomatiki au scan QR/Barcode — inajirekodi yenyewe kiotomatiki; jaza bei uliyouza na nauli.</div>
+          <div class="row" style="margin-bottom:0;">
+            <button type="button" class="b-green" data-act="ptFinishNauli">Rekodi &amp; Kamilisha Nauli / Bei</button>
+            <button type="button" id="btn_toggle_receipt" class="b-light" style="display:none;" data-act="togglePortalReceipt">Toa / Chapisha Risiti</button>
+          </div>
+          <div id="pt_receipt_box" class="receipt-box"></div>
         </div>
 
-        <div style="font-size:12px; font-weight:bold; color:#334155; margin-bottom:4px;">Orodha ya Bidhaa (Gusa bidhaa kuuza — inajirekodi yenyewe otomatiki):</div>
-        <div id="pt_prod_catalog_list" class="pt-prod-list">Hakuna bidhaa bado.</div>
+        <!-- 6. CHOOSE / CHAGUA KWENYE ORODHA (IMEWEKWA CHINI KABISA) -->
+        <div class="card" style="background:#ffffff; border:1px solid #cbd5e1;">
+          <b>6. Choose / Chagua Bidhaa Kwenye Orodha</b>
+          <div class="row" style="margin-top:8px;">
+            <div>
+              <small><b>Choose Bidhaa (Inajirekodi Otomatiki)</b></small>
+              <select id="pt_prod_select">
+                <option value="">-- Choose / Chagua Bidhaa Kwenye Orodha --</option>
+              </select>
+            </div>
+          </div>
+          <div style="font-size:12px; font-weight:bold; color:#334155; margin-bottom:4px;">Gusa bidhaa kuchagua / kuuza (inajirekodi yenyewe otomatiki):</div>
+          <div id="pt_prod_catalog_list" class="pt-prod-list">Hakuna bidhaa bado.</div>
 
-        <div id="pt_prod_info" class="card" style="background:#fff;">Chagua bidhaa kwa kuandika au scan QR/Barcode — inajirekodi yenyewe kiotomatiki; jaza bei uliyouza na nauli.</div>
-
-        <div class="row">
-          <div>
-            <small><b>Nauli (Weka kumalizia kurekodi)</b></small>
-            <input id="pt_nauli" type="number" step="any" min="0" value="" placeholder="Andika nauli uliyotumia (TZS)" />
+          <div class="pt-assigned-box" style="margin-top:8px; margin-bottom:0;">
+            <div class="box-head" style="margin-bottom:6px;">
+              <b>Stoku Niliyoingiziwa na HQ (Duka &amp; Idadi)</b>
+              <span id="pt_assigned_summary" style="font-size:12px; font-weight:bold; color:#065f46;"></span>
+            </div>
+            <div id="pt_assigned_stock_list">Hakuna stoku uliyoingiziwa bado.</div>
           </div>
         </div>
-
-        <div class="row">
-          <button type="button" class="b-green" data-act="ptFinishNauli">Hifadhi Bei &amp; Kamilisha Nauli</button>
-          <button type="button" id="btn_toggle_receipt" class="b-light" style="display:none;" data-act="togglePortalReceipt">Toa / Chapisha Risiti</button>
-        </div>
-        <div id="pt_receipt_box" class="receipt-box"></div>
 
         <div class="card" style="background:#ffffff; margin-top:10px; margin-bottom:8px;">
           <b>Badilisha Password Yangu</b>
@@ -1694,7 +1729,7 @@
 
         var items = getPortalAvailableProducts();
         var prevVal = sel.value || (portalPickedProd ? String(portalPickedProd.id) : "");
-        var optHtml = '<option value="">-- Chagua Bidhaa Kwenye Orodha --</option>';
+        var optHtml = '<option value="">-- Choose / Chagua Bidhaa Kwenye Orodha --</option>';
         var cardHtml = "";
 
         for (var i = 0; i < items.length; i++) {
@@ -1879,7 +1914,7 @@
       function ptFindProd() {
         var c = (document.getElementById("pt_code").value || document.getElementById("pt_type_search").value || "").trim().toLowerCase();
         var info = document.getElementById("pt_prod_info");
-        if (!c) { info.textContent = "Chagua bidhaa kwa kuandika au weka SKU / Barcode / QR."; return; }
+        if (!c) { info.textContent = "Chagua bidhaa kiotomatiki au weka SKU / Barcode / QR."; return; }
         var items = getPortalAvailableProducts();
         for (var i = 0; i < items.length; i++) {
           var p = items[i];
