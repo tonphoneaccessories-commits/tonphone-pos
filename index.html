@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TON-PHONE &amp; ACCESSORIES — HQ POS</title>
+  <title>TON-PHONE &amp; ACCESSORIES — POS</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://unpkg.com/html5-qrcode"></script>
   <style>
@@ -235,6 +235,13 @@
       color: #ffffff;
       border-color: #60a5fa;
     }
+    body.staff-only-mode {
+      padding-bottom: 24px;
+    }
+    body.staff-only-mode .bottom-nav,
+    body.staff-only-mode .page {
+      display: none !important;
+    }
     @media print {
       body * { visibility: hidden; }
       #pt_receipt_box, #pt_receipt_box * { visibility: visible; }
@@ -252,18 +259,18 @@
 <body>
   <div class="wrap">
     <div class="top-row">
-      <h2>TON-PHONE &amp; ACCESSORIES — HQ</h2>
+      <h2 id="mainAppTitle">TON-PHONE &amp; ACCESSORIES — HQ</h2>
     </div>
 
-    <!-- LANGO LA MFANYAKAZI / WAKALA (BILA BEI YA KUNUNUA / MTAJI) -->
+    <!-- LANGO LA MFANYAKAZI / WAKALA (BILA BEI YA KUNUNUA / MTAJI / HQ / WAFANYAKAZI WENGINE / MADUKA) -->
     <div id="staffPortalModal">
-      <h3 style="margin:0 0 6px 0; color:#92400e;">Lango la Mfanyakazi / Wakala (Imeunganishwa na HQ)</h3>
+      <h3 style="margin:0 0 6px 0; color:#92400e;">Lango la Mfanyakazi / Wakala</h3>
       <div id="portalLockBox">
         <div style="font-size:13px; margin-bottom:8px;">
           Mfanyakazi: <b id="portalEmpLabel">-</b> | Weka <b>Password</b> yako kuingia:
         </div>
         <div class="row" style="margin-bottom:0;">
-          <input id="portal_pass_input" type="password" placeholder="Ingiza password uliyopewa na HQ" />
+          <input id="portal_pass_input" type="password" placeholder="Ingiza password uliyopewa" />
           <button type="button" class="b-blue" data-act="unlockStaffPortal">Ingia kwa Password</button>
         </div>
       </div>
@@ -273,15 +280,15 @@
           Umeingia kama: <b id="portalActiveEmpName">-</b> (<span id="portalActiveBrName">-</span>)
         </div>
         <div class="row">
-          <input id="pt_code" type="text" placeholder="Search au scan SKU / Barcode / QR / Aina / Jina" />
+          <input id="pt_code" type="text" placeholder="Search au scan SKU / Barcode / QR / Jina" />
           <button type="button" class="b-blue" data-act="ptFindProd">Tafuta Bidhaa</button>
           <button type="button" class="b-teal" data-act="scanPortal">Scan QR / Bar</button>
         </div>
-        <div id="pt_prod_info" class="card" style="background:#fff;">Scan au tafuta SKU / Barcode / QR ya bidhaa yako (inaonyesha aina, jina, stoku iliyobaki &amp; bei ya kuuza rejareja pekee).</div>
+        <div id="pt_prod_info" class="card" style="background:#fff;">Scan au tafuta SKU / Barcode / QR ya bidhaa yako (inaonyesha jina, stoku iliyobaki &amp; bei ya kuuza rejareja pekee).</div>
         <div class="row">
           <input id="pt_qty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" />
           <input id="pt_nauli" type="number" step="any" min="0" value="0" placeholder="Nauli uliyotumia (TZS)" />
-          <button type="button" class="b-green" data-act="ptSaveSale">Uza &amp; Tuma HQ</button>
+          <button type="button" class="b-green" data-act="ptSaveSale">Uza &amp; Tuma</button>
         </div>
 
         <div class="row" style="margin-top:6px;">
@@ -297,8 +304,6 @@
           </div>
           <div id="pt_pass_status" style="font-size:12px; color:#0f766e; margin-top:6px;"></div>
         </div>
-
-        <button type="button" class="b-light" data-act="closePortal">Funga Lango</button>
       </div>
     </div>
 
@@ -661,7 +666,7 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v21";
+      var STORE_KEY = "tonphone_pos_hq_v22";
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160",
@@ -712,6 +717,7 @@
       var lastPortalReceipt = null;
       var branchStockOpen = true;
       var staffStockOpen = true;
+      var isStaffOnlyView = false;
 
       function defaultState() {
         return {
@@ -907,17 +913,19 @@
         if (!exists) {
           state.sales.unshift(saleRow);
         }
-        if (saleRow.employee_id) {
-          state.activeStaffId = String(saleRow.employee_id);
-        }
-        if (saleRow.branch_id) {
-          state.activeBranchId = String(saleRow.branch_id);
+        if (!isStaffOnlyView) {
+          if (saleRow.employee_id) {
+            state.activeStaffId = String(saleRow.employee_id);
+          }
+          if (saleRow.branch_id) {
+            state.activeBranchId = String(saleRow.branch_id);
+          }
         }
         recalculateAllProductStocks();
         saveLocalState();
         renderAll();
         runReport();
-        if (isRemote) {
+        if (isRemote && !isStaffOnlyView) {
           var st = calcStaffStats(state.activeStaffId);
           msg("Taarifa ya " + staffNameById(state.activeStaffId) + " imefika kiotomatiki! Kamisheni 55%: " + money(st.staffComm) + " | 45% Mmiliki: " + money(st.ownerComm));
         }
@@ -985,7 +993,7 @@
       function buildStaffPortalUrl(empId, brId, pass) {
         var baseUrl = window.location.origin + window.location.pathname;
         if (!baseUrl || baseUrl.indexOf("http") !== 0) {
-          baseUrl = "https://tonphoneaccessories.github.io/tonphone-pos/";
+          baseUrl = "https://tonphoneaccessories-commits.github.io/tonphone-pos/";
         }
         var sep = baseUrl.indexOf("?") === -1 ? "?" : "&";
         return baseUrl + sep + "staff_portal=1&emp=" + encodeURIComponent(empId) +
@@ -996,6 +1004,10 @@
         try {
           var params = new URLSearchParams(window.location.search || "");
           if (params.get("staff_portal") === "1") {
+            isStaffOnlyView = true;
+            document.body.className = "staff-only-mode";
+            document.getElementById("mainAppTitle").textContent = "TON-PHONE & ACCESSORIES — LANGO LA MFANYAKAZI";
+
             var empId = params.get("emp") || "";
             var brId = params.get("br") || HQ_B;
             var urlPass = params.get("key") || "1234";
@@ -1074,9 +1086,7 @@
         info.textContent = "Bidhaa haijapatikana kwa akaunti yako.";
       }
 
-      // Mfanyakazi anaposcan bidhaa aliyouza: inajaza kiotomatiki, inapunguza stoku, na inajirekodi yenyewe
       function handlePortalAutoScanSale(codeVal) {
-        var c = String(codeVal || "").trim().toLowerCase();
         document.getElementById("pt_code").value = codeVal;
         ptFindProd();
 
@@ -1157,10 +1167,10 @@
         if (sb) {
           sb.from("sales").insert([row]).then(function(r) {
             if (r.error) msg("Imehifadhiwa ndani; Supabase: " + r.error.message);
-            else msg("Taarifa imefika HQ, stoku imepungua, na kamisheni imeongezeka kiotomatiki!");
+            else msg("Taarifa imetumwa na stoku imepungua kiotomatiki!");
           });
         } else {
-          msg("Taarifa imefika, stoku imepungua, na kamisheni imeongezeka kiotomatiki!");
+          msg("Taarifa imetumwa na stoku imepungua kiotomatiki!");
         }
       }
 
@@ -1176,12 +1186,13 @@
         }
         var r = lastPortalReceipt;
         var dtStr = new Date(r.created_at || Date.now()).toLocaleString();
+        var brObjItem = brObj(r.branch_id);
         box.innerHTML =
           "<div style='text-align:center;'><b>TON-PHONE &amp; ACCESSORIES</b><br>RISITI YA MAUZO</div><hr>" +
           "Na. Risiti: <b>" + (r.id || "-") + "</b><br>" +
           "Tarehe / Muda: <b>" + dtStr + "</b><br>" +
           "Muuzaji / Wakala: <b>" + staffNameById(r.employee_id) + "</b><br>" +
-          "Duka / Tawi: <b>" + brLabel(r.branch_id) + "</b><br>" +
+          "Eneo: <b>" + (brObjItem ? brObjItem.name : "-") + "</b><br>" +
           "Bidhaa: <b>" + (r.product_name || "-") + "</b> (" + (r.sku || r.barcod || "-") + ")<br>" +
           "Idadi: <b>" + r.quantity + "</b><br>" +
           "Jumla ya Kuuza: <b>TZS " + money(r.total_amount) + "</b><br>" +
@@ -1336,7 +1347,7 @@
           if (!r.error && Array.isArray(r.data)) {
             var prevLen = state.sales.length;
             state.sales = r.data;
-            if (r.data.length > 0 && r.data[0].employee_id && r.data.length !== prevLen) {
+            if (!isStaffOnlyView && r.data.length > 0 && r.data[0].employee_id && r.data.length !== prevLen) {
               state.activeStaffId = String(r.data[0].employee_id);
             }
             recalculateAllProductStocks();
@@ -1348,6 +1359,7 @@
       }
 
       function goPage(pg) {
+        if (isStaffOnlyView) return;
         if (!pg || order.indexOf(pg) === -1) return;
         stopCam();
         var activeBtn = null;
@@ -1448,6 +1460,7 @@
       }
 
       function renderBranchInner() {
+        if (isStaffOnlyView) return;
         var b = brObj(state.activeBranchId);
         if (!b) return;
         recalculateAllProductStocks();
@@ -1516,6 +1529,7 @@
       }
 
       function renderStaffInner() {
+        if (isStaffOnlyView) return;
         var emp = staffObj(state.activeStaffId);
         if (!emp) return;
         recalculateAllProductStocks();
@@ -1589,6 +1603,7 @@
       }
 
       function renderCommission() {
+        if (isStaffOnlyView) return;
         var emp = staffObj(state.activeStaffId);
         if (!emp) return;
         var st = calcStaffStats(emp.id);
@@ -1622,6 +1637,7 @@
       }
 
       function renderAll() {
+        if (isStaffOnlyView) return;
         var bOpt = "", bHtml = "";
         for (var i = 0; i < state.branches.length; i++) {
           var b = state.branches[i];
@@ -1893,6 +1909,7 @@
       }
 
       function loadProds() {
+        if (isStaffOnlyView) return;
         recalculateAllProductStocks();
         var html = "";
         for (var i = 0; i < state.prods.length; i++) {
@@ -1910,6 +1927,7 @@
       }
 
       function runReport() {
+        if (isStaffOnlyView) return;
         var st = summarizeRows(state.sales);
         document.getElementById("rp_box").innerHTML =
           "Mauzo: <b>" + money(st.sales) + "</b> | Mtaji (HQ): <b>" + money(st.cost) +
@@ -1936,7 +1954,9 @@
         else if (act === "scanPortal") startCam("portal");
         else if (act === "ptSaveSale") ptSaveSale();
         else if (act === "togglePortalReceipt") togglePortalReceipt();
-        else if (act === "closePortal") document.getElementById("staffPortalModal").style.display = "none";
+        else if (act === "closePortal") {
+          if (!isStaffOnlyView) document.getElementById("staffPortalModal").style.display = "none";
+        }
         else if (act === "deleteActiveBranch") deleteActiveBranch();
         else if (act === "deleteActiveStaff") deleteActiveStaff();
         else if (act === "toggleBranchStockBox") toggleBranchStockBox();
@@ -2045,8 +2065,8 @@
       document.getElementById("rp_d").value = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
       loadLocalState();
       recalculateAllProductStocks();
-      renderAll();
       checkUrlParams();
+      renderAll();
       bindRealtimeSales();
       syncFromSupabase(true);
     })();
