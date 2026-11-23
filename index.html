@@ -262,7 +262,7 @@
       <h2 id="mainAppTitle">TON-PHONE &amp; ACCESSORIES — HQ</h2>
     </div>
 
-    <!-- LANGO LA MFANYAKAZI / WAKALA (BILA BEI YA KUNUNUA / MTAJI / HQ / WAFANYAKAZI WENGINE / MADUKA) -->
+    <!-- LANGO LA MFANYAKAZI / WAKALA -->
     <div id="staffPortalModal">
       <h3 style="margin:0 0 6px 0; color:#92400e;">Lango la Mfanyakazi / Wakala</h3>
       <div id="portalLockBox">
@@ -284,14 +284,21 @@
           <button type="button" class="b-blue" data-act="ptFindProd">Tafuta Bidhaa</button>
           <button type="button" class="b-teal" data-act="scanPortal">Scan QR / Bar</button>
         </div>
-        <div id="pt_prod_info" class="card" style="background:#fff;">Scan au tafuta SKU / Barcode / QR ya bidhaa yako (inaonyesha jina, stoku iliyobaki &amp; bei ya kuuza rejareja pekee).</div>
+        <div id="pt_prod_info" class="card" style="background:#fff;">Scan au tafuta bidhaa — ikisomwa inajirekodi kiotomatiki; weka nauli chini kumalizia kurekodi.</div>
+
         <div class="row">
-          <input id="pt_qty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" />
-          <input id="pt_nauli" type="number" step="any" min="0" value="0" placeholder="Nauli uliyotumia (TZS)" />
-          <button type="button" class="b-green" data-act="ptSaveSale">Uza &amp; Tuma</button>
+          <div>
+            <small><b>Idadi (Kiotomatiki ikiscanika)</b></small>
+            <input id="pt_qty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" />
+          </div>
+          <div>
+            <small><b>Nauli (Weka kumalizia kurekodi)</b></small>
+            <input id="pt_nauli" type="number" step="any" min="0" value="" placeholder="Andika nauli uliyotumia (TZS)" />
+          </div>
         </div>
 
-        <div class="row" style="margin-top:6px;">
+        <div class="row">
+          <button type="button" class="b-green" data-act="ptFinishNauli">Kamilisha Nauli</button>
           <button type="button" id="btn_toggle_receipt" class="b-light" style="display:none;" data-act="togglePortalReceipt">Toa / Chapisha Risiti</button>
         </div>
         <div id="pt_receipt_box" class="receipt-box"></div>
@@ -449,7 +456,7 @@
 
     <!-- 5. WAFANYAKAZI -->
     <div id="pg_wafanyakazi" class="page">
-      <div class="card">
+      <div id="hq_staff_add_card" class="card">
         <b>Jaza Majina ya Wafanyakazi 5 Utakaowaongeza</b>
         <div class="slot-box">
           <small><b>Mfanyakazi #1</b></small>
@@ -666,7 +673,7 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v22";
+      var STORE_KEY = "tonphone_pos_hq_v23";
 
       var ORDERED_CATALOG_200 = [
         "Itel_2160",
@@ -1007,6 +1014,8 @@
             isStaffOnlyView = true;
             document.body.className = "staff-only-mode";
             document.getElementById("mainAppTitle").textContent = "TON-PHONE & ACCESSORIES — LANGO LA MFANYAKAZI";
+            var addCard = document.getElementById("hq_staff_add_card");
+            if (addCard) addCard.style.display = "none";
 
             var empId = params.get("emp") || "";
             var brId = params.get("br") || HQ_B;
@@ -1086,6 +1095,7 @@
         info.textContent = "Bidhaa haijapatikana kwa akaunti yako.";
       }
 
+      // Bidhaa iliyouzika inajirekodi yenyewe kiotomatiki ikisomwa; nauli huwekwa kumalizia kurekodi
       function handlePortalAutoScanSale(codeVal) {
         document.getElementById("pt_code").value = codeVal;
         ptFindProd();
@@ -1125,53 +1135,56 @@
 
         if (sb) {
           sb.from("sales").insert([row]).then(function(r) {
-            if (r.error) msg("Imerekodiwa & stoku imepungua (" + portalPickedProd.name + " x" + q + ")");
-            else msg("Imescanika, imejirekodi, na stoku imepungua kiotomatiki (" + portalPickedProd.name + " x" + q + ")!");
+            if (r.error) msg("Bidhaa imejirekodi kiotomatiki (" + portalPickedProd.name + " x" + q + "). Weka nauli kumalizia.");
+            else msg("Bidhaa imejirekodi kiotomatiki (" + portalPickedProd.name + " x" + q + ")! Weka nauli kumalizia kurekodi.");
           });
         } else {
-          msg("Imescanika, imejirekodi, na stoku imepungua kiotomatiki (" + portalPickedProd.name + " x" + q + ")!");
+          msg("Bidhaa imejirekodi kiotomatiki (" + portalPickedProd.name + " x" + q + ")! Weka nauli kumalizia kurekodi.");
         }
       }
 
-      function ptSaveSale() {
-        if (!portalPickedProd) { msg("Scan au tafuta bidhaa kwanza."); return; }
-        var q = parseFloat(document.getElementById("pt_qty").value) || 0;
-        var nauli = parseFloat(document.getElementById("pt_nauli").value) || 0;
-        if (q <= 0) { msg("Weka idadi."); return; }
-        var empId = portalConfig ? portalConfig.empId : state.activeStaffId;
-        var brId = (portalConfig && portalConfig.brId) ? portalConfig.brId : (portalPickedProd.branch_id || HQ_B);
-        var totalAmt = q * Number(portalPickedProd.selling_price || 0);
-        var costAmt = q * Number(portalPickedProd.wholesale_price || 0);
-
-        var row = {
-          id: "sl-" + Date.now(),
-          employee_id: empId,
-          branch_id: brId,
-          product_id: String(portalPickedProd.id || ""),
-          sku: portalPickedProd.sku || portalPickedProd.barcod,
-          barcod: String(portalPickedProd.barcod),
-          product_name: portalPickedProd.name,
-          quantity: q,
-          total_amount: totalAmt,
-          cost_amount: costAmt,
-          transport_fee: nauli,
-          payment_method: "cash",
-          created_at: new Date().toISOString()
-        };
-
-        lastPortalReceipt = row;
-        document.getElementById("btn_toggle_receipt").style.display = "inline-block";
-        ingestSaleAuto(row, false);
-        ptFindProd();
-
-        if (sb) {
-          sb.from("sales").insert([row]).then(function(r) {
-            if (r.error) msg("Imehifadhiwa ndani; Supabase: " + r.error.message);
-            else msg("Taarifa imetumwa na stoku imepungua kiotomatiki!");
-          });
-        } else {
-          msg("Taarifa imetumwa na stoku imepungua kiotomatiki!");
+      // Weka nauli kumalizia kurekodi mauzo ya hivi karibuni
+      function ptFinishNauli() {
+        var nauli = parseFloat(document.getElementById("pt_nauli").value);
+        if (isNaN(nauli) || nauli < 0) {
+          msg("Andika kiasi cha nauli kwanza kumalizia kurekodi.");
+          return;
         }
+        var targetSale = null;
+        if (lastPortalReceipt) {
+          for (var i = 0; i < state.sales.length; i++) {
+            if (String(state.sales[i].id) === String(lastPortalReceipt.id)) {
+              targetSale = state.sales[i];
+              break;
+            }
+          }
+        }
+        if (!targetSale && portalConfig) {
+          for (var j = 0; j < state.sales.length; j++) {
+            if (String(state.sales[j].employee_id) === String(portalConfig.empId)) {
+              targetSale = state.sales[j];
+              break;
+            }
+          }
+        }
+        if (!targetSale) {
+          msg("Hakuna mauzo yaliyojirekodi bado. Scan bidhaa kwanza.");
+          return;
+        }
+
+        targetSale.transport_fee = nauli;
+        lastPortalReceipt = targetSale;
+        document.getElementById("btn_toggle_receipt").style.display = "inline-block";
+        saveLocalState();
+        renderAll();
+        runReport();
+
+        if (sb && targetSale.id) {
+          sb.from("sales").update({ transport_fee: nauli }).eq("id", targetSale.id).then(function(){});
+        }
+
+        document.getElementById("pt_nauli").value = "";
+        msg("Nauli ya TZS " + money(nauli) + " imekamilisha rekodi ya mauzo (" + (targetSale.product_name || "Bidhaa") + ")!");
       }
 
       function togglePortalReceipt() {
@@ -1952,7 +1965,7 @@
         else if (act === "ptChangePass") ptChangePass();
         else if (act === "ptFindProd") ptFindProd();
         else if (act === "scanPortal") startCam("portal");
-        else if (act === "ptSaveSale") ptSaveSale();
+        else if (act === "ptFinishNauli") ptFinishNauli();
         else if (act === "togglePortalReceipt") togglePortalReceipt();
         else if (act === "closePortal") {
           if (!isStaffOnlyView) document.getElementById("staffPortalModal").style.display = "none";
