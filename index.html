@@ -222,7 +222,7 @@
       <h2>TON-PHONE &amp; ACCESSORIES — HQ</h2>
     </div>
 
-    <!-- LANGO LA MFANYAKAZI / WAKALA (BILA BEI YA JUMLA) -->
+    <!-- LANGO LA MFANYAKAZI / WAKALA (BILA BEI YA KUNUNUA / MTAJI) -->
     <div id="staffPortalModal">
       <h3 style="margin:0 0 6px 0; color:#92400e;">Lango la Mfanyakazi / Wakala (Imeunganishwa na HQ)</h3>
       <div id="portalLockBox">
@@ -240,10 +240,10 @@
           Umeingia kama: <b id="portalActiveEmpName">-</b> (<span id="portalActiveBrName">-</span>)
         </div>
         <div class="row">
-          <input id="pt_code" type="text" placeholder="Search au scan SKU / Barcode / QR" />
+          <input id="pt_code" type="text" placeholder="Search au scan SKU / Barcode / QR / Aina / Jina" />
           <button type="button" class="b-blue" data-act="ptFindProd">Tafuta Bidhaa</button>
         </div>
-        <div id="pt_prod_info" class="card" style="background:#fff;">Tafuta SKU / Barcode / QR ya bidhaa yako.</div>
+        <div id="pt_prod_info" class="card" style="background:#fff;">Tafuta SKU / Barcode / QR ya bidhaa yako (inaonyesha aina, jina, stoku iliyobaki &amp; bei ya kuuza pekee).</div>
         <div class="row">
           <input id="pt_qty" type="number" step="any" min="0.01" value="1" placeholder="Idadi" />
           <input id="pt_nauli" type="number" step="any" min="0" value="0" placeholder="Nauli uliyotumia (TZS)" />
@@ -336,8 +336,8 @@
         </div>
         <div class="row">
           <input id="st_qty" type="number" step="any" placeholder="Idadi ya stoku" />
-          <input id="st_sell" type="number" step="any" placeholder="Bei ya kuuza" />
-          <input id="st_cost" type="number" step="any" placeholder="Bei ya jumla / mtaji (Siri ya HQ)" />
+          <input id="st_sell" type="number" step="any" placeholder="Kiasi cha kuuza (Bei ya kuuza)" />
+          <input id="st_cost" type="number" step="any" placeholder="Kiasi cha kununua (Siri ya HQ)" />
         </div>
         <div class="row" style="margin-bottom:0;">
           <button type="button" class="b-blue" data-act="saveProd">Hifadhi Stoku Kwa Mfanyakazi / Duka</button>
@@ -391,7 +391,6 @@
             <div id="md_sales_list" style="margin-top:6px; font-size:13px;"></div>
           </div>
 
-          <!-- ORODHA YA BIDHAA ZOTE NO. 1 MPAKA NO. 200 CHINI MWISHO -->
           <div id="md_stock_drawer" style="margin-top:14px; background:#ffffff; border:1px solid #93c5fd; border-radius:8px; padding:10px;">
             <div class="box-head">
               <b>Orodha ya Bidhaa Dukani (No. 1 – No. 200 | Aina Zilizopo: <span id="md_sku_types_cnt">0</span>)</b>
@@ -464,7 +463,7 @@
           <div class="grid4">
             <div class="stat"><small>Stoku Aliyoingiziwa</small><b id="wf_init_stock">0</b></div>
             <div class="stat"><small>Stoku Iliyopungua</small><b id="wf_used_stock">0</b></div>
-            <div class="stat"><small>Stoku Iliyobaki</small><b id="wf_rem_stock">0</b></div>
+            <div class="stat"><small>Stoku Iliyobaki (Otomatiki)</small><b id="wf_rem_stock">0</b></div>
             <div class="stat"><small>Kiasi Alichouza</small><b id="wf_sales">0</b></div>
           </div>
 
@@ -476,13 +475,14 @@
           </div>
 
           <div style="margin-top:10px;">
-            <b>Stoku ya Bidhaa Aliyoingiziwa Mfanyakazi Huyu &amp; Zilizopungua</b>
-            <div id="wf_assigned_stock" style="margin-top:6px; font-size:13px;"></div>
-          </div>
-
-          <div style="margin-top:10px;">
             <b>Vitu Alivyouza</b>
             <div id="wf_sold_stock" style="margin-top:6px; font-size:13px;"></div>
+          </div>
+
+          <!-- CHINI MWISHO: IDADI YA BIDHAA KUTOKANA NA AINA 1 HADI 200 KWA ORODHA KWENDA CHINI -->
+          <div style="margin-top:14px; background:#ffffff; border:1px solid #93c5fd; border-radius:8px; padding:10px;">
+            <b>Orodha ya Bidhaa za Mfanyakazi (No. 1 – No. 200 Kwenda Chini | Aina, Jina, Kiasi cha Kununua &amp; Kiasi cha Kuuza)</b>
+            <div id="wf_assigned_stock" style="margin-top:6px;"></div>
           </div>
         </div>
       </div>
@@ -600,9 +600,8 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v18";
+      var STORE_KEY = "tonphone_pos_hq_v19";
 
-      // Mpangilio maalum wa simu na betri kulingana na maelekezo yako
       var ORDERED_CATALOG_200 = [
         "Itel_2160",
         "Itel 2161",
@@ -730,6 +729,14 @@
         return String(s || "").toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim();
       }
 
+      function getProductCategory(prodName) {
+        var n = normName(prodName);
+        if (n.indexOf("battery") !== -1 || n.indexOf("betri") !== -1 || n.indexOf("bl 5c") !== -1 || n.indexOf("5l") !== -1) {
+          return "Betri ya Simu";
+        }
+        return "Simu";
+      }
+
       function getCatalogRank(prodName) {
         var n = normName(prodName);
         if (!n) return 9999;
@@ -747,11 +754,14 @@
         var pSku = String(prod.sku || prod.barcod || "").toLowerCase();
         var pId = String(prod.id || "");
         var pBr = String(prod.branch_id || "");
+        var pEmp = String(prod.employee_id || "");
         var pName = normName(prod.name);
         for (var i = 0; i < scopeSales.length; i++) {
           var s = scopeSales[i];
           var sBr = String(s.branch_id || "");
+          var sEmp = String(s.employee_id || "");
           if (pBr && sBr && pBr !== sBr) continue;
+          if (pEmp && sEmp && pEmp !== sEmp) continue;
           var sSku = String(s.sku || s.barcod || "").toLowerCase();
           var sPid = String(s.product_id || "");
           var sName = normName(s.product_name);
@@ -907,6 +917,7 @@
         msg("Password yako imebadilishwa kikamilifu.");
       }
 
+      // Mfanyakazi anaona Aina, Jina, Stoku Iliyobaki, na Bei ya Kuuza pekee (bila bei ya kununua/mtaji)
       function ptFindProd() {
         var c = (document.getElementById("pt_code").value || "").trim().toLowerCase();
         var info = document.getElementById("pt_prod_info");
@@ -920,8 +931,13 @@
           var brOk = !portalConfig || !portalConfig.brId || String(p.branch_id) === String(portalConfig.brId);
           if (matchCode && empOk && brOk) {
             portalPickedProd = p;
-            info.innerHTML = "<b>" + p.name + "</b> | SKU/QR: <b>" + (p.sku || p.barcod) +
-              "</b> | Bei ya Kuuza: <b>TZS " + money(p.selling_price) + "</b>";
+            var m = getProductStockMetrics(p, state.sales);
+            info.innerHTML =
+              "Aina: <b>" + getProductCategory(p.name) + "</b> | " +
+              "Jina: <b>" + p.name + "</b> | " +
+              "SKU/QR: <b>" + (p.sku || p.barcod) + "</b> | " +
+              "Stoku Iliyobaki: <b>" + m.remaining + "</b> | " +
+              "Bei ya Kuuza: <b>TZS " + money(p.selling_price) + "</b>";
             return;
           }
         }
@@ -956,13 +972,14 @@
         recalculateAllProductStocks();
         saveLocalState();
         renderAll();
+        ptFindProd();
         if (sb) {
           sb.from("sales").insert([row]).then(function(r) {
             if (r.error) msg("Imehifadhiwa ndani; Supabase: " + r.error.message);
-            else msg("Mauzo na nauli vimetumwa HQ na stoku imejipunguza kiotomatiki!");
+            else msg("Mauzo na nauli vimetumwa HQ na stoku ya mfanyakazi imejipunguza kiotomatiki!");
           });
         } else {
-          msg("Mauzo yamehifadhiwa na stoku imejipunguza kiotomatiki!");
+          msg("Mauzo yamehifadhiwa na stoku ya mfanyakazi imejipunguza kiotomatiki!");
         }
       }
 
@@ -1205,7 +1222,6 @@
         var st = calcBranchStats(b.id);
         var totInitStock = 0, totUsedStock = 0, totRemStock = 0;
 
-        // Panga bidhaa za duka kulingana na orodha uliyoitaja
         var sortedItems = st.stockItems.slice().sort(function(a, c) {
           var ra = getCatalogRank(a.name);
           var rc = getCatalogRank(c.name);
@@ -1222,23 +1238,22 @@
           totRemStock += m.remaining;
 
           liHtml += '<li>' +
-            '<b>' + item.name + '</b> — SKU/QR: <b>' + (item.sku || item.barcod) + '</b><br>' +
+            'Aina: <b>' + getProductCategory(item.name) + '</b> | Jina: <b>' + item.name + '</b> — SKU/QR: <b>' + (item.sku || item.barcod) + '</b><br>' +
             'Stoku Iliyoingia: <b>' + m.initial +
-            '</b> | Iliyopungua (Iliyouzwa): <b>' + m.reduced +
+            '</b> | Iliyopungua: <b>' + m.reduced +
             '</b> | <b>Idadi Iliyobaki Kiotomatiki: ' + m.remaining + '</b><br>' +
-            'Bei ya Kuuza: <b>TZS ' + money(item.selling_price) +
-            '</b> | Mtaji (HQ): <b>TZS ' + money(item.wholesale_price) +
+            'Kiasi cha Kununua: <b>TZS ' + money(item.wholesale_price) +
+            '</b> | Kiasi cha Kuuza: <b>TZS ' + money(item.selling_price) +
             '</b> | Mhusika: <b>' + staffNameById(item.employee_id) + '</b>' +
             '</li>';
         }
 
-        // Jaza nafasi zilizobaki mpaka No. 200 kwa namba kushuka chini
         var startSlot = sortedItems.length + 1;
         for (var slotNum = startSlot; slotNum <= 200; slotNum++) {
           var presetLabel = ORDERED_CATALOG_200[slotNum - 1] || ("Bidhaa #" + slotNum);
           liHtml += '<li>' +
-            '<b>' + presetLabel + '</b> — <i>Hakuna stoku bado</i> | ' +
-            '<b>Idadi Iliyobaki: 0</b>' +
+            'Aina: <b>' + getProductCategory(presetLabel) + '</b> | Jina: <b>' + presetLabel + '</b> — ' +
+            '<b>Idadi Iliyobaki: 0</b> | Kiasi cha Kununua: <b>0</b> | Kiasi cha Kuuza: <b>0</b>' +
             '</li>';
         }
 
@@ -1273,15 +1288,25 @@
         document.getElementById("md_sales_list").innerHTML = rHtml || "Hakuna mauzo yaliyotumwa kwenye duka hili bado.";
       }
 
+      // Sehemu ya Wafanyakazi: orodha No. 1 hadi 200 chini mwisho, stoku inajipunguza kiotomatiki, na aina/jina/kiasi cha kununua/kuuza
       function renderStaffInner() {
         var emp = staffObj(state.activeStaffId);
         if (!emp) return;
         recalculateAllProductStocks();
         var st = calcStaffStats(emp.id);
 
-        var assigned = state.prods.filter(function(p) { return String(p.employee_id) === String(emp.id); });
+        var assigned = state.prods
+          .filter(function(p) { return String(p.employee_id) === String(emp.id); })
+          .slice()
+          .sort(function(a, c) {
+            var ra = getCatalogRank(a.name);
+            var rc = getCatalogRank(c.name);
+            if (ra !== rc) return ra - rc;
+            return String(a.name || "").localeCompare(String(c.name || ""));
+          });
+
         var totEmpInit = 0, totEmpUsed = 0, totEmpRem = 0;
-        var aHtml = "";
+        var liHtml = "";
 
         for (var a = 0; a < assigned.length; a++) {
           var ap = assigned[a];
@@ -1290,12 +1315,23 @@
           totEmpUsed += m.reduced;
           totEmpRem += m.remaining;
 
-          aHtml += "<div>• SKU/QR: <b>" + (ap.sku || ap.barcod) + "</b> — <b>" + ap.name +
-            "</b> | Iliyoingizwa: <b>" + m.initial +
-            "</b> | Iliyopungua (Iliyouzwa): <b>" + m.reduced +
-            "</b> | <b>Iliyobaki Kiotomatiki: " + m.remaining +
-            "</b> | Bei ya Kuuza: <b>" + money(ap.selling_price) +
-            "</b> | Mtaji (HQ): <b>" + money(ap.wholesale_price) + "</b></div>";
+          liHtml += '<li>' +
+            'Aina: <b>' + getProductCategory(ap.name) + '</b> | Jina: <b>' + ap.name + '</b> — SKU/QR: <b>' + (ap.sku || ap.barcod) + '</b><br>' +
+            'Iliyoingizwa: <b>' + m.initial +
+            '</b> | Iliyopungua: <b>' + m.reduced +
+            '</b> | <b>Idadi Iliyobaki Kiotomatiki: ' + m.remaining + '</b><br>' +
+            'Kiasi cha Kununua: <b>TZS ' + money(ap.wholesale_price) +
+            '</b> | Kiasi cha Kuuza: <b>TZS ' + money(ap.selling_price) + '</b>' +
+            '</li>';
+        }
+
+        var startSlot = assigned.length + 1;
+        for (var slotNum = startSlot; slotNum <= 200; slotNum++) {
+          var presetLabel = ORDERED_CATALOG_200[slotNum - 1] || ("Bidhaa #" + slotNum);
+          liHtml += '<li>' +
+            'Aina: <b>' + getProductCategory(presetLabel) + '</b> | Jina: <b>' + presetLabel + '</b> — ' +
+            '<b>Idadi Iliyobaki: 0</b> | Kiasi cha Kununua: <b>0</b> | Kiasi cha Kuuza: <b>0</b>' +
+            '</li>';
         }
 
         document.getElementById("wf_i_title").textContent = emp.name + " — Duka: " + brLabel(emp.branch_id);
@@ -1311,15 +1347,18 @@
         document.getElementById("wf_net_profit").textContent = money(st.profit);
         document.getElementById("wf_items_cnt").textContent = String(st.totalQty);
 
-        document.getElementById("wf_assigned_stock").innerHTML = aHtml || "Hakuna stoku ya bidhaa iliyoingizwa kwa mfanyakazi huyu bado.";
+        document.getElementById("wf_assigned_stock").innerHTML = '<ol class="stock-ol-200">' + liHtml + '</ol>';
 
         var soldHtml = "";
         for (var i = 0; i < st.rows.length; i++) {
           var r = st.rows[i];
           var rowGross = Number(r.total_amount || 0) - Number(r.cost_amount || 0);
-          soldHtml += "<div>• SKU/QR: <b>" + (r.sku || r.barcod || "-") + "</b> — <b>" + (r.product_name || "Bidhaa") +
-            "</b> | Idadi: <b>" + r.quantity + "</b> | Kiasi Alichouza: <b>" + money(r.total_amount) +
-            "</b> | Faida: <b>" + money(rowGross) + "</b> | Nauli: <b>" + money(r.transport_fee || 0) + "</b></div>";
+          soldHtml += "<div>• Aina: <b>" + getProductCategory(r.product_name) +
+            "</b> | Jina: <b>" + (r.product_name || "Bidhaa") +
+            "</b> | Idadi: <b>" + r.quantity +
+            "</b> | Kiasi Alichouza: <b>" + money(r.total_amount) +
+            "</b> | Faida: <b>" + money(rowGross) +
+            "</b> | Nauli: <b>" + money(r.transport_fee || 0) + "</b></div>";
         }
         document.getElementById("wf_sold_stock").innerHTML = soldHtml || "Hakuna vitu vilivyouzwa na mfanyakazi huyu bado.";
       }
@@ -1542,7 +1581,7 @@
         var cost = parseFloat(document.getElementById("st_cost").value) || 0;
 
         if (!sku || !name || isNaN(qty) || isNaN(sell)) {
-          msg("Jaza SKU/QR, jina la bidhaa, stoku, na bei ya kuuza.");
+          msg("Jaza SKU/QR, jina la bidhaa, stoku, na kiasi cha kuuza.");
           return;
         }
 
@@ -1610,13 +1649,14 @@
         for (var i = 0; i < state.prods.length; i++) {
           var p = state.prods[i];
           var m = getProductStockMetrics(p, state.sales);
-          html += '<div class="list-box"><b>' + p.name + "</b> — SKU/QR: <b>" + (p.sku || p.barcod) +
+          html += '<div class="list-box">Aina: <b>' + getProductCategory(p.name) +
+            "</b> | Jina: <b>" + p.name + "</b> — SKU/QR: <b>" + (p.sku || p.barcod) +
             "</b> | Mfanyakazi: <b>" + staffNameById(p.employee_id) +
             "</b> | Duka: <b>" + brLabel(p.branch_id) + "</b> | Iliyoingia: <b>" + m.initial +
             "</b> | Iliyopungua: <b>" + m.reduced +
             "</b> | Iliyobaki: <b>" + m.remaining +
-            "</b> | Kuuza: <b>" + money(p.selling_price) +
-            "</b> | Mtaji (HQ): <b>" + money(p.wholesale_price) + "</b></div>";
+            "</b> | Kiasi cha Kuuza: <b>" + money(p.selling_price) +
+            "</b> | Kiasi cha Kununua (HQ): <b>" + money(p.wholesale_price) + "</b></div>";
         }
         document.getElementById("st_list").innerHTML = html || "Hakuna stoku bado.";
       }
@@ -1759,4 +1799,4 @@
     })();
   </script>
 </body>
-</html>
+            </html>
