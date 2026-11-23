@@ -31,6 +31,12 @@
       gap: 8px;
       margin-bottom: 10px;
     }
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
     h2 { margin: 0; font-size: 18px; }
     .mini-btn {
       width: auto;
@@ -201,7 +207,11 @@
   <div class="wrap">
     <div class="top-row">
       <h2>TON-PHONE &amp; ACCESSORIES — HQ</h2>
-      <button type="button" class="mini-btn" data-act="syncNow">Sawazisha HQ Sasa</button>
+      <div class="top-actions">
+        <button type="button" class="mini-btn" data-act="downloadBackup">Pakua Backup (.json)</button>
+        <button type="button" class="mini-btn" data-act="copyBackupJson">Nakili Backup</button>
+        <button type="button" class="mini-btn" data-act="syncNow">Sawazisha HQ Sasa</button>
+      </div>
     </div>
 
     <!-- LANGO LA MFANYAKAZI LINALOFUNGUKA KUPITIA LINK YAKE (KWA PASSWORD) -->
@@ -570,7 +580,7 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var STORE_KEY = "tonphone_pos_hq_v12";
+      var STORE_KEY = "tonphone_pos_hq_v13";
 
       var sb = null;
       try {
@@ -657,6 +667,43 @@
         } else {
           msg("Nakili: " + txt);
         }
+      }
+
+      function buildBackupJsonString() {
+        var payload = {
+          exported_at: new Date().toISOString(),
+          business: "TON-PHONE & ACCESSORIES",
+          owner: "Milton Elitwaza",
+          account_no: VAULT_ACC_NO,
+          lipa_code: LIPA_CODE,
+          data: state
+        };
+        return JSON.stringify(payload, null, 2);
+      }
+
+      function downloadBackupFile() {
+        var jsonText = buildBackupJsonString();
+        var stamp = new Date().toISOString().slice(0, 10);
+        var fileName = "tonphone-hq-backup-" + stamp + ".json";
+        try {
+          var blob = new Blob([jsonText], { type: "application/json;charset=utf-8" });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+          msg("Backup (" + fileName + ") imepakuliwa!");
+        } catch (e) {
+          copyTextHelper(jsonText, "Backup JSON imenakiliwa!");
+        }
+      }
+
+      function copyBackupJson() {
+        var jsonText = buildBackupJsonString();
+        copyTextHelper(jsonText, "Maandishi ya Backup (JSON) yamenakiliwa!");
       }
 
       function renderVault() {
@@ -1450,6 +1497,8 @@
         if (!act) return;
 
         if (act === "syncNow") syncFromSupabase(false);
+        else if (act === "downloadBackup") downloadBackupFile();
+        else if (act === "copyBackupJson") copyBackupJson();
         else if (act === "copyLipaCode") copyTextHelper(LIPA_CODE, "Kodi ya Lipa Namba " + LIPA_CODE + " imenakiliwa!");
         else if (act === "vaultDeposit") addVaultTx("in", "Malipo ya Lipa Namba (" + LIPA_CODE + ")");
         else if (act === "vaultWithdrawPhone") addVaultTx("out", "Imetumwa Mtandao wa Simu");
