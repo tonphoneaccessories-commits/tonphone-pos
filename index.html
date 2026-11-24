@@ -23,24 +23,6 @@
       padding: 14px;
       box-shadow: 0 3px 12px rgba(15, 23, 42, 0.08);
     }
-    #adminLockOverlay {
-      position: fixed;
-      inset: 0;
-      background: #0f172a;
-      z-index: 2000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-    .admin-box {
-      width: 100%;
-      max-width: 420px;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 18px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
     .top-row {
       display: flex;
       justify-content: space-between;
@@ -49,10 +31,11 @@
       gap: 8px;
       margin-bottom: 10px;
     }
-    .msg-actions {
+    .top-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
+      align-items: center;
     }
     h2 { margin: 0; font-size: 18px; }
     .mini-btn {
@@ -140,7 +123,6 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
       gap: 8px;
     }
     .inner-panel {
@@ -222,26 +204,14 @@
   </style>
 </head>
 <body>
-  <!-- KUFUNGA MFUMO KWA PASSWORD YA MKURUGENZI MKUU (ADMIN) -->
-  <div id="adminLockOverlay">
-    <div class="admin-box">
-      <div style="font-size:12px; font-weight:bold; color:#1d4ed8; margin-bottom:4px;">ADMIN / MKURUGENZI MKUU</div>
-      <h2 style="margin-bottom:6px;">TON-PHONE &amp; ACCESSORIES</h2>
-      <div style="font-size:13px; color:#334155; margin-bottom:12px;">
-        Mkurugenzi Mkuu: <b>Milton Elitwaza</b> — Weka password ya Admin kuingia kwenye mfumo.
-      </div>
-      <div class="row">
-        <input id="admin_pass_input" type="password" placeholder="Weka password ya Mkurugenzi Mkuu" />
-      </div>
-      <button type="button" class="b-blue" data-act="unlockAdmin">Ingia Kama Admin / Mkurugenzi Mkuu</button>
-      <div id="admin_lock_err" style="font-size:12px; color:#b91c1c; font-weight:bold; margin-top:8px;"></div>
-    </div>
-  </div>
-
   <div class="wrap">
     <div class="top-row">
       <h2>TON-PHONE &amp; ACCESSORIES — HQ</h2>
-      <button type="button" class="mini-btn" data-act="lockSystemNow">Funga Mfumo</button>
+      <div class="top-actions">
+        <button type="button" class="mini-btn" data-act="downloadBackup">Pakua Backup (.json)</button>
+        <button type="button" class="mini-btn" data-act="copyBackupJson">Nakili Backup</button>
+        <button type="button" class="mini-btn" data-act="syncNow">Sawazisha HQ Sasa</button>
+      </div>
     </div>
 
     <!-- LANGO LA MFANYAKAZI LINALOFUNGUKA KUPITIA LINK YAKE (KWA PASSWORD) -->
@@ -294,13 +264,9 @@
     <!-- 1. HQ -->
     <div id="pg_hq" class="page on">
       <div class="card">
-        <b>Makao Makuu (HQ) — Milton Elitwaza (Mkurugenzi Mkuu / Admin)</b>
+        <b>Makao Makuu (HQ) — Milton Elitwaza</b>
         <div style="margin-top:6px; font-size:13px;">
           Msimamizi Mkuu: <b>Milton Elitwaza</b> | Laini ya Vodacom: <b>0768829648</b> | Mauzo Yaliyopokelewa: <b id="hq_live_count">0</b>
-        </div>
-        <div class="row" style="margin-top:10px; margin-bottom:0;">
-          <input id="admin_new_pass_input" type="password" placeholder="Password mpya ya Admin / Mkurugenzi Mkuu" />
-          <button type="button" class="b-teal" data-act="saveAdminPass">Hifadhi Password ya Admin</button>
         </div>
       </div>
 
@@ -535,17 +501,6 @@
 
     <!-- 8. MAWASILIANO -->
     <div id="pg_mawasiliano" class="page">
-      <div class="card">
-        <div class="box-head">
-          <b>Mawasiliano &amp; Usimamizi wa Backup / Sawazisha</b>
-          <div class="msg-actions">
-            <button type="button" class="mini-btn" data-act="copyBackupJson">Nakili Backup</button>
-            <button type="button" class="mini-btn" data-act="downloadBackup">Pakua Backup</button>
-            <button type="button" class="mini-btn" data-act="syncNow">Sawazisha</button>
-          </div>
-        </div>
-      </div>
-
       <div class="vault-card">
         <div class="box-head">
           <b>Akaunti Maalum ya Kidigitali (Kibubu / Lipa Namba ya Mitandao Yote &amp; Benki)</b>
@@ -625,8 +580,7 @@
       var VODACOM_LINE = "0768829648";
       var LIPA_CODE = "7688296";
       var VAULT_ACC_NO = "TON-WALLET-768829648";
-      var DEFAULT_ADMIN_PASS = "TON-ADMIN-2026";
-      var STORE_KEY = "tonphone_pos_hq_v14";
+      var STORE_KEY = "tonphone_pos_hq_v13";
 
       var sb = null;
       try {
@@ -661,7 +615,6 @@
           sales: [],
           vaultTxs: [],
           staffPasswords: {},
-          adminPass: DEFAULT_ADMIN_PASS,
           activeStaffId: DIR_E,
           activeBranchId: "br-mwanza-nyamagana"
         };
@@ -690,7 +643,6 @@
           if (parsed && Array.isArray(parsed.sales)) state.sales = parsed.sales;
           if (parsed && Array.isArray(parsed.vaultTxs)) state.vaultTxs = parsed.vaultTxs;
           if (parsed && parsed.staffPasswords && typeof parsed.staffPasswords === "object") state.staffPasswords = parsed.staffPasswords;
-          if (parsed && parsed.adminPass) state.adminPass = parsed.adminPass;
           if (parsed && parsed.activeStaffId) state.activeStaffId = parsed.activeStaffId;
           if (parsed && parsed.activeBranchId) state.activeBranchId = parsed.activeBranchId;
         } catch (e) {}
@@ -717,45 +669,6 @@
         }
       }
 
-      function getCurrentAdminPass() {
-        return (state && state.adminPass) ? state.adminPass : DEFAULT_ADMIN_PASS;
-      }
-
-      function unlockAdmin() {
-        var inp = document.getElementById("admin_pass_input");
-        var err = document.getElementById("admin_lock_err");
-        var entered = inp ? (inp.value || "").trim() : "";
-        if (!entered || entered !== getCurrentAdminPass()) {
-          if (err) err.textContent = "Password ya Mkurugenzi Mkuu si sahihi. Jaribu tena.";
-          return;
-        }
-        if (err) err.textContent = "";
-        if (inp) inp.value = "";
-        document.getElementById("adminLockOverlay").style.display = "none";
-        msg("Karibu Mkurugenzi Mkuu (Admin), Milton Elitwaza!");
-      }
-
-      function lockSystemNow() {
-        var inp = document.getElementById("admin_pass_input");
-        var err = document.getElementById("admin_lock_err");
-        if (inp) inp.value = "";
-        if (err) err.textContent = "";
-        document.getElementById("adminLockOverlay").style.display = "flex";
-      }
-
-      function saveAdminPass() {
-        var inp = document.getElementById("admin_new_pass_input");
-        var nextPass = inp ? (inp.value || "").trim() : "";
-        if (!nextPass || nextPass.length < 4) {
-          msg("Weka password ya Admin yenye angalau herufi/namba 4.");
-          return;
-        }
-        state.adminPass = nextPass;
-        saveLocalState();
-        if (inp) inp.value = "";
-        msg("Password mpya ya Admin / Mkurugenzi Mkuu imehifadhiwa!");
-      }
-
       function buildBackupJsonString() {
         var payload = {
           exported_at: new Date().toISOString(),
@@ -763,16 +676,7 @@
           owner: "Milton Elitwaza",
           account_no: VAULT_ACC_NO,
           lipa_code: LIPA_CODE,
-          data: {
-            branches: state.branches,
-            staff: state.staff,
-            prods: state.prods,
-            sales: state.sales,
-            vaultTxs: state.vaultTxs,
-            staffPasswords: state.staffPasswords,
-            activeStaffId: state.activeStaffId,
-            activeBranchId: state.activeBranchId
-          }
+          data: state
         };
         return JSON.stringify(payload, null, 2);
       }
@@ -1592,10 +1496,7 @@
         var act = el.getAttribute("data-act");
         if (!act) return;
 
-        if (act === "unlockAdmin") unlockAdmin();
-        else if (act === "lockSystemNow") lockSystemNow();
-        else if (act === "saveAdminPass") saveAdminPass();
-        else if (act === "syncNow") syncFromSupabase(false);
+        if (act === "syncNow") syncFromSupabase(false);
         else if (act === "downloadBackup") downloadBackupFile();
         else if (act === "copyBackupJson") copyBackupJson();
         else if (act === "copyLipaCode") copyTextHelper(LIPA_CODE, "Kodi ya Lipa Namba " + LIPA_CODE + " imenakiliwa!");
