@@ -349,7 +349,7 @@
       line-height: 1;
     }
 
-    /* DIRISHA LA MBELE JUU YA SCREEN KWA KILA SEHEMU YA DUKA */
+    /* DIRISHA LA MBELE JUU YA SCREEN FULL KWA KILA SEHEMU YA DUKA */
     .hm-full-overlay {
       display: none;
       position: fixed;
@@ -363,7 +363,7 @@
       display: block;
     }
     .hm-full-inner {
-      max-width: 780px;
+      max-width: 960px;
       margin: 0 auto;
     }
     .hm-shell {
@@ -513,40 +513,37 @@
       background: #ffffff;
     }
     .hm-table-wrap {
-      margin-top: 12px;
       width: 100%;
       overflow-x: auto;
       background: #ffffff;
       border: 1px solid #e4e4e7;
       border-radius: 14px;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+      margin-top: 10px;
     }
-    table.hm-table {
+    table.hm-data-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 12px;
       color: #18181b;
-      min-width: 620px;
+      min-width: 680px;
     }
-    table.hm-table th {
+    table.hm-data-table th {
       background: #27272a;
       color: #ffffff;
       text-align: left;
       padding: 10px 11px;
       font-weight: bold;
       border-bottom: 1px solid #3f3f46;
-      white-space: nowrap;
     }
-    table.hm-table td {
-      padding: 10px 11px;
+    table.hm-data-table td {
+      padding: 9px 11px;
       border-bottom: 1px solid #e4e4e7;
       vertical-align: top;
-      line-height: 1.4;
     }
-    table.hm-table tr:last-child td {
+    table.hm-data-table tr:last-child td {
       border-bottom: none;
     }
-    table.hm-table tr:nth-child(even) td {
+    table.hm-data-table tr:nth-child(even) td {
       background: #fafafa;
     }
     .hm-sale-row {
@@ -561,15 +558,15 @@
       line-height: 1.45;
     }
 
-    /* SETI 4 ZA BIDHAA ALIZOUZA: 2 KUSHOTO NA 2 KULIA */
-    .sold-slots-2x2 {
+    /* SETI 4 ZA BIDHAA ALIZOUZA: KUSHOTO SETI 2 NA KULIA SETI 2 (JUU NA CHINI KAMA VIJEDWALI VINNE) */
+    .sold-slots-grid-4 {
       display: grid;
       grid-template-columns: 1fr;
       gap: 10px;
       margin-top: 8px;
     }
-    @media (min-width: 640px) {
-      .sold-slots-2x2 {
+    @media (min-width: 560px) {
+      .sold-slots-grid-4 {
         grid-template-columns: 1fr 1fr;
       }
     }
@@ -822,7 +819,7 @@
       background: #ffffff;
       border: 1px solid #bfdbfe;
       border-radius: 8px;
-      padding: 9px 10px;
+      padding: 9px;
       margin-bottom: 0;
     }
     .send-hq-box {
@@ -1140,7 +1137,7 @@
 
       <div id="portalWorkBox" style="display:none; margin-top:10px;">
         <div id="pt_hq_live_reply_banner" class="pt-live-reply-banner">
-          <div><b>promotio</b></div>
+          <div><b>Promotion — <span class="pt-promo-month-lbl">Mwezi Husika</span></b></div>
           <div>fika tageti ya simu <b>0</b></div>
           <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-top:2px;">
             <span>upate bonas ya sh <b>TZS 0</b></span>
@@ -1170,8 +1167,7 @@
         <div class="card" style="background:#eff6ff; border:1px solid #93c5fd;">
           <b>Rekodi Bidhaa Alizouza (Seti 4)</b>
 
-          <div class="sold-slots-2x2">
-            <!-- KUSHOTO JUU: BIDHAA #1 -->
+          <div class="sold-slots-grid-4">
             <div class="sold-slot-row">
               <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #1</div>
               <div class="row" style="margin-bottom:6px;">
@@ -1190,7 +1186,6 @@
               </div>
             </div>
 
-            <!-- KULIA JUU: BIDHAA #2 -->
             <div class="sold-slot-row">
               <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #2</div>
               <div class="row" style="margin-bottom:6px;">
@@ -1209,7 +1204,6 @@
               </div>
             </div>
 
-            <!-- KUSHOTO CHINI: BIDHAA #3 -->
             <div class="sold-slot-row">
               <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #3</div>
               <div class="row" style="margin-bottom:6px;">
@@ -1228,7 +1222,6 @@
               </div>
             </div>
 
-            <!-- KULIA CHINI: BIDHAA #4 -->
             <div class="sold-slot-row">
               <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #4</div>
               <div class="row" style="margin-bottom:6px;">
@@ -1399,8 +1392,8 @@
         </div>
 
         <div class="br-menu-list" id="brSectionMenuList">
-          <!-- 1. MAUZO NA WATEJA: Ukigusa moja kwa moja unafungua Historia ya Wateja juu ya screen -->
-          <div class="br-menu-card active-sec" id="br_card_mauzo_wateja" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="historia_mauzo">
+          <!-- 1. MAUZO NA WATEJA: Kipengele cha Historia kimefichwa kwa ndani; ukifungua Historia ndipo unakutana na Historia ya Wateja, na ndani yake ndipo kuna jedwali — vyote juu ya skrini kamili (full) -->
+          <div class="br-menu-card active-sec" id="br_card_mauzo_wateja" data-act="toggleBranchSectionAccordion" data-sec="mauzo_wateja">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1413,13 +1406,13 @@
             </div>
             <div class="br-menu-right">
               <span class="br-count-pill">5</span>
-              <span class="br-chevron" id="br_chev_mauzo_wateja" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="historia_mauzo" title="Fungua Historia ya Wateja">&rsaquo;</span>
+              <span class="br-chevron" id="br_chev_mauzo_wateja" data-act="toggleBranchSectionAccordion" data-sec="mauzo_wateja" title="Fungua vipengele">&rsaquo;</span>
             </div>
           </div>
 
           <div class="br-accordion-body open" id="br_acc_mauzo_wateja">
             <div class="sub-feature-list">
-              <!-- IMEPANDISHWA JUU KABISA: HISTORIA YA WATEJA -->
+              <!-- HISTORIA KWA NDANI: Ukigusa inafunguka ukurasa wa mbele full na ndani yake kuna Historia ya Wateja -->
               <div class="sub-feature-row selected-sub" id="br_sub_historia_mauzo" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="historia_mauzo">
                 <div class="sub-feature-left">
                   <span class="sub-feature-icon sub-icon-teal" aria-hidden="true">
@@ -1430,8 +1423,8 @@
                     </svg>
                   </span>
                   <div>
-                    <div class="sub-feature-title">Historia ya Wateja</div>
-                    <div class="sub-feature-desc">Angalia historia ya wateja, mauzo na miamala yote</div>
+                    <div class="sub-feature-title">Historia</div>
+                    <div class="sub-feature-desc">Fungua Historia ili kuingia Historia ya Wateja na jedwali lake</div>
                   </div>
                 </div>
                 <span class="sub-feature-chevron">&rsaquo;</span>
@@ -1929,7 +1922,7 @@
     </div>
   </div>
 
-  <!-- DIRISHA LA MBELE JUU YA SCREEN KWA KILA SEHEMU YA DUKA -->
+  <!-- DIRISHA LA MBELE JUU YA SCREEN FULL KWA KILA SEHEMU YA DUKA -->
   <div id="hmFullScreenModal" class="hm-full-overlay" aria-modal="true" role="dialog">
     <div class="hm-full-inner" id="hmFullScreenContent"></div>
   </div>
@@ -2006,6 +1999,7 @@
 
       var activeBranchModalSec = "";
       var activeMauzoSubFeature = "historia_mauzo";
+      var isInsideHistoriaWatejaTable = false;
       var isMauzoAccordionOpen = true;
       var isBranchModalOpen = false;
       var hmSearchQuery = "";
@@ -2062,6 +2056,13 @@
       var pickedProd = null;
       var qr = null;
       var scanMode = "mauzo";
+
+      function getCurrentMonthSwahiliName(dateObj) {
+        var dt = (dateObj instanceof Date) ? dateObj : new Date(dateObj || Date.now());
+        if (isNaN(dt.getTime())) dt = new Date();
+        var monthsSw = ["Januari", "Februari", "Machi", "Aprili", "Mei", "Juni", "Julai", "Agosti", "Septemba", "Oktoba", "Novemba", "Desemba"];
+        return (monthsSw[dt.getMonth()] || "") + " " + dt.getFullYear();
+      }
 
       function getStaffPhonePromo(empId) {
         if (!state.phonePromoByStaff || typeof state.phonePromoByStaff !== "object") state.phonePromoByStaff = {};
@@ -2143,21 +2144,24 @@
 
       function getMauzoSubLabel(subKey) {
         var subMap = {
-          historia_mauzo: "Historia ya Wateja",
+          historia_mauzo: "Historia",
           mauzo_ya_nyuma: "Mauzo ya Nyuma",
           wateja_mikopo: "Wateja & Mikopo",
           invoice: "Invoice",
           oda_zilizofeli: "Oda Zilizofeli/Kurudishwa"
         };
-        return subMap[subKey] || "Historia ya Wateja";
+        return subMap[subKey] || "Historia";
       }
 
       function getBranchSectionTitle(secKey, subKey) {
-        if (secKey === "mauzo_wateja") {
-          return getMauzoSubLabel(subKey || "historia_mauzo");
+        if (secKey === "mauzo_wateja" && subKey) {
+          if (subKey === "historia_mauzo") {
+            return isInsideHistoriaWatejaTable ? "Historia ya Wateja — Jedwali" : "Historia";
+          }
+          return getMauzoSubLabel(subKey);
         }
         var map = {
-          mauzo_wateja: "Historia ya Wateja",
+          mauzo_wateja: "1. Mauzo na Wateja",
           maduka_bidhaa: "2. Maduka na Bidhaa",
           manunuzi_gharama: "3. Manunuzi na Gharama",
           fedha_hesabu: "4. Fedha na Hesabu",
@@ -2172,7 +2176,7 @@
         var acc = document.getElementById("br_acc_mauzo_wateja");
         var chev = document.getElementById("br_chev_mauzo_wateja");
         if (acc) acc.className = "br-accordion-body" + (isMauzoAccordionOpen ? " open" : "");
-        if (chev) chev.innerHTML = "&rsaquo;";
+        if (chev) chev.innerHTML = isMauzoAccordionOpen ? "&#9662;" : "&rsaquo;";
 
         var subRows = document.querySelectorAll("#br_acc_mauzo_wateja .sub-feature-row");
         for (var i = 0; i < subRows.length; i++) {
@@ -2182,14 +2186,25 @@
       }
 
       function toggleBranchSectionAccordion(secKey) {
-        openBranchModalSection(secKey, secKey === "mauzo_wateja" ? "historia_mauzo" : "");
+        if (secKey === "mauzo_wateja") {
+          isMauzoAccordionOpen = !isMauzoAccordionOpen;
+          syncMauzoAccordionUi();
+          return;
+        }
+        openBranchModalSection(secKey, "");
       }
 
       function openBranchModalSection(secKey, subKey) {
         activeBranchModalSec = secKey || "mauzo_wateja";
         if (activeBranchModalSec === "mauzo_wateja") {
           isMauzoAccordionOpen = true;
-          activeMauzoSubFeature = subKey || "historia_mauzo";
+          if (subKey) activeMauzoSubFeature = subKey;
+          else if (!activeMauzoSubFeature) activeMauzoSubFeature = "historia_mauzo";
+          if (activeMauzoSubFeature === "historia_mauzo") {
+            isInsideHistoriaWatejaTable = false;
+          }
+        } else {
+          isInsideHistoriaWatejaTable = false;
         }
         syncMauzoAccordionUi();
 
@@ -2204,6 +2219,25 @@
         renderBranchModalOverlay();
       }
 
+      function openHistoriaWatejaInsideHistoria() {
+        activeBranchModalSec = "mauzo_wateja";
+        activeMauzoSubFeature = "historia_mauzo";
+        isInsideHistoriaWatejaTable = true;
+        isBranchModalOpen = true;
+        var modal = document.getElementById("hmFullScreenModal");
+        if (modal) modal.className = "hm-full-overlay open";
+        renderBranchModalOverlay();
+      }
+
+      function handleModalBackNavigation() {
+        if (activeBranchModalSec === "mauzo_wateja" && activeMauzoSubFeature === "historia_mauzo" && isInsideHistoriaWatejaTable) {
+          isInsideHistoriaWatejaTable = false;
+          renderBranchModalOverlay();
+          return;
+        }
+        closeHistoriaMauzoFull();
+      }
+
       function openHistoriaMauzoFull() {
         openBranchModalSection("mauzo_wateja", "historia_mauzo");
       }
@@ -2211,6 +2245,7 @@
       function closeHistoriaMauzoFull() {
         isBranchModalOpen = false;
         activeBranchModalSec = "";
+        isInsideHistoriaWatejaTable = false;
         var modal = document.getElementById("hmFullScreenModal");
         if (modal) modal.className = "hm-full-overlay";
       }
@@ -2251,21 +2286,15 @@
       function exportHistoriaMauzoCsv(brId) {
         var b = brObj(brId);
         var rows = getFilteredBranchSales(brId);
-        var headers = ["Na.", "Risiti/ID", "Bidhaa", "SKU/Barcode", "Idadi", "Bei ya Rejareja", "Jumla (TZS)", "Malipo", "Mfanyakazi", "Tarehe/Saa"];
+        var headers = ["Risiti/ID", "Bidhaa", "SKU/Barcode", "Idadi", "Bei ya Rejareja", "Jumla (TZS)", "Malipo", "Mfanyakazi", "Tarehe/Saa"];
         var lines = [headers.join(",")];
         for (var i = 0; i < rows.length; i++) {
           var r = rows[i];
           var vals = [
-            i + 1,
-            r.id || "",
-            r.product_name || "Bidhaa",
-            r.sku || r.barcod || "",
-            Number(r.quantity || 1),
-            Number(r.unit_sold_price || r.total_amount || 0),
-            Number(r.total_amount || 0),
-            r.payment_method || "cash",
-            staffNameById(r.employee_id),
-            r.created_at || ""
+            r.id || "", r.product_name || "Bidhaa", r.sku || r.barcod || "",
+            Number(r.quantity || 1), Number(r.unit_sold_price || r.total_amount || 0),
+            Number(r.total_amount || 0), r.payment_method || "cash",
+            staffNameById(r.employee_id), r.created_at || ""
           ].map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; });
           lines.push(vals.join(","));
         }
@@ -2295,31 +2324,50 @@
           var ordersCount = filteredSales.length;
           var avgOrderVal = ordersCount > 0 ? Math.round((paidSum + pendingSum) / ordersCount) : 0;
 
-          var tableHtml = !filteredSales.length
+          if (activeSub === "historia_mauzo" && !isInsideHistoriaWatejaTable) {
+            return '' +
+              '<div class="sub-feature-list">' +
+                '<div class="sub-feature-row selected-sub" data-act="openHistoriaWatejaInsideHistoria">' +
+                  '<div class="sub-feature-left">' +
+                    '<span class="sub-feature-icon sub-icon-teal" aria-hidden="true">' +
+                      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                        '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>' +
+                        '<circle cx="9" cy="7" r="4"></circle>' +
+                        '<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>' +
+                        '<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>' +
+                      '</svg>' +
+                    '</span>' +
+                    '<div>' +
+                      '<div class="sub-feature-title">Historia ya Wateja (' + ordersCount + ')</div>' +
+                      '<div class="sub-feature-desc">Gusa kuingia ndani ya Historia ya Wateja na kufungua jedwali kamili</div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<span class="sub-feature-chevron">&rsaquo;</span>' +
+                '</div>' +
+              '</div>';
+          }
+
+          var tableRowsHtml = !filteredSales.length
             ? '<div class="hm-empty-box">Hakuna historia ya wateja / mauzo iliyopatikana kwa kipindi hiki.</div>'
-            : '<div class="hm-table-wrap"><table class="hm-table">' +
-                '<thead><tr>' +
-                  '<th>#</th>' +
-                  '<th>Bidhaa / Msimbo</th>' +
-                  '<th>Idadi</th>' +
-                  '<th>Jumla (TZS)</th>' +
-                  '<th>Wakala / Malipo</th>' +
-                  '<th>Tarehe na Saa</th>' +
-                '</tr></thead><tbody>' +
-                filteredSales.map(function(sl, j) {
-                  var dt = sl.created_at ? new Date(sl.created_at) : new Date();
-                  var codeTxt = sl.sku || sl.barcod || "-";
-                  var payTxt = sl.payment_method === "lipa_namba" ? "Lipa Namba" : "Fedha Taslimu";
-                  return '<tr>' +
-                    '<td><b>' + (j + 1) + '</b></td>' +
-                    '<td><b>' + (sl.product_name || "Bidhaa") + '</b><br><span style="font-size:11px;color:#64748b;">' + codeTxt + '</span></td>' +
-                    '<td><b>' + Number(sl.quantity || 1) + '</b></td>' +
-                    '<td><b>TZS ' + money(sl.total_amount || 0) + '</b></td>' +
-                    '<td>' + staffNameById(sl.employee_id) + '<br><span style="font-size:11px;color:#64748b;">' + payTxt + '</span></td>' +
-                    '<td>' + formatShortSwahiliDate(dt) + '<br><span style="font-size:11px;color:#64748b;">' + formatSwahiliTimeOfDay(dt) + '</span></td>' +
-                  '</tr>';
-                }).join("") +
-                '</tbody></table></div>';
+            : '<div class="hm-table-wrap"><table class="hm-data-table"><thead><tr>' +
+                '<th>#</th><th>Bidhaa</th><th>Idadi</th><th>Jumla (TZS)</th><th>Wakala / Mfanyakazi</th><th>Malipo</th><th>Tarehe na Saa</th>' +
+              '</tr></thead><tbody>' +
+              filteredSales.map(function(sl, j) {
+                var dt = sl.created_at ? new Date(sl.created_at) : new Date();
+                var isPend = (sl.payment_status === "pending" || sl.status === "pending");
+                var payLbl = sl.payment_method === "lipa_namba" ? "Lipa Namba" : "Fedha Taslimu";
+                if (isPend) payLbl += " (Inasubiri)";
+                return '<tr>' +
+                  '<td>' + (j + 1) + '</td>' +
+                  '<td><b>' + (sl.product_name || "Bidhaa") + '</b></td>' +
+                  '<td><b>' + Number(sl.quantity || 1) + '</b></td>' +
+                  '<td><b>TZS ' + money(sl.total_amount || 0) + '</b></td>' +
+                  '<td>' + staffNameById(sl.employee_id) + '</td>' +
+                  '<td>' + payLbl + '</td>' +
+                  '<td>' + formatShortSwahiliDate(dt) + ' • ' + formatSwahiliTimeOfDay(dt) + '</td>' +
+                '</tr>';
+              }).join("") +
+              '</tbody></table></div>';
 
           var subBannerNote = "";
           if (activeSub === "mauzo_ya_nyuma") {
@@ -2352,7 +2400,7 @@
               '<select id="hm_sort_sel" class="hm-select"><option value="newest"' + (hmSortOrder === "newest" ? " selected" : "") + '>Mpya Kwanza</option><option value="oldest"' + (hmSortOrder === "oldest" ? " selected" : "") + '>Za Zamani Kwanza</option></select>' +
               '<button type="button" class="hm-export-btn" data-act="exportHistoriaMauzoCsv">&#8681; Pakua CSV</button>' +
             '</div>' +
-            '<div id="hm_auto_rows_list">' + tableHtml + '</div>';
+            '<div id="hm_auto_rows_list">' + tableRowsHtml + '</div>';
         }
 
         if (secKey === "maduka_bidhaa") {
@@ -2426,10 +2474,10 @@
           '<div class="hm-shell">' +
             '<div class="hm-top-bar">' +
               '<div class="hm-back-title">' +
-                '<button type="button" class="hm-header-back-btn" data-act="closeHistoriaMauzoFull" aria-label="Rudi nyuma">&#8592;</button>' +
+                '<button type="button" class="hm-header-back-btn" data-act="handleModalBackNavigation" aria-label="Rudi nyuma">&#8592;</button>' +
                 '<span>' + secTitle + '</span>' +
               '</div>' +
-              '<button type="button" class="hm-colored-back-btn" data-act="closeHistoriaMauzoFull">&#8592; Rudi</button>' +
+              '<button type="button" class="hm-colored-back-btn" data-act="handleModalBackNavigation">&#8592; Rudi</button>' +
             '</div>' +
             '<div class="hm-clock-pill" id="hm_live_swahili_dt">HQ • ' + b.name + ' • ' + swDateTimeNow + '</div>' +
             renderBranchSectionBodyInsideModal(activeBranchModalSec, b, st, activeMauzoSubFeature) +
@@ -2675,6 +2723,7 @@
       function updatePortalSwahiliDateTime() {
         var now = new Date();
         var swDateTimeFull = formatFullSwahiliDateTime(now);
+        var monthLabel = getCurrentMonthSwahiliName(now);
         var b = brObj(state.activeBranchId) || state.branches[0];
         var hqTop = document.getElementById("hq_swahili_clock_top");
         if (hqTop) hqTop.textContent = "Tarehe na Saa: " + swDateTimeFull;
@@ -2682,6 +2731,10 @@
         if (hmDt) hmDt.textContent = "HQ • " + (b ? b.name + " • " : "") + swDateTimeFull;
         var shClock = document.getElementById("sh_swahili_clock");
         if (shClock) shClock.textContent = swDateTimeFull;
+        var monthEls = document.querySelectorAll(".pt-promo-month-lbl");
+        for (var m = 0; m < monthEls.length; m++) {
+          monthEls[m].textContent = monthLabel;
+        }
       }
 
       function computeStateFingerprint() {
@@ -3466,6 +3519,8 @@
         if (!isStaffOnlyView || !portalConfig) return;
         updatePortalSwahiliDateTime();
 
+        var nowObj = new Date();
+        var monthLabel = getCurrentMonthSwahiliName(nowObj);
         var st = calcStaffStats(portalConfig.empId);
         var draftObj = (state.draftsByStaff && state.draftsByStaff[portalConfig.empId]) ? state.draftsByStaff[portalConfig.empId] : null;
         var draftSlots = (draftObj && Array.isArray(draftObj.slots)) ? draftObj.slots : [];
@@ -3488,7 +3543,7 @@
             : '<button type="button" class="promo-claim-red-btn" style="opacity:0.55;" data-act="claimPhoneTargetBonus">Vuna</button>';
 
           bannerEl.innerHTML =
-            "<div><b>promotio</b></div>" +
+            "<div><b>Promotion — <span class='pt-promo-month-lbl'>" + monthLabel + "</span></b></div>" +
             "<div>fika tageti ya simu <b>" + targetQty + "</b> (Umefika: <b>" + progressQty + "</b>)</div>" +
             "<div style='display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-top:2px;'>" +
               "<span>upate bonas ya sh <b>TZS " + money(bonusAmt) + "</b></span>" +
@@ -4145,100 +4200,89 @@
         else if (act === "stopScan") stopScan();
         else if (act === "openActiveStaffPortalLink") openActiveStaffPortalLink();
         else if (act === "openShopScanPortal") openShopScanPortal();
-        else if (act === "shAddScannedItem") shAddScannedItem(el.getAttribute("data-code") || "");
-        else if (act === "shSelectCategoryFilter") shSelectCategoryFilter(el.getAttribute("data-catkey") || "ALL");
-        else if (act === "shSelectGbFilter") shSelectGbFilter(el.getAttribute("data-gb") || "ALL");
-        else if (act === "shAddChosenCategoryItem") shAddChosenCategoryItem();
-        else if (act === "shSaveCategoryRetailPrice") shSaveCategoryRetailPrice();
-        else if (act === "shFinalizeAndIssueEfd") shFinalizeAndIssueEfd();
-        else if (act === "shClearScanCart") shClearScanCart();
-        else if (act === "toggleBranchSectionAccordion") { e.stopPropagation(); toggleBranchSectionAccordion(el.getAttribute("data-sec") || "mauzo_wateja"); }
-        else if (act === "openBranchModalSection") { e.stopPropagation(); openBranchModalSection(el.getAttribute("data-sec") || "mauzo_wateja", el.getAttribute("data-sub") || ""); }
-        else if (act === "selectMauzoSubFeature") selectMauzoSubFeature(el.getAttribute("data-sub") || "");
-        else if (act === "openHistoriaMauzoFull") openHistoriaMauzoFull();
-        else if (act === "closeHistoriaMauzoFull") closeHistoriaMauzoFull();
-        else if (act === "exportHistoriaMauzoCsv") exportHistoriaMauzoCsv(lockedShopBranchId || state.activeBranchId || HQ_B);
-        else if (act === "copyShopPortalLink") copyTextHelper(buildShopScanPortalUrl(state.activeBranchId || "br-mwanza-nyamagana"), "Kiungo cha duka kimenakiliwa!");
-        else if (act === "toggleBranchStockBox") toggleBranchStockBox();
-        else if (act === "toggleStaffStockBox") toggleStaffStockBox();
-        else if (act === "hqSaveSilentOverride") hqSaveSilentOverride();
+        else if (act === "copyShopPortalLink") copyTextHelper(buildShopScanPortalUrl(state.activeBranchId), "Kiungo cha duka kimenakiliwa!");
         else if (act === "deleteActiveBranch") deleteActiveBranch();
         else if (act === "deleteActiveStaff") deleteActiveStaff();
-        else if (act === "pickStaff") { state.activeStaffId = el.getAttribute("data-id"); renderStaff(); renderOutsideSellerConsole(); }
-        else if (act === "savePhoneTargetPromo") savePhoneTargetPromo();
-        else if (act === "claimPhoneTargetBonus") claimPhoneTargetBonus();
+        else if (act === "toggleBranchStockBox") toggleBranchStockBox();
+        else if (act === "toggleStaffStockBox") toggleStaffStockBox();
+        else if (act === "toggleBranchSectionAccordion") toggleBranchSectionAccordion(el.getAttribute("data-sec") || "mauzo_wateja");
+        else if (act === "openBranchModalSection") openBranchModalSection(el.getAttribute("data-sec") || "mauzo_wateja", el.getAttribute("data-sub") || "");
+        else if (act === "openHistoriaWatejaInsideHistoria") openHistoriaWatejaInsideHistoria();
+        else if (act === "handleModalBackNavigation") handleModalBackNavigation();
+        else if (act === "openHistoriaMauzoFull") openHistoriaMauzoFull();
+        else if (act === "closeHistoriaMauzoFull") closeHistoriaMauzoFull();
+        else if (act === "exportHistoriaMauzoCsv") exportHistoriaMauzoCsv(state.activeBranchId);
+        else if (act === "pickStaff") { state.activeStaffId = el.getAttribute("data-id"); renderStaff(); renderCommission(); }
+        else if (act === "hqSaveSilentOverride") hqSaveSilentOverride();
         else if (act === "approveBundleComm") approveBundleCommission(el.getAttribute("data-bundleid"));
         else if (act === "approveAllPendingComm") approveAllPendingComm();
         else if (act === "addStaffBonus") addStaffBonus();
-        else if (act === "runReport") runReport();
+        else if (act === "savePhoneTargetPromo") savePhoneTargetPromo();
+        else if (act === "claimPhoneTargetBonus") claimPhoneTargetBonus();
         else if (act === "unlockStaffPortal") unlockStaffPortal();
         else if (act === "ptSendReportToHQ") ptSendReportToHQ();
+        else if (act === "shAddScannedItem") shAddScannedItem(el.getAttribute("data-code"));
+        else if (act === "shAddChosenCategoryItem") shAddChosenCategoryItem();
+        else if (act === "shSaveCategoryRetailPrice") shSaveCategoryRetailPrice();
+        else if (act === "shSelectCategoryFilter") shSelectCategoryFilter(el.getAttribute("data-catkey") || "ALL");
+        else if (act === "shSelectGbFilter") shSelectGbFilter(el.getAttribute("data-gb") || "ALL");
+        else if (act === "shClearScanCart") shClearScanCart();
+        else if (act === "shFinalizeAndIssueEfd") shFinalizeAndIssueEfd();
+        else if (act === "runReport") runReport();
       });
 
       document.body.addEventListener("input", function(e) {
         var t = e.target;
         if (!t) return;
-        if (t.id === "m_qty") updateMauzoEst();
-        else if (t.id === "hm_search_inp") { hmSearchQuery = t.value || ""; renderBranchSectionsContent(); }
-        else if (t.id === "pt_nauli_input" || (t.id && t.id.indexOf("pt_sold_") === 0)) {
+        if (t.id === "pt_nauli_input" || (t.id && t.id.indexOf("pt_sold_") === 0)) {
           syncDraftAndNauliLiveToHQ();
+        } else if (t.id === "m_qty") {
+          updateMauzoEst();
+        } else if (t.id === "hm_search_inp") {
+          hmSearchQuery = t.value || "";
+          renderHistoriaMauzoFullModal();
         } else if (t.classList && t.classList.contains("item-profit-input")) {
           isEditingCommissionProfit = true;
-          if (commCalmTimer) clearTimeout(commCalmTimer);
-          commCalmTimer = setTimeout(function() { isEditingCommissionProfit = false; }, 1600);
           var sid = t.getAttribute("data-saleid");
-          var val = parseFloat(t.value);
-          if (sid) {
-            dirtyProfitSaleIds[sid] = true;
-            for (var i = 0; i < state.sales.length; i++) {
-              if (String(state.sales[i].id || "") === String(sid)) {
-                state.sales[i].entered_profit = (!isNaN(val) && val >= 0) ? val : 0;
-              }
-            }
-            try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (err) {}
-            lastSyncSnapshot = computeStateFingerprint();
-          }
+          if (sid) dirtyProfitSaleIds[String(sid)] = true;
+          if (commCalmTimer) clearTimeout(commCalmTimer);
+          commCalmTimer = setTimeout(function() {
+            isEditingCommissionProfit = false;
+            commCalmTimer = null;
+          }, 2500);
         }
       });
 
       document.body.addEventListener("change", function(e) {
         var t = e.target;
         if (!t) return;
-        if (t.id === "sh_chooser_cat_select") {
+        if (t.id === "cm_emp_sel") {
+          state.activeStaffId = t.value;
+          renderCommission();
+        } else if (t.id === "mw_seller_sel") {
+          state.activeStaffId = t.value;
+          renderOutsideSellerConsole();
+        } else if (t.id === "sh_chooser_cat_select") {
           selectedShopCategoryKey = t.value || "ALL";
           selectedChooserProductId = "";
           renderShopScanPortal();
         } else if (t.id === "sh_chooser_item_select") {
           selectedChooserProductId = t.value || "";
-          renderCategoryChooser(lockedShopBranchId || state.activeBranchId || HQ_B);
+          renderShopScanPortal();
         } else if (t.id === "sh_edit_cat_price_sel") {
           selectedEditCategoryKey = t.value || "memory_card";
         } else if (t.id === "hm_status_sel") {
           hmStatusFilter = t.value || "ALL";
-          renderBranchSectionsContent();
+          renderHistoriaMauzoFullModal();
         } else if (t.id === "hm_deliv_sel") {
           hmDeliveryFilter = t.value || "ALL";
-          renderBranchSectionsContent();
+          renderHistoriaMauzoFullModal();
         } else if (t.id === "hm_days_sel") {
           hmDaysFilter = t.value || "30";
-          renderBranchSectionsContent();
+          renderHistoriaMauzoFullModal();
         } else if (t.id === "hm_sort_sel") {
           hmSortOrder = t.value || "newest";
-          renderBranchSectionsContent();
-        } else if (t.id === "cm_emp_sel") {
-          if (!isStaffOnlyView && !isShopScanPortalView) {
-            state.activeStaffId = t.value;
-            renderStaff();
-            renderCommission();
-            renderOutsideSellerConsole();
-          }
-        } else if (t.id === "mw_seller_sel") {
-          if (!isStaffOnlyView && !isShopScanPortalView) {
-            state.activeStaffId = t.value;
-            renderStaff();
-            renderCommission();
-            renderOutsideSellerConsole();
-          }
+          renderHistoriaMauzoFullModal();
         }
       });
 
