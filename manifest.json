@@ -1,5 +1,5 @@
 {
-  "name": "TON-PHONE POS",
+  "name": "TON-PHONE & ACCESSORIES POS",
   "short_name": "TON-PHONE",
   "start_url": "./",
   "scope": "./",
@@ -9,14 +9,16 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "FB_IMG_1795624706360.jpg",
+      "src": "./FB_IMG_1795624706360.jpg",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "any"
     },
     {
-      "src": "FB_IMG_1795624706360.jpg",
+      "src": "./FB_IMG_1795624706360.jpg",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/jpeg",
+      "purpose": "maskable"
     }
   ]
 }
