@@ -265,8 +265,10 @@
     }
     .br-chevron {
       color: #64748b;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 6px;
     }
     .br-accordion-body {
       display: none;
@@ -1318,8 +1320,8 @@
         </div>
 
         <div class="br-menu-list" id="brSectionMenuList">
-          <!-- 1. MAUZO NA WATEJA (Inafungua orodha ya vipengele 5; mwisho chini ni Historia ya Mauzo inayofunguka full screen juu ya skrini) -->
-          <div class="br-menu-card active-sec" id="br_card_mauzo_wateja" data-act="toggleBranchSectionAccordion" data-sec="mauzo_wateja">
+          <!-- 1. MAUZO NA WATEJA: Kushale/kadi ikigusa inafunguka kwa mbele juu ya skrini; ukifungua orodha ndani, Historia ya Wateja ipo juu kabisa -->
+          <div class="br-menu-card active-sec" id="br_card_mauzo_wateja" data-act="openBranchModalSection" data-sec="mauzo_wateja">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1332,12 +1334,30 @@
             </div>
             <div class="br-menu-right">
               <span class="br-count-pill">5</span>
-              <span class="br-chevron" id="br_chev_mauzo_wateja">&#8964;</span>
+              <span class="br-chevron" id="br_chev_mauzo_wateja" data-act="toggleBranchSectionAccordion" data-sec="mauzo_wateja" title="Fungua/Funga orodha">&#8963;</span>
             </div>
           </div>
 
           <div class="br-accordion-body open" id="br_acc_mauzo_wateja">
             <div class="sub-feature-list">
+              <!-- IMEPANDISHWA JUU KABISA: HISTORIA YA WATEJA -->
+              <div class="sub-feature-row selected-sub" id="br_sub_historia_mauzo" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="historia_mauzo">
+                <div class="sub-feature-left">
+                  <span class="sub-feature-icon sub-icon-teal" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1Z"></path>
+                      <line x1="12" y1="7" x2="12" y2="17"></line>
+                      <path d="M14.5 9.5a2.5 2.5 0 0 0-5 0c0 2 5 1.5 5 4a2.5 2.5 0 0 1-5 0"></path>
+                    </svg>
+                  </span>
+                  <div>
+                    <div class="sub-feature-title">Historia ya Wateja</div>
+                    <div class="sub-feature-desc">Angalia historia ya wateja, mauzo na miamala yote</div>
+                  </div>
+                </div>
+                <span class="sub-feature-chevron">&rsaquo;</span>
+              </div>
+
               <div class="sub-feature-row" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="mauzo_ya_nyuma">
                 <div class="sub-feature-left">
                   <span class="sub-feature-icon sub-icon-indigo" aria-hidden="true">
@@ -1403,24 +1423,6 @@
                   <div>
                     <div class="sub-feature-title">Oda Zilizofeli/Kurudishwa</div>
                     <div class="sub-feature-desc">Kagua oda zilizoghairiwa na kurudishiwa pesa</div>
-                  </div>
-                </div>
-                <span class="sub-feature-chevron">&rsaquo;</span>
-              </div>
-
-              <!-- KIPENGELE CHA MWISHO CHINI: HISTORIA YA MAUZO (Ukigusa kinafunguka full screen juu ya skrini) -->
-              <div class="sub-feature-row selected-sub" id="br_sub_historia_mauzo" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="historia_mauzo">
-                <div class="sub-feature-left">
-                  <span class="sub-feature-icon sub-icon-teal" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1Z"></path>
-                      <line x1="12" y1="7" x2="12" y2="17"></line>
-                      <path d="M14.5 9.5a2.5 2.5 0 0 0-5 0c0 2 5 1.5 5 4a2.5 2.5 0 0 1-5 0"></path>
-                    </svg>
-                  </span>
-                  <div>
-                    <div class="sub-feature-title">Historia ya Mauzo</div>
-                    <div class="sub-feature-desc">Angalia mauzo na miamala yote</div>
                   </div>
                 </div>
                 <span class="sub-feature-chevron">&rsaquo;</span>
@@ -1968,13 +1970,13 @@
 
       function getMauzoSubLabel(subKey) {
         var subMap = {
-          historia_mauzo: "Historia ya Mauzo",
+          historia_mauzo: "Historia ya Wateja",
           mauzo_ya_nyuma: "Mauzo ya Nyuma",
           wateja_mikopo: "Wateja & Mikopo",
           invoice: "Invoice",
           oda_zilizofeli: "Oda Zilizofeli/Kurudishwa"
         };
-        return subMap[subKey] || "Historia ya Mauzo";
+        return subMap[subKey] || "Historia ya Wateja";
       }
 
       function getBranchSectionTitle(secKey, subKey) {
@@ -2015,7 +2017,7 @@
         openBranchModalSection(secKey, "");
       }
 
-      // Ukigusa kipengele chochote (mf. Historia ya Mauzo chini mwisho au sehemu yoyote ya Duka), kinafunguka kwa mbele juu ya skrini
+      // Ukigusa kishale/kadi ya 1. Mauzo na Wateja au kipengele chochote ndani yake, kinafunguka kwa mbele juu ya skrini
       function openBranchModalSection(secKey, subKey) {
         activeBranchModalSec = secKey || "mauzo_wateja";
         if (activeBranchModalSec === "mauzo_wateja") {
@@ -2099,12 +2101,12 @@
         var url = URL.createObjectURL(blob);
         var a = document.createElement("a");
         a.href = url;
-        a.download = "historia-ya-mauzo-" + (b ? b.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") : "duka") + ".csv";
+        a.download = "historia-ya-wateja-" + (b ? b.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") : "duka") + ".csv";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
-        msg("Faili la CSV la Historia ya Mauzo (" + rows.length + " rekodi) limepakuliwa!");
+        msg("Faili la CSV la Historia ya Wateja (" + rows.length + " rekodi) limepakuliwa!");
       }
 
       function renderBranchSectionBodyInsideModal(secKey, b, st, subKey) {
@@ -2121,7 +2123,7 @@
           var ordersCount = filteredSales.length;
           var avgOrderVal = ordersCount > 0 ? Math.round((paidSum + pendingSum) / ordersCount) : 0;
           var rowsHtml = !filteredSales.length
-            ? '<div class="hm-empty-box">Hakuna mauzo yaliyopatikana kwa kipindi hiki.</div>'
+            ? '<div class="hm-empty-box">Hakuna historia ya wateja / mauzo iliyopatikana kwa kipindi hiki.</div>'
             : filteredSales.map(function(sl, j) {
                 var dt = sl.created_at ? new Date(sl.created_at) : new Date();
                 return '<div class="hm-sale-row"><div class="box-head">' +
@@ -3933,7 +3935,7 @@
         else if (act === "shSaveCategoryRetailPrice") shSaveCategoryRetailPrice();
         else if (act === "shFinalizeAndIssueEfd") shFinalizeAndIssueEfd();
         else if (act === "shClearScanCart") shClearScanCart();
-        else if (act === "toggleBranchSectionAccordion") toggleBranchSectionAccordion(el.getAttribute("data-sec") || "mauzo_wateja");
+        else if (act === "toggleBranchSectionAccordion") { e.stopPropagation(); toggleBranchSectionAccordion(el.getAttribute("data-sec") || "mauzo_wateja"); }
         else if (act === "openBranchModalSection") openBranchModalSection(el.getAttribute("data-sec") || "mauzo_wateja", el.getAttribute("data-sub") || "");
         else if (act === "selectMauzoSubFeature") selectMauzoSubFeature(el.getAttribute("data-sub") || "");
         else if (act === "openHistoriaMauzoFull") openHistoriaMauzoFull();
