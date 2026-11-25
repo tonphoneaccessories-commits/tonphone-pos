@@ -1,7 +1,7 @@
 {
   "name": "TON-PHONE & ACCESSORIES POS",
   "short_name": "TON-PHONE",
-  "description": "Wholesale and retail point-of-sale and inventory management system for TON-PHONE & ACCESSORIES.",
+  "description": "Wholesale and retail point-of-sale and inventory management system",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
