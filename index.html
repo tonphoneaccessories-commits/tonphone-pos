@@ -551,7 +551,7 @@
       line-height: 1.45;
     }
 
-    /* SETI 4 ZA BIDHAA ALIZOUZA: KUSHOTO 2 NA KULIA 2 (2x2) */
+    /* VIBOKSI VINNE VYA BIDHAA ULIZOUZA: KUSHOTO 2 NA KULIA 2 (2x2) */
     .sold-sets-grid-2x2 {
       display: grid;
       grid-template-columns: 1fr;
@@ -968,7 +968,7 @@
       </div>
       <div>
         <div class="brand-title-main">TON-PHONE &amp; ACCESSORIES</div>
-        <div class="brand-title-sub">POS • JUMLA NA REJAREJA • USIMAMIZI HQ</div>
+        <div class="brand-title-sub" id="brandBannerSubtitle">WAKALA MAUZO</div>
       </div>
     </div>
 
@@ -1157,85 +1157,73 @@
         </div>
 
         <div class="card" style="background:#eff6ff; border:1px solid #93c5fd;">
-          <b>Rekodi Bidhaa Alizouza (Seti 4 — Kushoto 2 &amp; Kulia 2)</b>
+          <b>Rekodi Bidhaa Ulizouza</b>
 
           <div class="sold-sets-grid-2x2">
             <div class="sold-slot-row">
-              <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #1 (Kushoto Juu)</div>
-              <div class="row" style="margin-bottom:6px;">
-                <div>
-                  <small><b>Aina ya bidhaa aliyouza</b></small>
-                  <input id="pt_sold_item_1" type="text" placeholder="Aina ya bidhaa aliyouza" />
-                </div>
-                <div>
-                  <small><b>Idadi ya bidhaa alizouza</b></small>
-                  <input id="pt_sold_qty_1" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
-                </div>
+              <div style="margin-bottom:6px;">
+                <small><b>Aina ya bidhaa ulizouza</b></small>
+                <input id="pt_sold_item_1" type="text" placeholder="Aina ya bidhaa ulizouza" />
+              </div>
+              <div style="margin-bottom:6px;">
+                <small><b>Idadi ya bidhaa ulizouza</b></small>
+                <input id="pt_sold_qty_1" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa ulizouza" />
               </div>
               <div>
-                <small><b>Bei aliyouza (TZS)</b></small>
-                <input id="pt_sold_price_1" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
+                <small><b>Bei uliyouza</b></small>
+                <input id="pt_sold_price_1" type="number" step="any" min="0" value="" placeholder="Bei uliyouza" />
               </div>
             </div>
 
             <div class="sold-slot-row">
-              <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #2 (Kulia Juu)</div>
-              <div class="row" style="margin-bottom:6px;">
-                <div>
-                  <small><b>Aina ya bidhaa aliyouza</b></small>
-                  <input id="pt_sold_item_2" type="text" placeholder="Aina ya bidhaa aliyouza" />
-                </div>
-                <div>
-                  <small><b>Idadi ya bidhaa alizouza</b></small>
-                  <input id="pt_sold_qty_2" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
-                </div>
+              <div style="margin-bottom:6px;">
+                <small><b>Aina ya bidhaa ulizouza</b></small>
+                <input id="pt_sold_item_2" type="text" placeholder="Aina ya bidhaa ulizouza" />
+              </div>
+              <div style="margin-bottom:6px;">
+                <small><b>Idadi ya bidhaa ulizouza</b></small>
+                <input id="pt_sold_qty_2" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa ulizouza" />
               </div>
               <div>
-                <small><b>Bei aliyouza (TZS)</b></small>
-                <input id="pt_sold_price_2" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
+                <small><b>Bei uliyouza</b></small>
+                <input id="pt_sold_price_2" type="number" step="any" min="0" value="" placeholder="Bei uliyouza" />
               </div>
             </div>
 
             <div class="sold-slot-row">
-              <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #3 (Kushoto Chini)</div>
-              <div class="row" style="margin-bottom:6px;">
-                <div>
-                  <small><b>Aina ya bidhaa aliyouza</b></small>
-                  <input id="pt_sold_item_3" type="text" placeholder="Aina ya bidhaa aliyouza" />
-                </div>
-                <div>
-                  <small><b>Idadi ya bidhaa alizouza</b></small>
-                  <input id="pt_sold_qty_3" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
-                </div>
+              <div style="margin-bottom:6px;">
+                <small><b>Aina ya bidhaa ulizouza</b></small>
+                <input id="pt_sold_item_3" type="text" placeholder="Aina ya bidhaa ulizouza" />
+              </div>
+              <div style="margin-bottom:6px;">
+                <small><b>Idadi ya bidhaa ulizouza</b></small>
+                <input id="pt_sold_qty_3" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa ulizouza" />
               </div>
               <div>
-                <small><b>Bei aliyouza (TZS)</b></small>
-                <input id="pt_sold_price_3" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
+                <small><b>Bei uliyouza</b></small>
+                <input id="pt_sold_price_3" type="number" step="any" min="0" value="" placeholder="Bei uliyouza" />
               </div>
             </div>
 
             <div class="sold-slot-row">
-              <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #4 (Kulia Chini)</div>
-              <div class="row" style="margin-bottom:6px;">
-                <div>
-                  <small><b>Aina ya bidhaa aliyouza</b></small>
-                  <input id="pt_sold_item_4" type="text" placeholder="Aina ya bidhaa aliyouza" />
-                </div>
-                <div>
-                  <small><b>Idadi ya bidhaa alizouza</b></small>
-                  <input id="pt_sold_qty_4" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
-                </div>
+              <div style="margin-bottom:6px;">
+                <small><b>Aina ya bidhaa ulizouza</b></small>
+                <input id="pt_sold_item_4" type="text" placeholder="Aina ya bidhaa ulizouza" />
+              </div>
+              <div style="margin-bottom:6px;">
+                <small><b>Idadi ya bidhaa ulizouza</b></small>
+                <input id="pt_sold_qty_4" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa ulizouza" />
               </div>
               <div>
-                <small><b>Bei aliyouza (TZS)</b></small>
-                <input id="pt_sold_price_4" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
+                <small><b>Bei uliyouza</b></small>
+                <input id="pt_sold_price_4" type="number" step="any" min="0" value="" placeholder="Bei uliyouza" />
               </div>
             </div>
           </div>
         </div>
 
         <div class="card" style="background:#fefce8; border:2px solid #eab308;">
-          <b>Rekodi Nauli Aliyotumia (Inaenda Moja kwa Moja HQ)</b>
+          <b>Rekodi Nauli Aliyotumia</b>
           <div class="row" style="margin-top:8px; margin-bottom:0;">
             <div>
               <small><b>Kiasi cha Nauli Aliyotumia (TZS)</b></small>
@@ -3583,6 +3571,8 @@
             var urlPass = params.get("key") || "1234";
             var savedPass = (state.staffPasswords && state.staffPasswords[resolvedEmpId]) ? state.staffPasswords[resolvedEmpId] : urlPass;
             state.activeStaffId = resolvedEmpId;
+            var bannerSub = document.getElementById("brandBannerSubtitle");
+            if (bannerSub) bannerSub.textContent = "WAKALA MAUZO";
             document.getElementById("mainAppTitle").textContent = resolvedEmpName;
             portalConfig = { empId: resolvedEmpId, empName: resolvedEmpName, brId: brId, brName: brLabel(brId), expectedPass: savedPass };
             document.getElementById("portalEmpLabel").textContent = portalConfig.empName;
@@ -4205,27 +4195,24 @@
           hmSearchQuery = t.value || "";
           renderBranchModalOverlay();
           var reInp = document.getElementById("hm_search_inp");
-          if (reInp) { reInp.focus(); try { reInp.setSelectionRange(reInp.value.length, reInp.value.length); } catch (err) {} }
-          return;
-        }
-        if (t.id === "pt_nauli_input" || (t.id && t.id.indexOf("pt_sold_") === 0)) {
+          if (reInp) { reInp.focus(); reInp.setSelectionRange(reInp.value.length, reInp.value.length); }
+        } else if (t.id === "pt_nauli_input" || (t.id && t.id.indexOf("pt_sold_") === 0)) {
           syncDraftAndNauliLiveToHQ();
-          return;
-        }
-        if (t.classList && t.classList.contains("item-profit-input")) {
+        } else if (t.classList && t.classList.contains("item-profit-input")) {
           isEditingCommissionProfit = true;
           if (commCalmTimer) clearTimeout(commCalmTimer);
-          commCalmTimer = setTimeout(function() { isEditingCommissionProfit = false; }, 10000);
-          var sid = t.getAttribute("data-saleid");
-          if (sid) {
-            dirtyProfitSaleIds[String(sid)] = true;
-            var val = parseFloat(t.value);
+          commCalmTimer = setTimeout(function() { isEditingCommissionProfit = false; }, 1200);
+          var sid = String(t.getAttribute("data-saleid") || "");
+          var rawStr = String(t.value || "").trim();
+          var val = rawStr === "" ? 0 : parseFloat(rawStr);
+          if (sid && !isNaN(val) && val >= 0) {
+            dirtyProfitSaleIds[sid] = true;
             for (var i = 0; i < state.sales.length; i++) {
-              if (String(state.sales[i].id || "") === String(sid)) {
-                state.sales[i].entered_profit = isNaN(val) ? 0 : val;
-              }
+              if (String(state.sales[i].id || "") === sid) { state.sales[i].entered_profit = val; break; }
             }
           }
+        } else if (t.id === "m_qty") {
+          updateMauzoEst();
         }
       });
 
@@ -4236,24 +4223,28 @@
         else if (t.id === "hm_deliv_sel") { hmDeliveryFilter = t.value; renderBranchModalOverlay(); }
         else if (t.id === "hm_days_sel") { hmDaysFilter = t.value; renderBranchModalOverlay(); }
         else if (t.id === "hm_sort_sel") { hmSortOrder = t.value; renderBranchModalOverlay(); }
-        else if (t.id === "cm_emp_sel") { state.activeStaffId = t.value; saveLocalState(); renderCommission(); }
-        else if (t.id === "mw_seller_sel") { state.activeStaffId = t.value; saveLocalState(); renderOutsideSellerConsole(); }
         else if (t.id === "sh_chooser_cat_select") { selectedShopCategoryKey = t.value || "ALL"; selectedChooserProductId = ""; renderShopScanPortal(); }
         else if (t.id === "sh_chooser_item_select") { selectedChooserProductId = t.value || ""; renderShopScanPortal(); }
         else if (t.id === "sh_edit_cat_price_sel") { selectedEditCategoryKey = t.value || "memory_card"; }
-        else if (t.id === "m_qty") updateMauzoEst();
+        else if (t.id === "cm_emp_sel" || t.id === "mw_seller_sel") {
+          state.activeStaffId = t.value;
+          saveLocalState();
+          renderStaffInner();
+          renderCommission();
+          renderOutsideSellerConsole();
+        }
       });
 
       loadLocalState();
       checkUrlParams();
-      recalculateAllProductStocks();
       if (!isStaffOnlyView && !isShopScanPortalView) {
         renderAll();
         runReport();
+        syncFromSupabase();
+        bindRealtimeSales();
       }
       lastSyncSnapshot = computeStateFingerprint();
-      syncFromSupabase();
-      bindRealtimeSales();
+      updatePortalSwahiliDateTime();
     })();
   </script>
 </body>
