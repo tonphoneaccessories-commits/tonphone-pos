@@ -1,8 +1,9 @@
-const CACHE_NAME = "tonphone-pos-v1";
+const CACHE_NAME = "tonphone-pos-v2";
 const CORE_ASSETS = [
   "./",
   "./index.html",
-  "./manifest.json"
+  "./manifest.json",
+  "./FB_IMG_1795624706360.jpg"
 ];
 
 self.addEventListener("install", (event) => {
@@ -32,6 +33,12 @@ self.addEventListener("fetch", (event) => {
   if (url.origin !== self.location.origin) return;
 
   event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request))
+    fetch(event.request)
+      .then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
