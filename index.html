@@ -265,27 +265,32 @@
     }
     .br-chevron {
       color: #64748b;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: bold;
+      line-height: 1;
     }
-    .br-accordion-body {
-      display: none;
-      margin-top: -3px;
-      margin-bottom: 4px;
+    .mauzo-sub-panel {
+      margin-top: 8px;
       background: #ffffff;
-      border: 1px solid #bfdbfe;
-      border-radius: 12px;
-      padding: 8px 10px 10px 10px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
     }
-    .br-accordion-body.open {
-      display: block;
+    .mauzo-sub-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #f1f5f9;
+      margin-bottom: 6px;
     }
     .sub-feature-list {
       display: flex;
       flex-direction: column;
-      gap: 7px;
-      margin-top: 4px;
+      gap: 6px;
+      margin-top: 6px;
     }
     .sub-feature-row {
       display: flex;
@@ -293,9 +298,9 @@
       justify-content: space-between;
       gap: 12px;
       background: #ffffff;
-      border: 1px solid #e2e8f0;
+      border: 1px solid #f1f5f9;
       border-radius: 11px;
-      padding: 10px 12px;
+      padding: 10px 10px;
       cursor: pointer;
       transition: background 0.15s ease, border-color 0.15s ease;
     }
@@ -328,6 +333,7 @@
     .sub-icon-purple { background: #9333ea; }
     .sub-icon-blue { background: #0284c7; }
     .sub-icon-crimson { background: #e11d48; }
+    .sub-icon-emerald { background: #059669; }
     .sub-feature-title {
       font-size: 14px;
       font-weight: bold;
@@ -1318,8 +1324,7 @@
         </div>
 
         <div class="br-menu-list" id="brSectionMenuList">
-          <!-- 1. MAUZO NA WATEJA (Inafungua orodha ya vipengele 5; mwisho chini ni Historia ya Mauzo inayofunguka full screen juu ya skrini) -->
-          <div class="br-menu-card active-sec" id="br_card_mauzo_wateja" data-act="toggleBranchSectionAccordion" data-sec="mauzo_wateja">
+          <div class="br-menu-card active-sec" id="br_card_mauzo_wateja" data-act="toggleMauzoWatejaAccordion">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1332,89 +1337,37 @@
             </div>
             <div class="br-menu-right">
               <span class="br-count-pill">5</span>
-              <span class="br-chevron" id="br_chev_mauzo_wateja">&#8964;</span>
+              <span class="br-chevron" id="br_mauzo_chevron">&#8963;</span>
             </div>
           </div>
 
-          <div class="br-accordion-body open" id="br_acc_mauzo_wateja">
+          <!-- PANELI YA 1. MAUZO NA WATEJA — HISTORIA YA WATEJA IPO MWISHO KABISA CHINI -->
+          <div id="mauzoWatejaAccordionPanel" class="mauzo-sub-panel">
+            <div class="mauzo-sub-top">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <span class="br-menu-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                    <circle cx="12" cy="12" r="2.5"></circle>
+                    <path d="M6 12h.01M18 12h.01"></path>
+                  </svg>
+                </span>
+                <span class="br-menu-title">1. Mauzo na Wateja</span>
+              </div>
+              <div class="br-menu-right">
+                <span class="br-count-pill">5</span>
+                <span class="br-chevron" style="cursor:pointer;" data-act="toggleMauzoWatejaAccordion">&#8963;</span>
+              </div>
+            </div>
+
             <div class="sub-feature-list">
-              <div class="sub-feature-row" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="mauzo_ya_nyuma">
-                <div class="sub-feature-left">
-                  <span class="sub-feature-icon sub-icon-indigo" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                      <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                      <path d="m14 14 2-2 2 2"></path>
-                    </svg>
-                  </span>
-                  <div>
-                    <div class="sub-feature-title">Mauzo ya Nyuma</div>
-                    <div class="sub-feature-desc">Rekodi mauzo ya zamani ukiweka tarehe na muda</div>
-                  </div>
-                </div>
-                <span class="sub-feature-chevron">&rsaquo;</span>
-              </div>
-
-              <div class="sub-feature-row" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="wateja_mikopo">
-                <div class="sub-feature-left">
-                  <span class="sub-feature-icon sub-icon-purple" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                      <circle cx="12" cy="10" r="2"></circle>
-                    </svg>
-                  </span>
-                  <div>
-                    <div class="sub-feature-title">Wateja &amp; Mikopo</div>
-                    <div class="sub-feature-desc">Simamia wateja, mipaka ya mikopo, na madeni yaliyosalia</div>
-                  </div>
-                </div>
-                <span class="sub-feature-chevron">&rsaquo;</span>
-              </div>
-
-              <div class="sub-feature-row" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="invoice">
-                <div class="sub-feature-left">
-                  <span class="sub-feature-icon sub-icon-blue" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="8" y1="13" x2="16" y2="13"></line>
-                      <line x1="8" y1="17" x2="14" y2="17"></line>
-                    </svg>
-                  </span>
-                  <div>
-                    <div class="sub-feature-title">Invoice</div>
-                    <div class="sub-feature-desc">Tengeneza na simamia invoice za wateja</div>
-                  </div>
-                </div>
-                <span class="sub-feature-chevron">&rsaquo;</span>
-              </div>
-
-              <div class="sub-feature-row" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="oda_zilizofeli">
-                <div class="sub-feature-left">
-                  <span class="sub-feature-icon sub-icon-crimson" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M3 12a9 9 0 0 1 15-6.7L21 8"></path>
-                      <path d="M21 3v5h-5"></path>
-                      <path d="M21 12a9 9 0 0 1-15 6.7L3 16"></path>
-                      <path d="M3 21v-5h5"></path>
-                    </svg>
-                  </span>
-                  <div>
-                    <div class="sub-feature-title">Oda Zilizofeli/Kurudishwa</div>
-                    <div class="sub-feature-desc">Kagua oda zilizoghairiwa na kurudishiwa pesa</div>
-                  </div>
-                </div>
-                <span class="sub-feature-chevron">&rsaquo;</span>
-              </div>
-
-              <!-- KIPENGELE CHA MWISHO CHINI: HISTORIA YA MAUZO (Ukigusa kinafunguka full screen juu ya skrini) -->
-              <div class="sub-feature-row selected-sub" id="br_sub_historia_mauzo" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="historia_mauzo">
+              <!-- 1. Historia ya Mauzo -->
+              <div class="sub-feature-row" data-act="openBranchSectionSubModal" data-sec="mauzo_wateja" data-sub="historia_mauzo">
                 <div class="sub-feature-left">
                   <span class="sub-feature-icon sub-icon-teal" aria-hidden="true">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1Z"></path>
-                      <line x1="12" y1="7" x2="12" y2="17"></line>
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path>
+                      <path d="M12 7v10"></path>
                       <path d="M14.5 9.5a2.5 2.5 0 0 0-5 0c0 2 5 1.5 5 4a2.5 2.5 0 0 1-5 0"></path>
                     </svg>
                   </span>
@@ -1425,10 +1378,103 @@
                 </div>
                 <span class="sub-feature-chevron">&rsaquo;</span>
               </div>
+
+              <!-- 2. Mauzo ya Nyuma -->
+              <div class="sub-feature-row" data-act="openBranchSectionSubModal" data-sec="mauzo_wateja" data-sub="mauzo_ya_nyuma">
+                <div class="sub-feature-left">
+                  <span class="sub-feature-icon sub-icon-indigo" aria-hidden="true">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                      <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+                      <path d="m15 11-3 3"></path>
+                    </svg>
+                  </span>
+                  <div>
+                    <div class="sub-feature-title">Mauzo ya Nyuma</div>
+                    <div class="sub-feature-desc">Rekodi mauzo ya zamani ukiweka tarehe na muda</div>
+                  </div>
+                </div>
+                <span class="sub-feature-chevron">&rsaquo;</span>
+              </div>
+
+              <!-- 3. Wateja & Mikopo -->
+              <div class="sub-feature-row" data-act="openBranchSectionSubModal" data-sec="mauzo_wateja" data-sub="wateja_mikopo">
+                <div class="sub-feature-left">
+                  <span class="sub-feature-icon sub-icon-purple" aria-hidden="true">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 5H3a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"></path>
+                      <circle cx="9" cy="11" r="2"></circle>
+                      <path d="M6 15.5c0-1.5 1.3-2.5 3-2.5s3 1 3 2.5"></path>
+                      <path d="M15 10h5M15 14h4"></path>
+                    </svg>
+                  </span>
+                  <div>
+                    <div class="sub-feature-title">Wateja &amp; Mikopo</div>
+                    <div class="sub-feature-desc">Simamia wateja, mipaka ya mikopo, na madeni yaliyosalia</div>
+                  </div>
+                </div>
+                <span class="sub-feature-chevron">&rsaquo;</span>
+              </div>
+
+              <!-- 4. Invoice -->
+              <div class="sub-feature-row" data-act="openBranchSectionSubModal" data-sec="mauzo_wateja" data-sub="invoice">
+                <div class="sub-feature-left">
+                  <span class="sub-feature-icon sub-icon-blue" aria-hidden="true">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="8" y1="13" x2="16" y2="13"></line>
+                      <line x1="8" y1="17" x2="13" y2="17"></line>
+                    </svg>
+                  </span>
+                  <div>
+                    <div class="sub-feature-title">Invoice</div>
+                    <div class="sub-feature-desc">Tengeneza na simamia invoice za wateja</div>
+                  </div>
+                </div>
+                <span class="sub-feature-chevron">&rsaquo;</span>
+              </div>
+
+              <!-- 5. Oda Zilizofeli/Kurudishwa -->
+              <div class="sub-feature-row" data-act="openBranchSectionSubModal" data-sec="mauzo_wateja" data-sub="oda_kurudishwa">
+                <div class="sub-feature-left">
+                  <span class="sub-feature-icon sub-icon-crimson" aria-hidden="true">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                      <path d="M3 3v5h5"></path>
+                      <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                      <path d="M16 16h5v5"></path>
+                    </svg>
+                  </span>
+                  <div>
+                    <div class="sub-feature-title">Oda Zilizofeli/Kurudishwa</div>
+                    <div class="sub-feature-desc">Kagua oda zilizoghairiwa na kurudishiwa pesa</div>
+                  </div>
+                </div>
+                <span class="sub-feature-chevron">&rsaquo;</span>
+              </div>
+
+              <!-- 6. Historia ya Wateja — MWISHO KABISA CHINI: ukigusa ndio inafunguka mbele juu ya screen -->
+              <div class="sub-feature-row" id="btn_historia_ya_wateja_mwisho" data-act="openBranchSectionSubModal" data-sec="mauzo_wateja" data-sub="historia_ya_wateja">
+                <div class="sub-feature-left">
+                  <span class="sub-feature-icon sub-icon-emerald" aria-hidden="true">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M12 8h6l-1.5-1.5M18 8l-1.5 1.5"></path>
+                    </svg>
+                  </span>
+                  <div>
+                    <div class="sub-feature-title">Historia ya Wateja</div>
+                    <div class="sub-feature-desc">Kagua rekodi, manunuzi, na historia kamili ya wateja</div>
+                  </div>
+                </div>
+                <span class="sub-feature-chevron">&rsaquo;</span>
+              </div>
             </div>
           </div>
 
-          <div class="br-menu-card" id="br_card_maduka_bidhaa" data-act="openBranchModalSection" data-sec="maduka_bidhaa">
+          <div class="br-menu-card" data-act="openBranchModalSection" data-sec="maduka_bidhaa">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1445,7 +1491,7 @@
             </div>
           </div>
 
-          <div class="br-menu-card" id="br_card_manunuzi_gharama" data-act="openBranchModalSection" data-sec="manunuzi_gharama">
+          <div class="br-menu-card" data-act="openBranchModalSection" data-sec="manunuzi_gharama">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1462,7 +1508,7 @@
             </div>
           </div>
 
-          <div class="br-menu-card" id="br_card_fedha_hesabu" data-act="openBranchModalSection" data-sec="fedha_hesabu">
+          <div class="br-menu-card" data-act="openBranchModalSection" data-sec="fedha_hesabu">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1478,7 +1524,7 @@
             </div>
           </div>
 
-          <div class="br-menu-card" id="br_card_ripoti_takwimu" data-act="openBranchModalSection" data-sec="ripoti_takwimu">
+          <div class="br-menu-card" data-act="openBranchModalSection" data-sec="ripoti_takwimu">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1495,7 +1541,7 @@
             </div>
           </div>
 
-          <div class="br-menu-card" id="br_card_akaunti_setup" data-act="openBranchModalSection" data-sec="akaunti_setup">
+          <div class="br-menu-card" data-act="openBranchModalSection" data-sec="akaunti_setup">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1511,7 +1557,7 @@
             </div>
           </div>
 
-          <div class="br-menu-card" id="br_card_link_duka" data-act="openBranchModalSection" data-sec="link_duka">
+          <div class="br-menu-card" data-act="openBranchModalSection" data-sec="link_duka">
             <div class="br-menu-left">
               <span class="br-menu-icon link-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1907,9 +1953,9 @@
       var branchStockOpen = true;
       var staffStockOpen = true;
 
-      // Hali ya accordion na dirisha la mbele juu ya screen kwa sehemu za Duka (No. 1 hadi mwisho)
+      // Hali ya dirisha la mbele juu ya screen kwa kila sehemu ya Duka (No. 1 hadi mwisho)
       var activeBranchModalSec = "";
-      var activeMauzoSubFeature = "historia_mauzo";
+      var activeMauzoSubFeature = "historia_ya_wateja";
       var isMauzoAccordionOpen = true;
       var isBranchModalOpen = false;
       var hmSearchQuery = "";
@@ -1966,20 +2012,21 @@
       var qr = null;
       var scanMode = "mauzo";
 
-      function getMauzoSubLabel(subKey) {
+      function getMauzoSubTitle(subKey) {
         var subMap = {
           historia_mauzo: "Historia ya Mauzo",
           mauzo_ya_nyuma: "Mauzo ya Nyuma",
           wateja_mikopo: "Wateja & Mikopo",
           invoice: "Invoice",
-          oda_zilizofeli: "Oda Zilizofeli/Kurudishwa"
+          oda_kurudishwa: "Oda Zilizofeli/Kurudishwa",
+          historia_ya_wateja: "Historia ya Wateja"
         };
-        return subMap[subKey] || "Historia ya Mauzo";
+        return subMap[subKey] || "";
       }
 
       function getBranchSectionTitle(secKey, subKey) {
-        if (secKey === "mauzo_wateja" && subKey) {
-          return getMauzoSubLabel(subKey);
+        if (subKey) {
+          return getMauzoSubTitle(subKey);
         }
         var map = {
           mauzo_wateja: "1. Mauzo na Wateja",
@@ -1993,51 +2040,49 @@
         return map[secKey] || "Sehemu ya Duka";
       }
 
-      function syncMauzoAccordionUi() {
-        var acc = document.getElementById("br_acc_mauzo_wateja");
-        var chev = document.getElementById("br_chev_mauzo_wateja");
-        if (acc) acc.className = "br-accordion-body" + (isMauzoAccordionOpen ? " open" : "");
+      function toggleMauzoWatejaAccordion() {
+        isMauzoAccordionOpen = !isMauzoAccordionOpen;
+        var panel = document.getElementById("mauzoWatejaAccordionPanel");
+        var chev = document.getElementById("br_mauzo_chevron");
+        if (panel) panel.style.display = isMauzoAccordionOpen ? "block" : "none";
         if (chev) chev.innerHTML = isMauzoAccordionOpen ? "&#8963;" : "&#8964;";
-
-        var subRows = document.querySelectorAll("#br_acc_mauzo_wateja .sub-feature-row");
-        for (var i = 0; i < subRows.length; i++) {
-          var sKey = subRows[i].getAttribute("data-sub");
-          subRows[i].className = "sub-feature-row" + (sKey === activeMauzoSubFeature ? " selected-sub" : "");
-        }
       }
 
-      function toggleBranchSectionAccordion(secKey) {
-        if (secKey === "mauzo_wateja") {
-          isMauzoAccordionOpen = !isMauzoAccordionOpen;
-          syncMauzoAccordionUi();
-          return;
-        }
-        openBranchModalSection(secKey, "");
-      }
-
-      // Ukigusa kipengele chochote (mf. Historia ya Mauzo chini mwisho au sehemu yoyote ya Duka), kinafunguka kwa mbele juu ya skrini
+      // Ukigusa sekshen yoyote (1-7) au kipengele chochote ndani ya Mauzo na Wateja (hadi Historia ya Wateja chini mwisho), kinafunguka kwa mbele juu ya screen
       function openBranchModalSection(secKey, subKey) {
         activeBranchModalSec = secKey || "mauzo_wateja";
-        if (activeBranchModalSec === "mauzo_wateja") {
-          isMauzoAccordionOpen = true;
-          if (subKey) activeMauzoSubFeature = subKey;
-          else if (!activeMauzoSubFeature) activeMauzoSubFeature = "historia_mauzo";
+        if (subKey) {
+          activeMauzoSubFeature = subKey;
+        } else if (activeBranchModalSec === "mauzo_wateja") {
+          activeMauzoSubFeature = "historia_ya_wateja";
+        } else {
+          activeMauzoSubFeature = "";
         }
-        syncMauzoAccordionUi();
-
         isBranchModalOpen = true;
+
         var cards = document.querySelectorAll("#brSectionMenuList .br-menu-card");
         for (var i = 0; i < cards.length; i++) {
           var cSec = cards[i].getAttribute("data-sec");
-          cards[i].className = "br-menu-card" + (cSec === activeBranchModalSec ? " active-sec" : "");
+          var isMatch = (cSec === activeBranchModalSec) || (activeBranchModalSec === "mauzo_wateja" && cards[i].id === "br_card_mauzo_wateja");
+          cards[i].className = "br-menu-card" + (isMatch ? " active-sec" : "");
         }
+        var subRows = document.querySelectorAll("#mauzoWatejaAccordionPanel .sub-feature-row");
+        for (var j = 0; j < subRows.length; j++) {
+          var rSub = subRows[j].getAttribute("data-sub");
+          subRows[j].className = "sub-feature-row" + (activeMauzoSubFeature && rSub === activeMauzoSubFeature ? " selected-sub" : "");
+        }
+
         var modal = document.getElementById("hmFullScreenModal");
         if (modal) modal.className = "hm-full-overlay open";
         renderBranchModalOverlay();
       }
 
+      function openBranchSectionSubModal(secKey, subKey) {
+        openBranchModalSection(secKey || "mauzo_wateja", subKey || "historia_ya_wateja");
+      }
+
       function openHistoriaMauzoFull() {
-        openBranchModalSection("mauzo_wateja", "historia_mauzo");
+        openBranchModalSection("mauzo_wateja", "historia_ya_wateja");
       }
 
       function closeHistoriaMauzoFull() {
@@ -2099,18 +2144,17 @@
         var url = URL.createObjectURL(blob);
         var a = document.createElement("a");
         a.href = url;
-        a.download = "historia-ya-mauzo-" + (b ? b.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") : "duka") + ".csv";
+        a.download = "historia-ya-wateja-na-mauzo-" + (b ? b.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") : "duka") + ".csv";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
-        msg("Faili la CSV la Historia ya Mauzo (" + rows.length + " rekodi) limepakuliwa!");
+        msg("Faili la CSV (" + rows.length + " rekodi) limepakuliwa!");
       }
 
       function renderBranchSectionBodyInsideModal(secKey, b, st, subKey) {
         var shUrl = buildShopScanPortalUrl(b.id);
         if (secKey === "mauzo_wateja") {
-          var activeSub = subKey || activeMauzoSubFeature || "historia_mauzo";
           var filteredSales = getFilteredBranchSales(b.id);
           var paidSum = 0, pendingSum = 0;
           for (var i = 0; i < filteredSales.length; i++) {
@@ -2120,8 +2164,11 @@
           }
           var ordersCount = filteredSales.length;
           var avgOrderVal = ordersCount > 0 ? Math.round((paidSum + pendingSum) / ordersCount) : 0;
+          var emptyText = subKey === "historia_ya_wateja"
+            ? "Hakuna historia ya wateja iliyopatikana kwa kipindi hiki."
+            : "Hakuna mauzo yaliyopatikana kwa kipindi hiki.";
           var rowsHtml = !filteredSales.length
-            ? '<div class="hm-empty-box">Hakuna mauzo yaliyopatikana kwa kipindi hiki.</div>'
+            ? '<div class="hm-empty-box">' + emptyText + '</div>'
             : filteredSales.map(function(sl, j) {
                 var dt = sl.created_at ? new Date(sl.created_at) : new Date();
                 return '<div class="hm-sale-row"><div class="box-head">' +
@@ -2130,27 +2177,15 @@
                   '<div style="margin-top:4px;">Idadi: <b>' + Number(sl.quantity || 1) + '</b> | Jumla: <b>TZS ' + money(sl.total_amount || 0) + '</b> | Wakala: <b>' + staffNameById(sl.employee_id) + '</b></div></div>';
               }).join("");
 
-          var subBannerNote = "";
-          if (activeSub === "mauzo_ya_nyuma") {
-            subBannerNote = '<div class="hm-sale-row" style="border-left-color:#4f46e5;"><b>Mauzo ya Nyuma:</b> Kagua na kuchuja mauzo yaliyorekodiwa kwa tarehe na muda wa nyuma.</div>';
-          } else if (activeSub === "wateja_mikopo") {
-            subBannerNote = '<div class="hm-sale-row" style="border-left-color:#9333ea;"><b>Wateja &amp; Mikopo:</b> Salio linalosubiri na rekodi za wateja wa duka la <b>' + b.name + '</b>.</div>';
-          } else if (activeSub === "invoice") {
-            subBannerNote = '<div class="hm-sale-row" style="border-left-color:#0284c7;"><b>Invoice:</b> Rejea ya risiti na ankara za mauzo ya duka la <b>' + b.name + '</b>.</div>';
-          } else if (activeSub === "oda_zilizofeli") {
-            subBannerNote = '<div class="hm-sale-row" style="border-left-color:#e11d48;"><b>Oda Zilizofeli/Kurudishwa:</b> Angalia oda zilizoghairiwa au kurudishiwa pesa.</div>';
-          }
-
           return '' +
-            subBannerNote +
             '<div class="hm-dark-grid">' +
               '<div class="hm-dark-card"><div class="hm-dark-label">Pesa Zilizoingia</div><div class="hm-dark-val">TZS ' + money(paidSum) + '</div><div class="hm-dark-sub">Kwa tarehe ya malipo</div></div>' +
-              '<div class="hm-dark-card"><div class="hm-dark-label">Oda / Mauzo</div><div class="hm-dark-val">' + ordersCount + '</div></div>' +
+              '<div class="hm-dark-card"><div class="hm-dark-label">Orders</div><div class="hm-dark-val">' + ordersCount + '</div></div>' +
               '<div class="hm-dark-card"><div class="hm-dark-label">Salio Linalosubiri</div><div class="hm-dark-val">TZS ' + money(pendingSum) + '</div></div>' +
-              '<div class="hm-dark-card"><div class="hm-dark-label">Wastani wa Thamani ya Oda</div><div class="hm-dark-val">TZS ' + money(avgOrderVal) + '</div></div>' +
+              '<div class="hm-dark-card"><div class="hm-dark-label">Wastani wa Thamani ya Order</div><div class="hm-dark-val">TZS ' + money(avgOrderVal) + '</div></div>' +
             '</div>' +
             '<div class="hm-filter-row two">' +
-              '<input id="hm_search_inp" class="hm-input" type="text" value="' + escapeAttr(hmSearchQuery) + '" placeholder="Tafuta risiti, mteja, bidhaa..." />' +
+              '<input id="hm_search_inp" class="hm-input" type="text" value="' + escapeAttr(hmSearchQuery) + '" placeholder="Tafuta risiti, mteja, bidhaa," />' +
               '<select id="hm_status_sel" class="hm-select"><option value="ALL"' + (hmStatusFilter === "ALL" ? " selected" : "") + '>Hali Zote</option><option value="paid"' + (hmStatusFilter === "paid" ? " selected" : "") + '>Zilizolipwa</option><option value="pending"' + (hmStatusFilter === "pending" ? " selected" : "") + '>Zinasubiri</option></select>' +
             '</div>' +
             '<div class="hm-filter-row even">' +
@@ -2159,7 +2194,7 @@
             '</div>' +
             '<div class="hm-filter-row even">' +
               '<select id="hm_sort_sel" class="hm-select"><option value="newest"' + (hmSortOrder === "newest" ? " selected" : "") + '>Mpya Kwanza</option><option value="oldest"' + (hmSortOrder === "oldest" ? " selected" : "") + '>Za Zamani Kwanza</option></select>' +
-              '<button type="button" class="hm-export-btn" data-act="exportHistoriaMauzoCsv">&#8681; Pakua CSV</button>' +
+              '<button type="button" class="hm-export-btn" data-act="exportHistoriaMauzoCsv">&#8681; Export CSV</button>' +
             '</div>' +
             '<div id="hm_auto_rows_list">' + rowsHtml + '</div>';
         }
@@ -2257,13 +2292,15 @@
 
       function selectMauzoSubFeature(subKey) {
         if (!subKey) return;
-        activeMauzoSubFeature = subKey;
         openBranchModalSection("mauzo_wateja", subKey);
       }
 
       function renderBranchSectionsContent() {
         if (isStaffOnlyView || isShopScanPortalView) return;
-        syncMauzoAccordionUi();
+        var panel = document.getElementById("mauzoWatejaAccordionPanel");
+        var chev = document.getElementById("br_mauzo_chevron");
+        if (panel) panel.style.display = isMauzoAccordionOpen ? "block" : "none";
+        if (chev) chev.innerHTML = isMauzoAccordionOpen ? "&#8963;" : "&#8964;";
         if (isBranchModalOpen && !isUserCurrentlyTyping()) {
           renderBranchModalOverlay();
         }
@@ -3933,8 +3970,9 @@
         else if (act === "shSaveCategoryRetailPrice") shSaveCategoryRetailPrice();
         else if (act === "shFinalizeAndIssueEfd") shFinalizeAndIssueEfd();
         else if (act === "shClearScanCart") shClearScanCart();
-        else if (act === "toggleBranchSectionAccordion") toggleBranchSectionAccordion(el.getAttribute("data-sec") || "mauzo_wateja");
-        else if (act === "openBranchModalSection") openBranchModalSection(el.getAttribute("data-sec") || "mauzo_wateja", el.getAttribute("data-sub") || "");
+        else if (act === "toggleMauzoWatejaAccordion") toggleMauzoWatejaAccordion();
+        else if (act === "openBranchModalSection") openBranchModalSection(el.getAttribute("data-sec") || "mauzo_wateja", "");
+        else if (act === "openBranchSectionSubModal") openBranchSectionSubModal(el.getAttribute("data-sec") || "mauzo_wateja", el.getAttribute("data-sub") || "historia_ya_wateja");
         else if (act === "selectMauzoSubFeature") selectMauzoSubFeature(el.getAttribute("data-sub") || "");
         else if (act === "openHistoriaMauzoFull") openHistoriaMauzoFull();
         else if (act === "closeHistoriaMauzoFull") closeHistoriaMauzoFull();
