@@ -363,7 +363,7 @@
       display: block;
     }
     .hm-full-inner {
-      max-width: 540px;
+      max-width: 780px;
       margin: 0 auto;
     }
     .hm-shell {
@@ -512,6 +512,43 @@
       font-size: 13px;
       background: #ffffff;
     }
+    .hm-table-wrap {
+      margin-top: 12px;
+      width: 100%;
+      overflow-x: auto;
+      background: #ffffff;
+      border: 1px solid #e4e4e7;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+    }
+    table.hm-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      color: #18181b;
+      min-width: 620px;
+    }
+    table.hm-table th {
+      background: #27272a;
+      color: #ffffff;
+      text-align: left;
+      padding: 10px 11px;
+      font-weight: bold;
+      border-bottom: 1px solid #3f3f46;
+      white-space: nowrap;
+    }
+    table.hm-table td {
+      padding: 10px 11px;
+      border-bottom: 1px solid #e4e4e7;
+      vertical-align: top;
+      line-height: 1.4;
+    }
+    table.hm-table tr:last-child td {
+      border-bottom: none;
+    }
+    table.hm-table tr:nth-child(even) td {
+      background: #fafafa;
+    }
     .hm-sale-row {
       border: 1px solid #e4e4e7;
       border-left: 4px solid #27272a;
@@ -522,6 +559,19 @@
       color: #18181b;
       font-size: 12px;
       line-height: 1.45;
+    }
+
+    /* SETI 4 ZA BIDHAA ALIZOUZA: 2 KUSHOTO NA 2 KULIA */
+    .sold-slots-2x2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    @media (min-width: 640px) {
+      .sold-slots-2x2 {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     .comm-split {
@@ -773,7 +823,7 @@
       border: 1px solid #bfdbfe;
       border-radius: 8px;
       padding: 9px 10px;
-      margin-bottom: 8px;
+      margin-bottom: 0;
     }
     .send-hq-box {
       background: #ecfdf5;
@@ -1094,7 +1144,7 @@
           <div>fika tageti ya simu <b>0</b></div>
           <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-top:2px;">
             <span>upate bonas ya sh <b>TZS 0</b></span>
-            <button type="button" class="promo-claim-red-btn" data-act="claimPhoneTargetBonus">Kilia</button>
+            <button type="button" class="promo-claim-red-btn" data-act="claimPhoneTargetBonus">Vuna</button>
           </div>
         </div>
 
@@ -1120,75 +1170,81 @@
         <div class="card" style="background:#eff6ff; border:1px solid #93c5fd;">
           <b>Rekodi Bidhaa Alizouza (Seti 4)</b>
 
-          <div class="sold-slot-row" style="margin-top:8px;">
-            <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #1</div>
-            <div class="row" style="margin-bottom:6px;">
-              <div>
-                <small><b>Aina ya bidhaa aliyouza</b></small>
-                <input id="pt_sold_item_1" type="text" placeholder="Aina ya bidhaa aliyouza" />
+          <div class="sold-slots-2x2">
+            <!-- KUSHOTO JUU: BIDHAA #1 -->
+            <div class="sold-slot-row">
+              <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #1</div>
+              <div class="row" style="margin-bottom:6px;">
+                <div>
+                  <small><b>Aina ya bidhaa aliyouza</b></small>
+                  <input id="pt_sold_item_1" type="text" placeholder="Aina ya bidhaa aliyouza" />
+                </div>
+                <div>
+                  <small><b>Idadi ya bidhaa alizouza</b></small>
+                  <input id="pt_sold_qty_1" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
+                </div>
               </div>
               <div>
-                <small><b>Idadi ya bidhaa alizouza</b></small>
-                <input id="pt_sold_qty_1" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
+                <small><b>Bei aliyouza (TZS)</b></small>
+                <input id="pt_sold_price_1" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
               </div>
             </div>
-            <div>
-              <small><b>Bei aliyouza (TZS)</b></small>
-              <input id="pt_sold_price_1" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
-            </div>
-          </div>
 
-          <div class="sold-slot-row">
-            <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #2</div>
-            <div class="row" style="margin-bottom:6px;">
-              <div>
-                <small><b>Aina ya bidhaa aliyouza</b></small>
-                <input id="pt_sold_item_2" type="text" placeholder="Aina ya bidhaa aliyouza" />
+            <!-- KULIA JUU: BIDHAA #2 -->
+            <div class="sold-slot-row">
+              <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #2</div>
+              <div class="row" style="margin-bottom:6px;">
+                <div>
+                  <small><b>Aina ya bidhaa aliyouza</b></small>
+                  <input id="pt_sold_item_2" type="text" placeholder="Aina ya bidhaa aliyouza" />
+                </div>
+                <div>
+                  <small><b>Idadi ya bidhaa alizouza</b></small>
+                  <input id="pt_sold_qty_2" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
+                </div>
               </div>
               <div>
-                <small><b>Idadi ya bidhaa alizouza</b></small>
-                <input id="pt_sold_qty_2" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
+                <small><b>Bei aliyouza (TZS)</b></small>
+                <input id="pt_sold_price_2" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
               </div>
             </div>
-            <div>
-              <small><b>Bei aliyouza (TZS)</b></small>
-              <input id="pt_sold_price_2" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
-            </div>
-          </div>
 
-          <div class="sold-slot-row">
-            <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #3</div>
-            <div class="row" style="margin-bottom:6px;">
-              <div>
-                <small><b>Aina ya bidhaa aliyouza</b></small>
-                <input id="pt_sold_item_3" type="text" placeholder="Aina ya bidhaa aliyouza" />
+            <!-- KUSHOTO CHINI: BIDHAA #3 -->
+            <div class="sold-slot-row">
+              <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #3</div>
+              <div class="row" style="margin-bottom:6px;">
+                <div>
+                  <small><b>Aina ya bidhaa aliyouza</b></small>
+                  <input id="pt_sold_item_3" type="text" placeholder="Aina ya bidhaa aliyouza" />
+                </div>
+                <div>
+                  <small><b>Idadi ya bidhaa alizouza</b></small>
+                  <input id="pt_sold_qty_3" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
+                </div>
               </div>
               <div>
-                <small><b>Idadi ya bidhaa alizouza</b></small>
-                <input id="pt_sold_qty_3" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
+                <small><b>Bei aliyouza (TZS)</b></small>
+                <input id="pt_sold_price_3" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
               </div>
             </div>
-            <div>
-              <small><b>Bei aliyouza (TZS)</b></small>
-              <input id="pt_sold_price_3" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
-            </div>
-          </div>
 
-          <div class="sold-slot-row" style="margin-bottom:0;">
-            <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #4</div>
-            <div class="row" style="margin-bottom:6px;">
-              <div>
-                <small><b>Aina ya bidhaa aliyouza</b></small>
-                <input id="pt_sold_item_4" type="text" placeholder="Aina ya bidhaa aliyouza" />
+            <!-- KULIA CHINI: BIDHAA #4 -->
+            <div class="sold-slot-row">
+              <div style="font-size:12px; font-weight:bold; color:#1e3a8a; margin-bottom:5px;">Bidhaa #4</div>
+              <div class="row" style="margin-bottom:6px;">
+                <div>
+                  <small><b>Aina ya bidhaa aliyouza</b></small>
+                  <input id="pt_sold_item_4" type="text" placeholder="Aina ya bidhaa aliyouza" />
+                </div>
+                <div>
+                  <small><b>Idadi ya bidhaa alizouza</b></small>
+                  <input id="pt_sold_qty_4" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
+                </div>
               </div>
               <div>
-                <small><b>Idadi ya bidhaa alizouza</b></small>
-                <input id="pt_sold_qty_4" type="number" step="any" min="0" value="" placeholder="Idadi ya bidhaa alizouza" />
+                <small><b>Bei aliyouza (TZS)</b></small>
+                <input id="pt_sold_price_4" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
               </div>
-            </div>
-            <div>
-              <small><b>Bei aliyouza (TZS)</b></small>
-              <input id="pt_sold_price_4" type="number" step="any" min="0" value="" placeholder="Bei aliyouza" />
             </div>
           </div>
         </div>
@@ -1343,8 +1399,8 @@
         </div>
 
         <div class="br-menu-list" id="brSectionMenuList">
-          <!-- 1. MAUZO NA WATEJA: Kishale kinaelekea kulia (&rsaquo;) kama mishale mingine na ukigusa kinafunguka kwa mbele -->
-          <div class="br-menu-card active-sec" id="br_card_mauzo_wateja" data-act="openBranchModalSection" data-sec="mauzo_wateja">
+          <!-- 1. MAUZO NA WATEJA: Ukigusa moja kwa moja unafungua Historia ya Wateja juu ya screen -->
+          <div class="br-menu-card active-sec" id="br_card_mauzo_wateja" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="historia_mauzo">
             <div class="br-menu-left">
               <span class="br-menu-icon" aria-hidden="true">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1357,7 +1413,7 @@
             </div>
             <div class="br-menu-right">
               <span class="br-count-pill">5</span>
-              <span class="br-chevron" id="br_chev_mauzo_wateja" data-act="openBranchModalSection" data-sec="mauzo_wateja" title="Fungua kwa mbele">&rsaquo;</span>
+              <span class="br-chevron" id="br_chev_mauzo_wateja" data-act="openBranchModalSection" data-sec="mauzo_wateja" data-sub="historia_mauzo" title="Fungua Historia ya Wateja">&rsaquo;</span>
             </div>
           </div>
 
@@ -2072,11 +2128,10 @@
           created_at: new Date().toISOString()
         });
 
-        // Salio linaondoka linaenda kwenye bonus na linabaki 0 mpaka tena atakapofika target nyingine
         promo.bonusAmount = 0;
         promo.baselineSoldQty = Number(st.itemsCnt || 0);
 
-        appendPermanentRecord("Mfumo wa Nje wa Mfanyakazi", "Alilia Bonasi ya Target", empId, portalConfig ? portalConfig.brId : HQ_B, {
+        appendPermanentRecord("Mfumo wa Nje wa Mfanyakazi", "Alivuna Bonasi ya Target", empId, portalConfig ? portalConfig.brId : HQ_B, {
           claimed_bonus: bonusAmt,
           target_qty: targetQty
         });
@@ -2098,11 +2153,11 @@
       }
 
       function getBranchSectionTitle(secKey, subKey) {
-        if (secKey === "mauzo_wateja" && subKey) {
-          return getMauzoSubLabel(subKey);
+        if (secKey === "mauzo_wateja") {
+          return getMauzoSubLabel(subKey || "historia_mauzo");
         }
         var map = {
-          mauzo_wateja: "1. Mauzo na Wateja",
+          mauzo_wateja: "Historia ya Wateja",
           maduka_bidhaa: "2. Maduka na Bidhaa",
           manunuzi_gharama: "3. Manunuzi na Gharama",
           fedha_hesabu: "4. Fedha na Hesabu",
@@ -2127,15 +2182,14 @@
       }
 
       function toggleBranchSectionAccordion(secKey) {
-        openBranchModalSection(secKey, "");
+        openBranchModalSection(secKey, secKey === "mauzo_wateja" ? "historia_mauzo" : "");
       }
 
       function openBranchModalSection(secKey, subKey) {
         activeBranchModalSec = secKey || "mauzo_wateja";
         if (activeBranchModalSec === "mauzo_wateja") {
           isMauzoAccordionOpen = true;
-          if (subKey) activeMauzoSubFeature = subKey;
-          else if (!activeMauzoSubFeature) activeMauzoSubFeature = "historia_mauzo";
+          activeMauzoSubFeature = subKey || "historia_mauzo";
         }
         syncMauzoAccordionUi();
 
@@ -2197,15 +2251,21 @@
       function exportHistoriaMauzoCsv(brId) {
         var b = brObj(brId);
         var rows = getFilteredBranchSales(brId);
-        var headers = ["Risiti/ID", "Bidhaa", "SKU/Barcode", "Idadi", "Bei ya Rejareja", "Jumla (TZS)", "Malipo", "Mfanyakazi", "Tarehe/Saa"];
+        var headers = ["Na.", "Risiti/ID", "Bidhaa", "SKU/Barcode", "Idadi", "Bei ya Rejareja", "Jumla (TZS)", "Malipo", "Mfanyakazi", "Tarehe/Saa"];
         var lines = [headers.join(",")];
         for (var i = 0; i < rows.length; i++) {
           var r = rows[i];
           var vals = [
-            r.id || "", r.product_name || "Bidhaa", r.sku || r.barcod || "",
-            Number(r.quantity || 1), Number(r.unit_sold_price || r.total_amount || 0),
-            Number(r.total_amount || 0), r.payment_method || "cash",
-            staffNameById(r.employee_id), r.created_at || ""
+            i + 1,
+            r.id || "",
+            r.product_name || "Bidhaa",
+            r.sku || r.barcod || "",
+            Number(r.quantity || 1),
+            Number(r.unit_sold_price || r.total_amount || 0),
+            Number(r.total_amount || 0),
+            r.payment_method || "cash",
+            staffNameById(r.employee_id),
+            r.created_at || ""
           ].map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; });
           lines.push(vals.join(","));
         }
@@ -2234,15 +2294,32 @@
           }
           var ordersCount = filteredSales.length;
           var avgOrderVal = ordersCount > 0 ? Math.round((paidSum + pendingSum) / ordersCount) : 0;
-          var rowsHtml = !filteredSales.length
+
+          var tableHtml = !filteredSales.length
             ? '<div class="hm-empty-box">Hakuna historia ya wateja / mauzo iliyopatikana kwa kipindi hiki.</div>'
-            : filteredSales.map(function(sl, j) {
-                var dt = sl.created_at ? new Date(sl.created_at) : new Date();
-                return '<div class="hm-sale-row"><div class="box-head">' +
-                  '<span><b>' + (j + 1) + '. ' + (sl.product_name || "Bidhaa") + '</b></span>' +
-                  '<span style="font-size:11px; color:#27272a; font-weight:bold;">' + formatShortSwahiliDate(dt) + ' • ' + formatSwahiliTimeOfDay(dt) + '</span></div>' +
-                  '<div style="margin-top:4px;">Idadi: <b>' + Number(sl.quantity || 1) + '</b> | Jumla: <b>TZS ' + money(sl.total_amount || 0) + '</b> | Wakala: <b>' + staffNameById(sl.employee_id) + '</b></div></div>';
-              }).join("");
+            : '<div class="hm-table-wrap"><table class="hm-table">' +
+                '<thead><tr>' +
+                  '<th>#</th>' +
+                  '<th>Bidhaa / Msimbo</th>' +
+                  '<th>Idadi</th>' +
+                  '<th>Jumla (TZS)</th>' +
+                  '<th>Wakala / Malipo</th>' +
+                  '<th>Tarehe na Saa</th>' +
+                '</tr></thead><tbody>' +
+                filteredSales.map(function(sl, j) {
+                  var dt = sl.created_at ? new Date(sl.created_at) : new Date();
+                  var codeTxt = sl.sku || sl.barcod || "-";
+                  var payTxt = sl.payment_method === "lipa_namba" ? "Lipa Namba" : "Fedha Taslimu";
+                  return '<tr>' +
+                    '<td><b>' + (j + 1) + '</b></td>' +
+                    '<td><b>' + (sl.product_name || "Bidhaa") + '</b><br><span style="font-size:11px;color:#64748b;">' + codeTxt + '</span></td>' +
+                    '<td><b>' + Number(sl.quantity || 1) + '</b></td>' +
+                    '<td><b>TZS ' + money(sl.total_amount || 0) + '</b></td>' +
+                    '<td>' + staffNameById(sl.employee_id) + '<br><span style="font-size:11px;color:#64748b;">' + payTxt + '</span></td>' +
+                    '<td>' + formatShortSwahiliDate(dt) + '<br><span style="font-size:11px;color:#64748b;">' + formatSwahiliTimeOfDay(dt) + '</span></td>' +
+                  '</tr>';
+                }).join("") +
+                '</tbody></table></div>';
 
           var subBannerNote = "";
           if (activeSub === "mauzo_ya_nyuma") {
@@ -2275,7 +2352,7 @@
               '<select id="hm_sort_sel" class="hm-select"><option value="newest"' + (hmSortOrder === "newest" ? " selected" : "") + '>Mpya Kwanza</option><option value="oldest"' + (hmSortOrder === "oldest" ? " selected" : "") + '>Za Zamani Kwanza</option></select>' +
               '<button type="button" class="hm-export-btn" data-act="exportHistoriaMauzoCsv">&#8681; Pakua CSV</button>' +
             '</div>' +
-            '<div id="hm_auto_rows_list">' + rowsHtml + '</div>';
+            '<div id="hm_auto_rows_list">' + tableHtml + '</div>';
         }
 
         if (secKey === "maduka_bidhaa") {
@@ -3407,8 +3484,8 @@
         var bannerEl = document.getElementById("pt_hq_live_reply_banner");
         if (bannerEl) {
           var claimBtnHtml = reachedTarget
-            ? '<button type="button" class="promo-claim-red-btn" data-act="claimPhoneTargetBonus">Kilia</button>'
-            : '<button type="button" class="promo-claim-red-btn" style="opacity:0.55;" data-act="claimPhoneTargetBonus">Kilia</button>';
+            ? '<button type="button" class="promo-claim-red-btn" data-act="claimPhoneTargetBonus">Vuna</button>'
+            : '<button type="button" class="promo-claim-red-btn" style="opacity:0.55;" data-act="claimPhoneTargetBonus">Vuna</button>';
 
           bannerEl.innerHTML =
             "<div><b>promotio</b></div>" +
@@ -4076,7 +4153,7 @@
         else if (act === "shFinalizeAndIssueEfd") shFinalizeAndIssueEfd();
         else if (act === "shClearScanCart") shClearScanCart();
         else if (act === "toggleBranchSectionAccordion") { e.stopPropagation(); toggleBranchSectionAccordion(el.getAttribute("data-sec") || "mauzo_wateja"); }
-        else if (act === "openBranchModalSection") openBranchModalSection(el.getAttribute("data-sec") || "mauzo_wateja", el.getAttribute("data-sub") || "");
+        else if (act === "openBranchModalSection") { e.stopPropagation(); openBranchModalSection(el.getAttribute("data-sec") || "mauzo_wateja", el.getAttribute("data-sub") || ""); }
         else if (act === "selectMauzoSubFeature") selectMauzoSubFeature(el.getAttribute("data-sub") || "");
         else if (act === "openHistoriaMauzoFull") openHistoriaMauzoFull();
         else if (act === "closeHistoriaMauzoFull") closeHistoriaMauzoFull();
@@ -4110,30 +4187,16 @@
           if (commCalmTimer) clearTimeout(commCalmTimer);
           commCalmTimer = setTimeout(function() { isEditingCommissionProfit = false; }, 1600);
           var sid = t.getAttribute("data-saleid");
-          var rawStr = String(t.value || "").trim();
-          var val = rawStr === "" ? 0 : parseFloat(rawStr);
-          if (sid && !isNaN(val) && val >= 0) {
+          var val = parseFloat(t.value);
+          if (sid) {
             dirtyProfitSaleIds[sid] = true;
             for (var i = 0; i < state.sales.length; i++) {
-              if (String(state.sales[i].id) === String(sid)) {
-                state.sales[i].entered_profit = val;
-                break;
+              if (String(state.sales[i].id || "") === String(sid)) {
+                state.sales[i].entered_profit = (!isNaN(val) && val >= 0) ? val : 0;
               }
-            }
-            var emp = staffObj(state.activeStaffId) || state.staff[0];
-            if (emp) {
-              var stNow = calcStaffStats(emp.id);
-              var gEl = document.getElementById("cm_gross");
-              var nEl = document.getElementById("cm_nauli");
-              var spEl = document.getElementById("cm_split_45_55");
-              var afterN = Math.max(0, stNow.gross - stNow.nauli);
-              if (gEl) gEl.textContent = "TZS " + money(stNow.gross);
-              if (nEl) nEl.textContent = "TZS " + money(stNow.nauli);
-              if (spEl) spEl.textContent = "Yake (55%): TZS " + money(afterN * 0.55) + " | Yangu (45%): TZS " + money(afterN * 0.45);
             }
             try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (err) {}
             lastSyncSnapshot = computeStateFingerprint();
-            broadcastSync("Faida imesasishwa kwenye Kamisheni.");
           }
         }
       });
@@ -4141,30 +4204,53 @@
       document.body.addEventListener("change", function(e) {
         var t = e.target;
         if (!t) return;
-        if (t.id === "cm_emp_sel") { state.activeStaffId = t.value; renderCommission(); }
-        else if (t.id === "mw_seller_sel") { state.activeStaffId = t.value; renderOutsideSellerConsole(); }
-        else if (t.id === "sh_br_sel" && !lockedShopBranchId) { state.activeBranchId = t.value; renderShopScanPortal(); }
-        else if (t.id === "sh_chooser_cat_select") { shSelectCategoryFilter(t.value || "ALL"); }
-        else if (t.id === "sh_chooser_item_select") { selectedChooserProductId = t.value || ""; renderCategoryChooser(lockedShopBranchId || state.activeBranchId || HQ_B); }
-        else if (t.id === "sh_edit_cat_price_sel") { selectedEditCategoryKey = t.value || "memory_card"; }
-        else if (t.id === "hm_status_sel") { hmStatusFilter = t.value || "ALL"; renderBranchSectionsContent(); }
-        else if (t.id === "hm_deliv_sel") { hmDeliveryFilter = t.value || "ALL"; renderBranchSectionsContent(); }
-        else if (t.id === "hm_days_sel") { hmDaysFilter = t.value || "30"; renderBranchSectionsContent(); }
-        else if (t.id === "hm_sort_sel") { hmSortOrder = t.value || "newest"; renderBranchSectionsContent(); }
+        if (t.id === "sh_chooser_cat_select") {
+          selectedShopCategoryKey = t.value || "ALL";
+          selectedChooserProductId = "";
+          renderShopScanPortal();
+        } else if (t.id === "sh_chooser_item_select") {
+          selectedChooserProductId = t.value || "";
+          renderCategoryChooser(lockedShopBranchId || state.activeBranchId || HQ_B);
+        } else if (t.id === "sh_edit_cat_price_sel") {
+          selectedEditCategoryKey = t.value || "memory_card";
+        } else if (t.id === "hm_status_sel") {
+          hmStatusFilter = t.value || "ALL";
+          renderBranchSectionsContent();
+        } else if (t.id === "hm_deliv_sel") {
+          hmDeliveryFilter = t.value || "ALL";
+          renderBranchSectionsContent();
+        } else if (t.id === "hm_days_sel") {
+          hmDaysFilter = t.value || "30";
+          renderBranchSectionsContent();
+        } else if (t.id === "hm_sort_sel") {
+          hmSortOrder = t.value || "newest";
+          renderBranchSectionsContent();
+        } else if (t.id === "cm_emp_sel") {
+          if (!isStaffOnlyView && !isShopScanPortalView) {
+            state.activeStaffId = t.value;
+            renderStaff();
+            renderCommission();
+            renderOutsideSellerConsole();
+          }
+        } else if (t.id === "mw_seller_sel") {
+          if (!isStaffOnlyView && !isShopScanPortalView) {
+            state.activeStaffId = t.value;
+            renderStaff();
+            renderCommission();
+            renderOutsideSellerConsole();
+          }
+        }
       });
-
-      var dInp = document.getElementById("rp_d");
-      if (dInp) dInp.value = new Date().toISOString().slice(0, 10);
 
       loadLocalState();
       recalculateAllProductStocks();
+      lastSyncSnapshot = computeStateFingerprint();
       checkUrlParams();
       if (!isStaffOnlyView && !isShopScanPortalView) {
         renderAll();
         runReport();
       }
       updatePortalSwahiliDateTime();
-      lastSyncSnapshot = computeStateFingerprint();
       syncFromSupabase();
       bindRealtimeSales();
     })();
