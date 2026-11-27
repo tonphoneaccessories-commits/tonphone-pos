@@ -1,25 +1,25 @@
 {
-  "name": "TON-PHONE & ACCESSORIES POS",
+  "name": "TON-PHONE ACCESSORIES",
   "short_name": "TON-PHONE",
-  "description": "Wholesale and retail point-of-sale and inventory management system",
-  "start_url": "./",
-  "scope": "./",
+  "description": "Mfumo wa HQ, Duka la Jumla/Rejareja na Mawakala",
+  "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#000000",
   "theme_color": "#000000",
-  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "./icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ]
 }
