@@ -1,13 +1,10 @@
 {
-  "name": "TON-PHONE ACCESSORIES",
+  "name": "TON PHONE ACCESSORIES",
   "short_name": "TON-PHONE",
-  "description": "Mfumo wa HQ, Duka la Jumla/Rejareja na Mawakala",
-  "start_url": "/index.html",
-  "scope": "/",
+  "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
   "icons": [
     {
       "src": "icon-192.png",
